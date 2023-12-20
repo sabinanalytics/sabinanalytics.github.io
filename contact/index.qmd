@@ -1,0 +1,31 @@
+---
+title: "Contact"
+title-block-banner: "#0062B8"
+title-block-banner-color: "#FFFFFF"
+page-layout: full
+toc: true
+toc-location: right
+---
+
+# Consulting
+
+::: {#consulting}
+In addition to my day to day I offer consulting services and expert witness abilities in the following areas:
+
+-   Sports Analytics, with most expertise in:
+    -   Football (American)
+    -   Soccer (internation football)
+    -   Basketball
+-   Statistical Methodology
+-   Data Science
+-   Analytics & Data Science Leadership
+-   Speaking to large groups
+:::
+
+# Contact
+
+::: {#contact}
+Contact me about my work, speaking opportunities, consulting, expert witness, or research at
+
+[Wharton](mailto:psabin88@wharton.upenn.edu) or [Personal](mailto:r.paul.sabin@gmail.com)
+:::

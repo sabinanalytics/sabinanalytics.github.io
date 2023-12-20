@@ -2,19 +2,105 @@ project:
   type: website
   output-dir: docs
 
-website:
-  title: "sabinanalytics.github.io"
-  navbar:
-    left:
-      - href: index.qmd
-        text: Home
-      - about.qmd
+preview: 
+  port: 5555
+  browser: true
+  watch-inputs: true
+  navigate: true
+
+render:
+  - "*.qmd"
+  - "*.md"
+  - "!etc/"
 
 format:
   html:
-    theme: cosmo
-    css: styles.css
-    toc: true
+    # theme: cosmo
+    # css: styles.css
+    theme:
+      light: html/ath.scss
+      dark: solar
+    # toc: true
+    grid: 
+      body-width: 900px
+    toc: false
+    code-link: true
+    anchor-sections: true
+    fig-cap-location: margin
+    reference-location: margin
+    footnotes-hover: true
+    highlight-style: monokai
+    
 
 editor: visual
+
+
+freeze: true
+
+bibliography: files/bib/references.bib
+csl: files/bib/chicago-author-date.csl
+
+# Metadata stuff
+pagetitle: "{{< meta title >}} | Sabin Analytics"
+author-meta: "Paul Sabin"
+
+website:
+  title: "Sabin Analytics"
+  description: "Paul Sabin is a Sr. Fellow & Lecturer at Wharton. Formerly a Sr. Sports Data Scientist at ESPN & VP of Football Analytics at SumerSports."
+  favicon: "/images/favicon-gridiron.png"
+  site-url: "https://www.sabinanalytics.com"
+  # repo-url: "https://github.com/andrewheiss/ath-quarto"
+
+  google-analytics: "G-YV4B7VVR0R"
+
+  # twitter-card: 
+  #   image: "/files/profiles/twitter-card-large.png"
+  #   card-style: summary_large_image
+  #   creator: "@sabinanalytics"
+  #   site: "@sabinanalytics"
+
+  # open-graph: 
+  #   image: "/files/profiles/twitter-card-large.png"
+  #   locale: en_US
+  # 
+  navbar:
+    pinned: true
+
+    left:
+      - text: "Ratings & Projections"
+        href: "ratings/index.qmd"
+      - text: "About Me"
+        href: "about.qmd"        
+      - text: "CV"
+        href: "cv/index.qmd"
+      - text: "Contact"
+        href: "contact/index.qmd"
+      - text: "Press"
+        href: "press/index.qmd"
+
+    right:
+      - text: "{{< iconify bi envelope size=1.1em title='E-mail' >}}"
+        href: "mailto:psabin88@wharton.upenn.edu"
+        # rel: me
+      - text: "{{< iconify fa6-brands square-x-twitter size=1.1em title='X' >}}"
+        href: https://twitter.com/SabinAnalytics
+        rel: me
+      - text: "{{< iconify bi github size=1.1em title='GitHub' >}}"
+        href: https://github.com/sabinanalytics
+        rel: me
+      - text: "{{< iconify bi linkedin size=1.1em title='LinkedIn' >}}"
+        href: https://www.linkedin.com/in/rpaulsabin
+        rel: me
+      - text: "{{< iconify fa6-brands google-scholar size=1.1em title='Google Scholar' >}}"
+        href: https://scholar.google.com/citations?user=wAezxZ4AAAAJ&hl=en
+        rel: me    
+  
+  page-footer:
+    left: |
+      <span class="faux-block">{{< fa brands creative-commons >}} {{< var years >}} Paul Sabin</span>
+      <span class="faux-block">All content licensed under<br>[{{< fa brands creative-commons >}} {{< fa brands creative-commons-by >}} Creative Commons CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)</span>      
+    center: |
+          <span class="faux-block"> </span>
+    right: |
+      <span class="faux-block">Made with {{< fa brands r-project >}} and [Quarto](https://quarto.org/)</span>
 

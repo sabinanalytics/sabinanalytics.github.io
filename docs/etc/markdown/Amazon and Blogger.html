@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Paul Sabin">
+
+<title>?meta:title | Sabin Analytics</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../..//images/favicon-gridiron.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script src="../../site_libs/quarto-contrib/iconify-1.0.7/iconify-icon.min.js"></script>
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-YV4B7VVR0R"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-YV4B7VVR0R', { 'anonymize_ip': true});
+</script>
+
+
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Sabin Analytics</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../ratings/index.qmd" rel="" target="">
+ <span class="menu-text">Ratings &amp; Projections</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html" rel="" target="">
+ <span class="menu-text">About Me</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../cv/index.html" rel="" target="">
+ <span class="menu-text">CV</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../contact/index.qmd" rel="" target="">
+ <span class="menu-text">Contact</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../press/index.qmd" rel="" target="">
+ <span class="menu-text">Press</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="mailto:psabin88@wharton.upenn.edu" rel="" target="">
+ <span class="menu-text"><iconify-icon inline="" icon="bi:envelope" style="font-size: 1.1em;" e-mail=""></iconify-icon></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://twitter.com/SabinAnalytics" rel="me" target="">
+ <span class="menu-text"><iconify-icon inline="" icon="fa6-brands:square-x-twitter" style="font-size: 1.1em;" x=""></iconify-icon></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://github.com/sabinanalytics" rel="me" target="">
+ <span class="menu-text"><iconify-icon inline="" icon="bi:github" style="font-size: 1.1em;" github=""></iconify-icon></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://www.linkedin.com/in/rpaulsabin" rel="me" target="">
+ <span class="menu-text"><iconify-icon inline="" icon="bi:linkedin" style="font-size: 1.1em;" linkedin=""></iconify-icon></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://scholar.google.com/citations?user=wAezxZ4AAAAJ&amp;hl=en" rel="me" target="">
+ <span class="menu-text"><iconify-icon inline="" icon="fa6-brands:google-scholar" style="font-size: 1.1em;" google="" scholar=""></iconify-icon></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+
+
+<section id="using-amazon-s3-and-blogger-for-family-history" class="level1">
+<h1>Using Amazon S3 and Blogger for family history</h1>
+<p>The easiest way to share large scans of family history journals is through the internet, using a combination of Amazon S3 (for storage) and Blogger (to display and present the files). Getting the system set up is relatively easy; once it’s set up it’s even easier to use.</p>
+</section>
+<section id="amazon-s3" class="level1 page-columns page-full">
+<h1>Amazon S3</h1>
+<p>Besides selling everything in the world, Amazon offers a ton of web services: cloud computing, database management, content delivery networks, and other nerdy development things. One of their best and most convenient offerings is S3, or Simple Storage Service—essentially a giant hard drive in the cloud. Storage costs are minimal (<a href="http://aws.amazon.com/s3/pricing/">$0.095 per GB</a>), so you can store a ton of stuff safely online.</p>
+<p>To get started, go to <a href="http://aws.amazon.com/s3/">http://aws.amazon.com/s3/</a> and create a free account.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="https://www.evernote.com/shard/s1/sh/da7b64d2-16be-40d5-ac0a-3e5741eb1e2a/4d321153e2209ece349c2afdad22a2a8/deep/0/Amazon%20S3,%20Cloud%20Computing%20Storage%20for%20Files,%20Images,%20Videos.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption margin-caption">Create a new account</figcaption>
+</figure>
+</div>
+<p>Log in with your Amazon account and follow the instructions. Eventually you’ll come to your Amazon Web Services console at <a href="https://console.aws.amazon.com/console/home">https://console.aws.amazon.com/console/home</a>, where you can access the dashboard for S3</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="https://www.evernote.com/shard/s1/sh/93199e45-6db9-46ba-93fa-abd7519a7182/677137a4cd468d4a8a625b05e3959c52/deep/0/AWS%20Management%20Console%20Home%20and%20Amazon%20and%20Blogger.md%20and%20Windows%208%20%5BRunning%5D.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption margin-caption">S3 on the AWS console</figcaption>
+</figure>
+</div>
+<p>S3 lets you create an unlimited number of “buckets” for storage. Buckets aren’t quite like folders—they’re more like actual hard drives. As you can see in the screenshot below, I have buckets for a bunch of different things, like blog files (where we upload our Christmas newsletter), and other stuff. You can create as many buckets as you want at no cost—you’re only charged for storage space. So for this you’d probably want just one bucket for all the family history stuff you’re doing, with multiple folders inside that bucket. Click on “Create Bucket” to create a bucket (obviously).</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="https://www.evernote.com/shard/s1/sh/a3f0ee8d-6889-41aa-8325-459e4f51263f/b159fe4e5f39add46257b94a3b43ae8a/deep/0/S3%20Management%20Console.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption margin-caption">Create a new bucket</figcaption>
+</figure>
+</div>
+<p>Give your bucket a unique name (‘familyhistory’ didn’t work for me) and click “Create.” You don’t need to worry about the “Set Up Logging” thing.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="https://www.evernote.com/shard/s1/sh/ae21190c-76b4-43b8-a94d-cb1a2533d93d/0a7807b4face0a31c70a048452775ccc/deep/0/S3%20Management%20Console.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption margin-caption">New bucket dialog</figcaption>
+</figure>
+</div>
+<p>You should now have a new bucket in your bucket list (pseudo pun!).</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="https://www.evernote.com/shard/s1/sh/f9e3a235-31eb-48f2-a113-8217b141e1da/a4d7e8cf9dea2518d9ec0da16269e113/deep/0/S3%20Management%20Console.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption margin-caption">New bucket in the list</figcaption>
+</figure>
+</div>
+<p>Click on the new bucket to see its contents. Nothing’s there! Click on “Create Folder” to, um, create a folder.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="https://www.evernote.com/shard/s1/sh/f58d7685-f358-45c4-89e8-f5e6ebff0afd/43b2c695132666169a86cd9569659791/deep/0/S3%20Management%20Console.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption margin-caption">Create a new folder</figcaption>
+</figure>
+</div>
+<p>By default, the folders that you create will be private and only accessible by you (since lots of companies use S3 to store user data). You’ll need to make any new folders publicly accessible by right clicking on them and choosing “Make Public”:</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="https://www.evernote.com/shard/s1/sh/227814ed-8b2a-41a3-8012-49f0b0ea4ff2/59f2b434a266fb45572598f8c06b045e/deep/0/S3%20Management%20Console.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption margin-caption">Make that folder public</figcaption>
+</figure>
+</div>
+<p>Now anything you put in that folder will have a publicly accessible URL. Magic.</p>
+<p>That’s it! You’ve set up S3! Now you need to put stuff in those folders.</p>
+</section>
+<section id="add-files-to-s3" class="level1 page-columns page-full">
+<h1>Add files to S3</h1>
+<p>Now that you’ve set up S3, you have everything you need to upload files and share their URLs. There are two general ways to add files to your S3 bucket: (1) using the S3 website and (2) using a 3rd-party program. Both are really easy to do, and both let you quickly get publicly accessible and shareable URLs.</p>
+<section id="use-the-s3-website" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="use-the-s3-website">Use the S3 website</h2>
+<p>Log into the your S3 console at <a href="https://console.aws.amazon.com/s3/">https://console.aws.amazon.com/s3/</a>. Open the bucket and folder you want to upload to. Then click “Upload”:</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="https://www.evernote.com/shard/s1/sh/69cea7d9-5b53-4b7e-b222-9e1cebbca9b7/347b8af7d56dcd24d32f01478244cfc5/deep/0/S3%20Management%20Console.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption margin-caption">Upload file to S3</figcaption>
+</figure>
+</div>
+<p>Click “Add Files” to select the files on your computer that you want to upload, then click “Start Upload.” Alternatively, you can click the “Enable Enhanced Uploader (BETA)” link to upload whole folders. I’ve never done this, but it probably works.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="https://www.evernote.com/shard/s1/sh/a05d4278-4675-4837-8b00-115f48d3d416/02e8608088589bb42d31295a708d3061/deep/0/S3%20Management%20Console.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption margin-caption">Upload dialog</figcaption>
+</figure>
+</div>
+<p>You can then look in the folder to see a list of the files you’ve uploaded. If you click on one of the files, you’ll get a screen of summary information, including a publicly accessible URL.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="https://www.evernote.com/shard/s1/sh/ce8ae7a8-2288-4fcc-9ae7-ec9f55129212/7df83e1d0a8af05b2c5cb0be3d4d4069/deep/0/S3%20Management%20Console%20and%20Messages.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption margin-caption">File properties</figcaption>
+</figure>
+</div>
+<p>Copy that, paste it in a browser tab, and the file will download. Send that link to anyone and they can download it. Paste that link into a blog post and people can click it and download the file. Magic.</p>
+</section>
+<section id="use-a-3rd-party-program" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="use-a-3rd-party-program">Use a 3rd-party program</h2>
+<p>Rather than use the S3 website, I find it easier to use a different program that lets you drag and drop files from your computer to the S3 server and quickly get their URLs. The best (and free-est) program is called <a href="http://cyberduck.ch/">Cyberduck</a>. Go to <a href="http://cyberduck.ch/">http://cyberduck.ch/</a> and download the Windows version and install it on your computer.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="https://www.evernote.com/shard/s1/sh/e5c575e2-e84c-48a7-a420-cf5d944bcfcf/f8dd031ea60fbd77f06a92dd83d9c632/deep/0/Windows%208%20%5BRunning%5D.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption margin-caption">Download Cyberduck</figcaption>
+</figure>
+</div>
+<p>Once it’s installed, you can use Cyberduck to connect to S3. The best way to do this is to save your connection information inside Cyberduck as a bookmark. Click on Bookmark &gt; New Bookmark to create one.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="https://www.evernote.com/shard/s1/sh/6ee1a9b9-ca8f-4faa-9d9c-5e23adadfd5a/be6722250f2430dab14fcddf05234bcc/deep/0/Windows%208%20%5BRunning%5D.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption margin-caption">Create new bookmark</figcaption>
+</figure>
+</div>
+<p>In the new bookmark dialog box, change the “FTP (File Transfer Protocol)” to “S3 (Amazon Simple Storage Service)”</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="https://www.evernote.com/shard/s1/sh/fdced94f-0280-4588-8e81-07703c30791b/b4826792417ebc83d3393823142db3c2/deep/0/Windows%208%20%5BRunning%5D.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption margin-caption">Select S3 from the list</figcaption>
+</figure>
+</div>
+<p>Give the bookmark whatever nickname you want. Leave the server information as is. You can find your access key ID at the S3 website. Click on your name in the top right corner and select “Security Credentials” from the menu.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="https://www.evernote.com/shard/s1/sh/a5bf2b52-1f89-4fb8-bd36-94360c9c42ca/2a0e145f43af22baaef35e69d08dc61d/deep/0/S3%20Management%20Console.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption margin-caption">Security credentials</figcaption>
+</figure>
+</div>
+<p>If you get some warning or message about AWS Identity and Access Management, ignore it and click “Continue to Security Credentials”.</p>
+<p>Click on Access Keys and click on “Create New Root Key” to generate a new access key ID and secret access key. Copy these and save them somewhere safe.</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="https://www.evernote.com/shard/s1/sh/219e7e2b-a7dc-434a-bab2-28401470abf3/01c8c3ce1caa0918abf8bc8b08e64145/deep/0/IAM%20Management%20Console.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption margin-caption">New credentials</figcaption>
+</figure>
+</div>
+<p>Paste the access key ID into the Cyberduck bookmark and then close the bookmark editing dialog (for some reason it won’t let you enter the password until you try to connect to the server).</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="https://www.evernote.com/shard/s1/sh/090f3c78-1969-48a6-bf47-801f7cb77d8a/6721614d42ed8da84db5fdbf09b0e004/deep/0/Windows%208%20%5BRunning%5D.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption margin-caption">Finish the bookmark</figcaption>
+</figure>
+</div>
+<p>Once the bookmark dialog is closed, you’ll see the bookmark in the list of bookmarks. Double click on it to connect. Since this is your first time connecting, it’ll ask for your password. Paste in the huge crazy long secret access key, make sure “Save password” is checked, and click “Login”</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="https://www.evernote.com/shard/s1/sh/f0124947-3d24-4b67-bb6c-0ac248fc9e08/05c126fd5779bb132df2f5e1fb83020d/deep/0/Windows%208%20%5BRunning%5D.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption margin-caption">Log in</figcaption>
+</figure>
+</div>
+<p>You’ll see a list of your buckets, just like on the website. Double click on the bucket you created to open it and see the folders.</p>
+<p>To upload stuff, just drag files from your computer into folders in Cyberduck. You can even drag entire folders.</p>
+<p>Getting a URL for a file in Cyberduck is super easy. Right click on a file, go to “Copy URL” and choose “HTTP URL” (all the others are for other things you don’t need)</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="https://www.evernote.com/shard/s1/sh/53bc0c89-6f35-460b-961a-3c85d267a8dd/acee76d8b1415759576770dd2d93666c/deep/0/Windows%208%20%5BRunning%5D.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption margin-caption">Copy the file’s URL</figcaption>
+</figure>
+</div>
+<p>Sometimes when you reopen Cyberduck, it’ll try to open the last folder it was in. If you want to get back to the list of bookmarks, click on the little bookmark icon near the top:</p>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="https://www.evernote.com/shard/s1/sh/ab21d88b-13ad-4c54-b7d6-659c83133259/b4db3a552fa72040783965855779fc1c/deep/0/Windows%208%20%5BRunning%5D.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption margin-caption">Bookmark icon</figcaption>
+</figure>
+</div>
+<p><strong>There’s only one caveat!</strong> Folders in S3 are private by default. If you drag a folder from your computer into the main root of the bucket (i.e.&nbsp;not into a folder you’ve already set as public), it’ll be private. You can either (1) log into the S3 website and right click on the folder to make it public, or (2) upload stuff to an already public folder. An easy way around this would be to create one main folder for uploaded stuff within your bucket and upload all other files and folders there—then anything you upload will automatically be public as well.</p>
+</section>
+</section>
+<section id="putting-it-all-together" class="level1">
+<h1>Putting it all together</h1>
+<p>Now that you’ve done the hard steps of setting this up, here’s how you can use everything in the future.</p>
+<section id="using-cyberduck" class="level2">
+<h2 class="anchored" data-anchor-id="using-cyberduck">Using Cyberduck</h2>
+<ol type="1">
+<li>Open Cyberduck.</li>
+<li>Double click on the S3 connection in the bookmark list.</li>
+<li>Navigate to the folder where you want to upload stuff.</li>
+<li>Drag files from your computer into Cyberduck.</li>
+<li>Right click on the files to get their public URLs.</li>
+<li>Do something with those URLs.</li>
+</ol>
+</section>
+<section id="using-the-s3-website" class="level2">
+<h2 class="anchored" data-anchor-id="using-the-s3-website">Using the S3 website</h2>
+<ol type="1">
+<li>Log into S3 at <a href="https://console.aws.amazon.com/s3/">https://console.aws.amazon.com/s3/</a></li>
+<li>Navigate to the folder where you want to upload stuff.</li>
+<li>Upload files.</li>
+<li>Click on the files and find their URLs in the file properties screen.</li>
+<li>Do something with those URLs.</li>
+</ol>
+</section>
+<section id="distribute-the-urls" class="level2">
+<h2 class="anchored" data-anchor-id="distribute-the-urls">Distribute the URLs</h2>
+<p>Once your files are in the cloud on S3, all you need to do is get their URLs and distribute them somehow.</p>
+<p>Ideally you could then make some curated blog posts in Blogger, like this:</p>
+<blockquote class="blockquote">
+<p>Joseph Stacey Murdock was born in X in Y. He had Z kids. Blah blah. He left several personal journals. The first (http://the-url-for-the-first-journal) was found in 1893 and talks about stuff. The second (http://the-url-for-the-second-journal) was found later and talks about other stuff. These are cool.</p>
+</blockquote>
+<p>Alternatively, if someone in your family wants a specific journal or scan, you can open Cyberduck, find the file, copy the URL and send it to them (rather than tracking down the specific blog post).</p>
+<p>That’s all!</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left"><span class="faux-block"><i class="fa-brands fa-creative-commons" aria-label="creative-commons"></i> 2023-2024 Paul Sabin</span> <span class="faux-block">All content licensed under<br><a href="https://creativecommons.org/licenses/by/4.0/"><i class="fa-brands fa-creative-commons" aria-label="creative-commons"></i> <i class="fa-brands fa-creative-commons-by" aria-label="creative-commons-by"></i> Creative Commons CC BY 4.0</a></span><br>
+</div>   
+    <div class="nav-footer-center"><span class="faux-block"> </span></div>
+    <div class="nav-footer-right"><span class="faux-block">Made with <i class="fa-brands fa-r-project" aria-label="r-project"></i> and <a href="https://quarto.org/">Quarto</a></span></div>
+  </div>
+</footer>
+
+
+
+</body></html>

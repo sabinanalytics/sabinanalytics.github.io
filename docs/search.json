@@ -2,15 +2,316 @@
   {
     "objectID": "about.html",
     "href": "about.html",
-    "title": "About",
+    "title": "About Me",
     "section": "",
-    "text": "About this site\n\n1 + 1\n\n[1] 2"
+    "text": "Personal\nMy wife and I co-coach our coed basketball team of 4 girls and one boy. In my spare time I am chasing my goals in my recent hobby of marathon running and my lifelong love of waterskiing. I enjoy coaching my kids’ sports teams and while trying not to overthink strategy for elementary school aged soccer. I volunteer regularly in the community and at my local Church of Jesus Christ of Latter-day Saints.\n \n\n\nProfessional\nI’m a sports analytics expert with years of management experience. I built and grew a data science team from scratch working on NFL Football analytics problems at SumerSports. I have more than 5 years managing data science staff and driving key business decisions. At ESPN I led the development, implementation, and communication for many proprietary player & team metrics across NFL, CFB, NBA, CBB, and soccer.\nAmong those metrics, BPI and Strength of Record (SOR) are official metrics of the NCAA selection committee. Another, the Allstate Playoff predictor bring millions of people to ESPN to play out how their team can reach the playoff. CFB Real Plus-Minus was the first “objective” rating for every college football player.\n \n\n\n\nEDUCATION\n\nPhd in statistics from Virginia Tech\nMS in statistics from BYU\nBA in French from BYU\nBS in statistics from BYU"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "sabinanalytics.github.io",
+    "title": "Welcome!",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\n\n1 + 1\n\n[1] 2"
+    "text": "I’m a Senior Fellow at The Wharton Sports Analytics & Business Initiative and a Lecturer in the Department of Statistics and Data Science at The Wharton School of The University of Pennsylvania.\nPreviously I was the VP of Football Analytics at SumerSports and a Senior Sports Data Scientist at ESPN where I authored analytics articles on ESPN.com in addition to creating models and projections including, but not limited to, the Basketball Power Index BPI, The Allstate Playoff Predictor, Fantasy Soccer Projections, NFL FPI. While at ESPN I also created the first of its kind objective data-based rating system for all college football and NFL players.\nI teach at Wharton and at Virginia Tech. I also provide Sports Analytics, statistics, and expert witness consulting services. To contact me, click the email button at the top of the site."
+  },
+  {
+    "objectID": "cv/index.html",
+    "href": "cv/index.html",
+    "title": "Curriculum vitæ",
+    "section": "",
+    "text": "Download current CV"
+  },
+  {
+    "objectID": "etc/presentations/phd-data/plugin/markdown/example.html",
+    "href": "etc/presentations/phd-data/plugin/markdown/example.html",
+    "title": "Markdown Demo",
+    "section": "",
+    "text": "Content 1.1\nNote: This will only appear in the speaker notes window.\n\n\n\nContent 1.2\n\n\n\nContent 2.1\n\n\n\nContent 3.1\n\n\n\nContent 3.2"
+  },
+  {
+    "objectID": "etc/presentations/phd-data/plugin/markdown/example.html#external-1.1",
+    "href": "etc/presentations/phd-data/plugin/markdown/example.html#external-1.1",
+    "title": "Markdown Demo",
+    "section": "",
+    "text": "Content 1.1\nNote: This will only appear in the speaker notes window."
+  },
+  {
+    "objectID": "etc/presentations/phd-data/plugin/markdown/example.html#external-1.2",
+    "href": "etc/presentations/phd-data/plugin/markdown/example.html#external-1.2",
+    "title": "Markdown Demo",
+    "section": "",
+    "text": "Content 1.2"
+  },
+  {
+    "objectID": "etc/presentations/phd-data/plugin/markdown/example.html#external-2",
+    "href": "etc/presentations/phd-data/plugin/markdown/example.html#external-2",
+    "title": "Markdown Demo",
+    "section": "",
+    "text": "Content 2.1"
+  },
+  {
+    "objectID": "etc/presentations/phd-data/plugin/markdown/example.html#external-3.1",
+    "href": "etc/presentations/phd-data/plugin/markdown/example.html#external-3.1",
+    "title": "Markdown Demo",
+    "section": "",
+    "text": "Content 3.1"
+  },
+  {
+    "objectID": "etc/presentations/phd-data/plugin/markdown/example.html#external-3.2",
+    "href": "etc/presentations/phd-data/plugin/markdown/example.html#external-3.2",
+    "title": "Markdown Demo",
+    "section": "",
+    "text": "Content 3.2"
+  },
+  {
+    "objectID": "etc/presentations/data-best-practices/plugin/markdown/example.html",
+    "href": "etc/presentations/data-best-practices/plugin/markdown/example.html",
+    "title": "Markdown Demo",
+    "section": "",
+    "text": "Content 1.1\nNote: This will only appear in the speaker notes window.\n\n\n\nContent 1.2\n\n\n\nContent 2.1\n\n\n\nContent 3.1\n\n\n\nContent 3.2"
+  },
+  {
+    "objectID": "etc/presentations/data-best-practices/plugin/markdown/example.html#external-1.1",
+    "href": "etc/presentations/data-best-practices/plugin/markdown/example.html#external-1.1",
+    "title": "Markdown Demo",
+    "section": "",
+    "text": "Content 1.1\nNote: This will only appear in the speaker notes window."
+  },
+  {
+    "objectID": "etc/presentations/data-best-practices/plugin/markdown/example.html#external-1.2",
+    "href": "etc/presentations/data-best-practices/plugin/markdown/example.html#external-1.2",
+    "title": "Markdown Demo",
+    "section": "",
+    "text": "Content 1.2"
+  },
+  {
+    "objectID": "etc/presentations/data-best-practices/plugin/markdown/example.html#external-2",
+    "href": "etc/presentations/data-best-practices/plugin/markdown/example.html#external-2",
+    "title": "Markdown Demo",
+    "section": "",
+    "text": "Content 2.1"
+  },
+  {
+    "objectID": "etc/presentations/data-best-practices/plugin/markdown/example.html#external-3.1",
+    "href": "etc/presentations/data-best-practices/plugin/markdown/example.html#external-3.1",
+    "title": "Markdown Demo",
+    "section": "",
+    "text": "Content 3.1"
+  },
+  {
+    "objectID": "etc/presentations/data-best-practices/plugin/markdown/example.html#external-3.2",
+    "href": "etc/presentations/data-best-practices/plugin/markdown/example.html#external-3.2",
+    "title": "Markdown Demo",
+    "section": "",
+    "text": "Content 3.2"
+  },
+  {
+    "objectID": "etc/markdown/Amazon and Blogger.html",
+    "href": "etc/markdown/Amazon and Blogger.html",
+    "title": "Using Amazon S3 and Blogger for family history",
+    "section": "",
+    "text": "The easiest way to share large scans of family history journals is through the internet, using a combination of Amazon S3 (for storage) and Blogger (to display and present the files). Getting the system set up is relatively easy; once it’s set up it’s even easier to use."
+  },
+  {
+    "objectID": "etc/markdown/Amazon and Blogger.html#use-the-s3-website",
+    "href": "etc/markdown/Amazon and Blogger.html#use-the-s3-website",
+    "title": "Using Amazon S3 and Blogger for family history",
+    "section": "Use the S3 website",
+    "text": "Use the S3 website\nLog into the your S3 console at https://console.aws.amazon.com/s3/. Open the bucket and folder you want to upload to. Then click “Upload”:\n\n\n\nUpload file to S3\n\n\nClick “Add Files” to select the files on your computer that you want to upload, then click “Start Upload.” Alternatively, you can click the “Enable Enhanced Uploader (BETA)” link to upload whole folders. I’ve never done this, but it probably works.\n\n\n\nUpload dialog\n\n\nYou can then look in the folder to see a list of the files you’ve uploaded. If you click on one of the files, you’ll get a screen of summary information, including a publicly accessible URL.\n\n\n\nFile properties\n\n\nCopy that, paste it in a browser tab, and the file will download. Send that link to anyone and they can download it. Paste that link into a blog post and people can click it and download the file. Magic."
+  },
+  {
+    "objectID": "etc/markdown/Amazon and Blogger.html#use-a-3rd-party-program",
+    "href": "etc/markdown/Amazon and Blogger.html#use-a-3rd-party-program",
+    "title": "Using Amazon S3 and Blogger for family history",
+    "section": "Use a 3rd-party program",
+    "text": "Use a 3rd-party program\nRather than use the S3 website, I find it easier to use a different program that lets you drag and drop files from your computer to the S3 server and quickly get their URLs. The best (and free-est) program is called Cyberduck. Go to http://cyberduck.ch/ and download the Windows version and install it on your computer.\n\n\n\nDownload Cyberduck\n\n\nOnce it’s installed, you can use Cyberduck to connect to S3. The best way to do this is to save your connection information inside Cyberduck as a bookmark. Click on Bookmark &gt; New Bookmark to create one.\n\n\n\nCreate new bookmark\n\n\nIn the new bookmark dialog box, change the “FTP (File Transfer Protocol)” to “S3 (Amazon Simple Storage Service)”\n\n\n\nSelect S3 from the list\n\n\nGive the bookmark whatever nickname you want. Leave the server information as is. You can find your access key ID at the S3 website. Click on your name in the top right corner and select “Security Credentials” from the menu.\n\n\n\nSecurity credentials\n\n\nIf you get some warning or message about AWS Identity and Access Management, ignore it and click “Continue to Security Credentials”.\nClick on Access Keys and click on “Create New Root Key” to generate a new access key ID and secret access key. Copy these and save them somewhere safe.\n\n\n\nNew credentials\n\n\nPaste the access key ID into the Cyberduck bookmark and then close the bookmark editing dialog (for some reason it won’t let you enter the password until you try to connect to the server).\n\n\n\nFinish the bookmark\n\n\nOnce the bookmark dialog is closed, you’ll see the bookmark in the list of bookmarks. Double click on it to connect. Since this is your first time connecting, it’ll ask for your password. Paste in the huge crazy long secret access key, make sure “Save password” is checked, and click “Login”\n\n\n\nLog in\n\n\nYou’ll see a list of your buckets, just like on the website. Double click on the bucket you created to open it and see the folders.\nTo upload stuff, just drag files from your computer into folders in Cyberduck. You can even drag entire folders.\nGetting a URL for a file in Cyberduck is super easy. Right click on a file, go to “Copy URL” and choose “HTTP URL” (all the others are for other things you don’t need)\n\n\n\nCopy the file’s URL\n\n\nSometimes when you reopen Cyberduck, it’ll try to open the last folder it was in. If you want to get back to the list of bookmarks, click on the little bookmark icon near the top:\n\n\n\nBookmark icon\n\n\nThere’s only one caveat! Folders in S3 are private by default. If you drag a folder from your computer into the main root of the bucket (i.e. not into a folder you’ve already set as public), it’ll be private. You can either (1) log into the S3 website and right click on the folder to make it public, or (2) upload stuff to an already public folder. An easy way around this would be to create one main folder for uploaded stuff within your bucket and upload all other files and folders there—then anything you upload will automatically be public as well."
+  },
+  {
+    "objectID": "etc/markdown/Amazon and Blogger.html#using-cyberduck",
+    "href": "etc/markdown/Amazon and Blogger.html#using-cyberduck",
+    "title": "Using Amazon S3 and Blogger for family history",
+    "section": "Using Cyberduck",
+    "text": "Using Cyberduck\n\nOpen Cyberduck.\nDouble click on the S3 connection in the bookmark list.\nNavigate to the folder where you want to upload stuff.\nDrag files from your computer into Cyberduck.\nRight click on the files to get their public URLs.\nDo something with those URLs."
+  },
+  {
+    "objectID": "etc/markdown/Amazon and Blogger.html#using-the-s3-website",
+    "href": "etc/markdown/Amazon and Blogger.html#using-the-s3-website",
+    "title": "Using Amazon S3 and Blogger for family history",
+    "section": "Using the S3 website",
+    "text": "Using the S3 website\n\nLog into S3 at https://console.aws.amazon.com/s3/\nNavigate to the folder where you want to upload stuff.\nUpload files.\nClick on the files and find their URLs in the file properties screen.\nDo something with those URLs."
+  },
+  {
+    "objectID": "etc/markdown/Amazon and Blogger.html#distribute-the-urls",
+    "href": "etc/markdown/Amazon and Blogger.html#distribute-the-urls",
+    "title": "Using Amazon S3 and Blogger for family history",
+    "section": "Distribute the URLs",
+    "text": "Distribute the URLs\nOnce your files are in the cloud on S3, all you need to do is get their URLs and distribute them somehow.\nIdeally you could then make some curated blog posts in Blogger, like this:\n\nJoseph Stacey Murdock was born in X in Y. He had Z kids. Blah blah. He left several personal journals. The first (http://the-url-for-the-first-journal) was found in 1893 and talks about stuff. The second (http://the-url-for-the-second-journal) was found later and talks about other stuff. These are cool.\n\nAlternatively, if someone in your family wants a specific journal or scan, you can open Cyberduck, find the file, copy the URL and send it to them (rather than tracking down the specific blog post).\nThat’s all!"
+  },
+  {
+    "objectID": "etc/presentations/data-best-practices/data-best-practices/plugin/markdown/example.html",
+    "href": "etc/presentations/data-best-practices/data-best-practices/plugin/markdown/example.html",
+    "title": "Markdown Demo",
+    "section": "",
+    "text": "Content 1.1\nNote: This will only appear in the speaker notes window.\n\n\n\nContent 1.2\n\n\n\nContent 2.1\n\n\n\nContent 3.1\n\n\n\nContent 3.2"
+  },
+  {
+    "objectID": "etc/presentations/data-best-practices/data-best-practices/plugin/markdown/example.html#external-1.1",
+    "href": "etc/presentations/data-best-practices/data-best-practices/plugin/markdown/example.html#external-1.1",
+    "title": "Markdown Demo",
+    "section": "",
+    "text": "Content 1.1\nNote: This will only appear in the speaker notes window."
+  },
+  {
+    "objectID": "etc/presentations/data-best-practices/data-best-practices/plugin/markdown/example.html#external-1.2",
+    "href": "etc/presentations/data-best-practices/data-best-practices/plugin/markdown/example.html#external-1.2",
+    "title": "Markdown Demo",
+    "section": "",
+    "text": "Content 1.2"
+  },
+  {
+    "objectID": "etc/presentations/data-best-practices/data-best-practices/plugin/markdown/example.html#external-2",
+    "href": "etc/presentations/data-best-practices/data-best-practices/plugin/markdown/example.html#external-2",
+    "title": "Markdown Demo",
+    "section": "",
+    "text": "Content 2.1"
+  },
+  {
+    "objectID": "etc/presentations/data-best-practices/data-best-practices/plugin/markdown/example.html#external-3.1",
+    "href": "etc/presentations/data-best-practices/data-best-practices/plugin/markdown/example.html#external-3.1",
+    "title": "Markdown Demo",
+    "section": "",
+    "text": "Content 3.1"
+  },
+  {
+    "objectID": "etc/presentations/data-best-practices/data-best-practices/plugin/markdown/example.html#external-3.2",
+    "href": "etc/presentations/data-best-practices/data-best-practices/plugin/markdown/example.html#external-3.2",
+    "title": "Markdown Demo",
+    "section": "",
+    "text": "Content 3.2"
+  },
+  {
+    "objectID": "etc/presentations/code-cloud/plugin/markdown/example.html",
+    "href": "etc/presentations/code-cloud/plugin/markdown/example.html",
+    "title": "Markdown Demo",
+    "section": "",
+    "text": "Content 1.1\nNote: This will only appear in the speaker notes window.\n\n\n\nContent 1.2\n\n\n\nContent 2.1\n\n\n\nContent 3.1\n\n\n\nContent 3.2"
+  },
+  {
+    "objectID": "etc/presentations/code-cloud/plugin/markdown/example.html#external-1.1",
+    "href": "etc/presentations/code-cloud/plugin/markdown/example.html#external-1.1",
+    "title": "Markdown Demo",
+    "section": "",
+    "text": "Content 1.1\nNote: This will only appear in the speaker notes window."
+  },
+  {
+    "objectID": "etc/presentations/code-cloud/plugin/markdown/example.html#external-1.2",
+    "href": "etc/presentations/code-cloud/plugin/markdown/example.html#external-1.2",
+    "title": "Markdown Demo",
+    "section": "",
+    "text": "Content 1.2"
+  },
+  {
+    "objectID": "etc/presentations/code-cloud/plugin/markdown/example.html#external-2",
+    "href": "etc/presentations/code-cloud/plugin/markdown/example.html#external-2",
+    "title": "Markdown Demo",
+    "section": "",
+    "text": "Content 2.1"
+  },
+  {
+    "objectID": "etc/presentations/code-cloud/plugin/markdown/example.html#external-3.1",
+    "href": "etc/presentations/code-cloud/plugin/markdown/example.html#external-3.1",
+    "title": "Markdown Demo",
+    "section": "",
+    "text": "Content 3.1"
+  },
+  {
+    "objectID": "etc/presentations/code-cloud/plugin/markdown/example.html#external-3.2",
+    "href": "etc/presentations/code-cloud/plugin/markdown/example.html#external-3.2",
+    "title": "Markdown Demo",
+    "section": "",
+    "text": "Content 3.2"
+  },
+  {
+    "objectID": "cv/index_cv.html",
+    "href": "cv/index_cv.html",
+    "title": "Curriculum vitæ",
+    "section": "",
+    "text": "Download current CV"
+  },
+  {
+    "objectID": "press/index_press.html",
+    "href": "press/index_press.html",
+    "title": "Press",
+    "section": "",
+    "text": "This page lists notable appearances I’ve made on various media outlets as well as my own personal published work and other media that features me or my work."
+  },
+  {
+    "objectID": "press/index_press.html#podcast-tv-webinar-appearances",
+    "href": "press/index_press.html#podcast-tv-webinar-appearances",
+    "title": "Press",
+    "section": "Podcast, TV, & Webinar Appearances",
+    "text": "Podcast, TV, & Webinar Appearances\n\n\n    \n                  \n            September 12, 2022\n        \n        \n            APIs and web scraping with R\n            Workshop for SEACEN's September 2022 online course on \"Data Analytics for Macroeconomic Surveillance\" | Kuala Lumpur, Malaysia (via Zoom)\n            \n                \n                    \n                         Companion site, slides, and materials\n                    \n                \n                \n                    \n                         GitHub repository\n                    \n                \n            \n        \n    \n    \n                  \n            February 22, 2022\n        \n        \n            Putting everything out there as a researcher\n            Workshop for EPID 9100 (PhD/MS seminar), Department of Epidemiology & Biostatistics, University of Georgia | Athens, Georgia\n            \n                \n                    \n                         Slides\n                    \n                \n                \n                    \n                         Handout page\n                    \n                \n                \n                    \n                         GitHub repository for talk\n                    \n                \n            \n        \n    \n\n\nNo matching items"
+  },
+  {
+    "objectID": "press/index_press.html#featured-in",
+    "href": "press/index_press.html#featured-in",
+    "title": "Press",
+    "section": "Featured In",
+    "text": "Featured In\n\n\n    \n                  \n            September 12, 2022\n        \n        \n            APIs and web scraping with R\n            Workshop for SEACEN's September 2022 online course on \"Data Analytics for Macroeconomic Surveillance\" | Kuala Lumpur, Malaysia (via Zoom)\n            \n                \n                    \n                         Companion site, slides, and materials\n                    \n                \n                \n                    \n                         GitHub repository\n                    \n                \n            \n        \n    \n    \n                  \n            February 22, 2022\n        \n        \n            Putting everything out there as a researcher\n            Workshop for EPID 9100 (PhD/MS seminar), Department of Epidemiology & Biostatistics, University of Georgia | Athens, Georgia\n            \n                \n                    \n                         Slides\n                    \n                \n                \n                    \n                         Handout page\n                    \n                \n                \n                    \n                         GitHub repository for talk\n                    \n                \n            \n        \n    \n\n\nNo matching items"
+  },
+  {
+    "objectID": "press/index_press.html#authored-articles",
+    "href": "press/index_press.html#authored-articles",
+    "title": "Press",
+    "section": "Authored Articles",
+    "text": "Authored Articles\n\n\n    \n                  \n            August 3, 2022\n        \n        \n            COVID-19, MLB, NFL, Sabin (8/3/2022)\n             | The Wharton Moneyball Podcast\n            \n                \n                    \n                         \n                    \n                \n            \n        \n    \n\n\nNo matching items"
+  },
+  {
+    "objectID": "press/index.html",
+    "href": "press/index.html",
+    "title": "Press",
+    "section": "",
+    "text": "This page lists notable appearances I’ve made on various media outlets as well as my own personal published work and other media that features me or my work."
+  },
+  {
+    "objectID": "press/index.html#podcast-tv-webinar-appearances",
+    "href": "press/index.html#podcast-tv-webinar-appearances",
+    "title": "Press",
+    "section": "Podcast, TV, & Webinar Appearances",
+    "text": "Podcast, TV, & Webinar Appearances\n\n\n    \n                  \n            August 3, 2022\n        \n        \n            \n            The Wharton Moneyball Podcast | \n            \n                \n                    \n                         COVID-19, MLB, NFL, Sabin (8/3/2022)\n                    \n                \n            \n        \n    \n    \n                  \n            February 16, 2022\n        \n        \n            \n            Northern Virginia Technology Council | \n            \n                \n                    \n                         Nerds and Jocks Unite -- What's Next in Sports Analytics\n                    \n                \n            \n        \n    \n    \n                  \n            December 9, 2021\n        \n        \n            \n            ESPN+ | \n            \n                \n                    \n                         College Sports Summit\n                    \n                \n            \n        \n    \n    \n                  \n            August 3, 2020\n        \n        \n            \n            Dataiku | \n            \n                \n                    \n                         The Scope of Data Science in the Sports World\n                    \n                \n            \n        \n    \n    \n                  \n            January 8, 2020\n        \n        \n            \n            TruMedia Expected Value Podcast | \n            \n                \n                    \n                         Paul Sabin\n                    \n                \n            \n        \n    \n    \n                  \n            July 21, 2017\n        \n        \n            \n            BYU Sports Nation | \n            \n                \n                    \n                         Paul Sabin of ESPN Analytics\n                    \n                \n            \n        \n    \n\n\nNo matching items"
+  },
+  {
+    "objectID": "press/index.html#featured-in",
+    "href": "press/index.html#featured-in",
+    "title": "Press",
+    "section": "Featured In",
+    "text": "Featured In\n\n\n    \n                  \n            October 16, 2023\n        \n        \n            \n            Analytics at Wharton News | \n            \n                \n                    \n                         Eric Eisenstein and Paul Sabin Join Analytics at Wharton as Senior Fellows\n                    \n                \n            \n        \n    \n    \n                  \n            February 11, 2022\n        \n        \n            \n            Virginia Tech News | \n            \n                \n                    \n                         Analytics in sports, There's a stat for that\n                    \n                \n            \n        \n    \n    \n                  \n            April 30, 2021\n        \n        \n            \n            UCI Department of Statistics | \n            \n                \n                    \n                         Exploring and Strengthening Sports Stats at UCI\n                    \n                \n            \n        \n    \n    \n                  \n            January 3, 2020\n        \n        \n            \n            Virginia Tech Innovation and Partnerships | \n            \n                \n                    \n                         Industry Leader Spotlight, Paul Sabin\n                    \n                \n            \n        \n    \n    \n                  \n            April 26, 2019\n        \n        \n            \n            Sports Business Journal | \n            \n                \n                    \n                         ESPN Presents NFL Draft Predictions in New Virtual Studio\n                    \n                \n            \n        \n    \n    \n                  \n            February 23, 2018\n        \n        \n            \n            Forbes | \n            \n                \n                    \n                         Day 1 Recap Of 2018 Sloan Sports Analytics Conference\n                    \n                \n            \n        \n    \n    \n                  \n            March 24, 2014\n        \n        \n            \n            Wall Street Journal | \n            \n                \n                    \n                         NFL Looks to Expand Playoffs in 2015 (Not 2014)\n                    \n                \n            \n        \n    \n    \n                  \n            March 23, 2014\n        \n        \n            \n            BYU University Communications | \n            \n                \n                    \n                         The teams that would bring the biggest Final Four ratings\n                    \n                \n            \n        \n    \n\n\nNo matching items"
+  },
+  {
+    "objectID": "press/index.html#authored-articles",
+    "href": "press/index.html#authored-articles",
+    "title": "Press",
+    "section": "Authored Articles",
+    "text": "Authored Articles\n\n\n    \n                  \n            August 3, 2022\n        \n        \n            COVID-19, MLB, NFL, Sabin (8/3/2022)\n            COVID-19, MLB, NFL, Sabin (8/3/2022) | \n            \n                \n                    \n                         The Wharton Moneyball Podcast\n                    \n                \n            \n        \n    \n\n\nNo matching items"
+  },
+  {
+    "objectID": "press/index.html#published-articles",
+    "href": "press/index.html#published-articles",
+    "title": "Press",
+    "section": "Published Articles",
+    "text": "Published Articles\n\n\n    \n                  \n            April 23, 2023\n        \n        \n            \n            SumerSports | \n            \n                \n                    \n                         Playing the Fields\n                    \n                \n            \n        \n    \n    \n                  \n            April 21, 2021\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         Which NFL teams should draft first-round quarterbacks? Projecting rookies versus 10 current starters\n                    \n                \n            \n        \n    \n    \n                  \n            December 2, 2020\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         Breaking down this season's BPI projections and why Gonzaga is not the favorite\n                    \n                \n            \n        \n    \n    \n                  \n            November 17, 2020\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         Proyecciones del draft 2020 de la NBA, mejores prospectos, más sobrevalorados y más subestimados\n                    \n                \n            \n        \n    \n    \n                  \n            November 17, 2020\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         NBA draft 2020 projections, Best prospects, most overrated and most underrated\n                    \n                \n            \n        \n    \n    \n                  \n            October 30, 2020\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         College Football Playoff simulation scenarios, BYU in the semis? Oregon winning it all?\n                    \n                \n            \n        \n    \n    \n                  \n            February 27, 2020\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         Would three NCAA tournament bids make the WCC a college basketball power conference?\n                    \n                \n            \n        \n    \n    \n                  \n            February 6, 2020\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         Indiana among teams facing major NCAA tournament bubble matchups\n                    \n                \n            \n        \n    \n    \n                  \n            January 30, 2020\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         BPI says these college basketball teams are better than their places in the standings\n                    \n                \n            \n        \n    \n    \n                  \n            January 23, 2020\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         BPI vs. Bracketology, Which college basketball teams, leagues should we buy and sell?\n                    \n                \n            \n        \n    \n    \n                  \n            January 16, 2020\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         Why No. 3 Duke -- fresh off a loss to Clemson -- is still underrated\n                    \n                \n            \n        \n    \n    \n                  \n            January 12, 2020\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         The BPI Bracket Predictor...\n                    \n                \n            \n        \n    \n    \n                  \n            January 9, 2020\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         Why Memphis looks more like a bubble team in March\n                    \n                \n            \n        \n    \n    \n                  \n            January 3, 2020\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         BPI says ACC, Big Ten trending in different directions\n                    \n                \n            \n        \n    \n    \n                  \n            November 4, 2019\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         According to the Allstate Playoff Predictor...\n                    \n                \n            \n        \n    \n    \n                  \n            November 1, 2019\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         Preseason BPI rankings like Michigan State, skeptical about Memphis\n                    \n                \n            \n        \n    \n    \n                  \n            September 30, 2019\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         FPI views the Redskins as...\n                    \n                \n            \n        \n    \n    \n                  \n            August 19, 2019\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         Introducing a new way to rate college football players\n                    \n                \n            \n        \n    \n    \n                  \n            March 18, 2019\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         BPI says Duke was harmed, North Carolina helped by bracketing\n                    \n                \n            \n        \n    \n    \n                  \n            February 17, 2019\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         How NET rankings could impact Kansas, Gonzaga and 2 others\n                    \n                \n            \n        \n    \n    \n                  \n            February 15, 2019\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         Three '19 teams (not just Duke) rank among most dominant of decade\n                    \n                \n            \n        \n    \n    \n                  \n            January 31, 2019\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         Your BPI-influenced NCAA tournament draft\n                    \n                \n            \n        \n    \n    \n                  \n            January 25, 2019\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         Buying teams in the latest round of Bracketology\n                    \n                \n            \n        \n    \n    \n                  \n            December 11, 2018\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         BPI loves the ACC right now...\n                    \n                \n            \n        \n    \n    \n                  \n            November 8, 2018\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         Why the Steelers and Panthers should (almost) always go for two\n                    \n                \n            \n        \n    \n    \n                  \n            November 1, 2018\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         Preseason BPI rankings, Kansas, UNC, Virginia lead the pack\n                    \n                \n            \n        \n    \n    \n                  \n            July 29, 2018\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         ESPN's BPI tabs Kansas, Gonzaga as best teams in nation\n                    \n                \n            \n        \n    \n    \n                  \n            June 18, 2018\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         Boom or bust, ESPN's Draft Analytics model predicts top players in 2018 NBA draft\n                    \n                \n            \n        \n    \n    \n                  \n            June 13, 2018\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         Boom or bust, ESPN's Draft Analytics model predicts top players in 2018 NBA draft\n                    \n                \n            \n        \n    \n    \n                  \n            January 24, 2018\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         A spin through the bracket to find the Giant Killers\n                    \n                \n            \n        \n    \n    \n                  \n            May 17, 2017\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         Potential 2017 NBA draft steals\n                    \n                \n            \n        \n    \n    \n                  \n            April 12, 2017\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         How did ESPN's upgraded BPI perform this college basketball season?\n                    \n                \n            \n        \n    \n    \n                  \n            April 3, 2017\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         A BPI look at the journey to the title game\n                    \n                \n            \n        \n    \n    \n                  \n            March 8, 2017\n        \n        \n            \n            FiveThirtyEight | \n            \n                \n                    \n                         On The NCAA Bubble? Here’s The Number To Watch\n                    \n                \n            \n        \n    \n    \n                  \n            February 20, 2017\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         North Carolina the biggest mover in BPI, but Villanova still No. 1\n                    \n                \n            \n        \n    \n    \n                  \n            December 6, 2016\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         UConn still must climb big mountain to make NCAA case\n                    \n                \n            \n        \n    \n    \n                  \n            November 23, 2016\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         Why Fort Waynes win over Indiana isn't that shocking\n                    \n                \n            \n        \n    \n    \n                  \n            June 9, 2016\n        \n        \n            \n            ESPN | \n            \n                \n                    \n                         NBA draft projections, Ranking Simmons, Ingram and top 40\n                    \n                \n            \n        \n    \n\n\nNo matching items"
+  },
+  {
+    "objectID": "contact/index.html",
+    "href": "contact/index.html",
+    "title": "Contact",
+    "section": "",
+    "text": "Consulting\n\nIn addition to my day to day I offer consulting services and expert witness abilities in the following areas:\n\nSports Analytics, with most expertise in:\n\nFootball (American)\nSoccer (internation football)\nBasketball\n\nStatistical Methodology\nData Science\nAnalytics & Data Science Leadership\nSpeaking to large groups\n\n\n\n\nContact\n\nContact me about my work, speaking opportunities, consulting, expert witness, or research at\nWharton or Personal"
+  },
+  {
+    "objectID": "ratings/index.html",
+    "href": "ratings/index.html",
+    "title": "Ratings & Projections",
+    "section": "",
+    "text": "Soccer\n\nEPL Projections\n\n\n\nCollege Football"
   }
 ]

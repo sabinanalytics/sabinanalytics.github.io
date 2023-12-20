@@ -1,0 +1,22 @@
+---
+title: "Ratings & Projections"
+title-block-banner: "#0062B8"
+title-block-banner-color: "#FFFFFF"
+page-layout: full
+toc: true
+toc-location: right
+---
+
+# Soccer
+
+::: {#soccer}
+
+EPL Projections
+:::
+
+
+# College Football
+
+::: {#cfb}
+
+:::

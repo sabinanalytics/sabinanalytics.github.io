@@ -1,9 +1,35 @@
 ---
-title: "About"
+title: "About Me"
 ---
 
-About this site
+![](images/post_marathon_katherine.png){width="800"}
 
-```{r}
-1 + 1
-```
+# Personal
+
+My wife and I co-coach our coed basketball team of 4 girls and one boy. In my spare time I am chasing my goals in my recent hobby of marathon running and my lifelong love of waterskiing. I enjoy coaching my kids' sports teams and while trying not to overthink strategy for elementary school aged soccer. I volunteer regularly in the community and at my local Church of Jesus Christ of Latter-day Saints.
+
+![](images/sloan_presenting_2019.jpeg){width="400"} ![](images/mega_cast.jpeg){width="400"}
+
+# Professional
+
+I'm a sports analytics expert with years of management experience. I built and grew a data science team from scratch working on NFL Football analytics problems at SumerSports. I have more than 5 years managing data science staff and driving key business decisions. At ESPN I led the development, implementation, and communication for many proprietary player & team metrics across NFL, CFB, NBA, CBB, and soccer.
+
+Among those metrics, BPI and Strength of Record (SOR) are official metrics of the NCAA selection committee. Another, the Allstate Playoff predictor bring millions of people to ESPN to play out how their team can reach the playoff. CFB Real Plus-Minus was the first "objective" rating for every college football player.
+
+![](images/espn_logo.png){width="400"} ![](images/sumer_logo.jpeg){width="400"}
+
+![](images/vt_graduation.jpeg){width="600"}
+
+# EDUCATION
+
+-   Phd in statistics from Virginia Tech
+
+-   MS in statistics from BYU
+
+-   BA in French from BYU
+
+-   BS in statistics from BYU
+
+![](images/vt_logo.png){width="400"} ![](images/byu_logo.png){width="400"}
+
+![](images/statistics_chalkboard.jpeg){width="400"} ![](images/french_flag.png){width="400"}
