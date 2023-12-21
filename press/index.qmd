@@ -20,6 +20,7 @@ toc: true
 toc-location: right
 toc-title: Year
 date-format: "MMMM D, YYYY"
+sidebar: false
 ---
 
 This page lists notable appearances I've made on various media outlets as well as my own personal published work and other media that features me or my work.

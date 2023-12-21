@@ -5,6 +5,7 @@ title-block-banner-color: "#FFFFFF"
 page-layout: full
 toc: true
 toc-location: right
+sidebar: false
 ---
 
 # Consulting

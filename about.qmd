@@ -1,5 +1,9 @@
 ---
 title: "About Me"
+description: ""
+title-block-banner: "#0062B8"
+title-block-banner-color: "#FFFFFF"
+sidebar: false
 ---
 
 ![](images/post_marathon_katherine.png){width="800"}

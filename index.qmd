@@ -9,6 +9,7 @@ format:
   html:
     quarto-template-params:
       banner-header-class: "home"
+sidebar: false
 # about: 
 #   template: trestles
 #   image-shape: round
@@ -31,11 +32,9 @@ format:
 #     tracking-id: "G-YV4B7VVR0R"
 #     anonymize-ip: true
 ---
-       
-::: {.grid}
 
+::: grid
 ::: {.g-col-12 .g-col-sm-4}
-
 ```{=html}
 <div class="grid" style="--bs-columns: 5; row-gap: 0;">
   <div class="g-col-1 g-col-sm-0"></div>
@@ -49,17 +48,13 @@ format:
   <div class="g-col-1 g-col-sm-0"></div>
 </div>
 ```
-
 :::
 
 ::: {.g-col-12 .g-col-sm-8}
+I'm a Senior Fellow at [The Wharton Sports Analytics & Business Initiative](https://wsb.wharton.upenn.edu/) and a Lecturer in the Department of Statistics and Data Science at [The Wharton School](https://www.wharton.upenn.edu/) of [The University of Pennsylvania](https://www.upenn.edu/).
 
-I'm a Senior Fellow at [The Wharton Sports Analytics \& Business Initiative](https://wsb.wharton.upenn.edu/) and a Lecturer in the Department of Statistics and Data Science at [The Wharton School](https://www.wharton.upenn.edu/) of [The University of Pennsylvania](https://www.upenn.edu/). 
-
-Previously I was the VP of Football Analytics at [SumerSports](sumersports.com) and a Senior Sports Data Scientist at [ESPN](https://www.espn.com/analytics/) where I authored analytics articles on [ESPN.com](espn.com) in addition to creating models and projections including, but not limited to, the Basketball Power Index [BPI](espn.com/bpi), [The Allstate Playoff Predictor](https://www.espn.com/espn/feature/story/_/page/cfbplayoffpredictor/cfb-playoff-predictor), Fantasy Soccer Projections, [NFL FPI](https://www.espn.com/nfl/fpi). While at ESPN I also created the first of its kind objective data-based rating system for all college football and NFL players. 
+Previously I was the VP of Football Analytics at [SumerSports](sumersports.com) and a Senior Sports Data Scientist at [ESPN](https://www.espn.com/analytics/) where I authored analytics articles on [ESPN.com](espn.com) in addition to creating models and projections including, but not limited to, the Basketball Power Index [BPI](espn.com/bpi), [The Allstate Playoff Predictor](https://www.espn.com/espn/feature/story/_/page/cfbplayoffpredictor/cfb-playoff-predictor), Fantasy Soccer Projections, [NFL FPI](https://www.espn.com/nfl/fpi). While at ESPN I also created the first of its kind objective data-based rating system for all college football and NFL players.
 
 I teach at Wharton and at Virginia Tech. I also provide Sports Analytics, statistics, and expert witness consulting services. To contact me, click the email button at the top of the site.
-
 :::
-
 :::

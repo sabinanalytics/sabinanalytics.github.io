@@ -1,0 +1,25 @@
+---
+title: "College Football Ratings & Projections"
+title-block-banner: "#0062B8"
+title-block-banner-color: "#FFFFFF"
+page-layout: full
+toc: true
+toc-location: right
+---
+
+Please be patient... website is under construction.
+
+# Power Ratings
+
+::: {#powerratings}
+:::
+
+# Game Predictions
+
+::: {#game-predictions}
+:::
+
+# Resume
+
+::: {#resume}
+:::

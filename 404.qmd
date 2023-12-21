@@ -1,6 +1,9 @@
 ---
+title: ""
+description: ""
 title-block-banner: "#0062B8"
 title-block-banner-color: "#FFFFFF"
+sidebar: false
 ---
 
 ### Oops!

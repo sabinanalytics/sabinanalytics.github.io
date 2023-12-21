@@ -1,5 +1,5 @@
 ---
-title: Curriculum vitæ
+title: Curriculum Vitæ
 description: "Paul Sabin's CV"
 title-block-banner: "#0062B8"
 title-block-banner-color: "#FFFFFF"
@@ -7,6 +7,7 @@ published-title: CV last updated
 engine: knitr 
 cv:
   pdf: "Paul_Sabin_Resume_12_2023.pdf"
+sidebar: false
 ---
 
 ```{css, echo=FALSE}

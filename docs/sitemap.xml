@@ -2,11 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.sabinanalytics.com/index.html</loc>
-    <lastmod>2023-12-20T21:19:34.246Z</lastmod>
+    <lastmod>2023-12-21T21:24:52.977Z</lastmod>
   </url>
   <url>
     <loc>https://www.sabinanalytics.com/cv/index.html</loc>
-    <lastmod>2023-12-20T21:19:44.348Z</lastmod>
+    <lastmod>2023-12-21T02:58:36.440Z</lastmod>
   </url>
   <url>
     <loc>https://www.sabinanalytics.com/etc/presentations/phd-data/plugin/markdown/example.html</loc>
@@ -38,18 +38,26 @@
   </url>
   <url>
     <loc>https://www.sabinanalytics.com/press/index.html</loc>
-    <lastmod>2023-12-20T21:19:48.886Z</lastmod>
+    <lastmod>2023-12-21T02:55:23.095Z</lastmod>
   </url>
   <url>
     <loc>https://www.sabinanalytics.com/about.html</loc>
-    <lastmod>2023-12-20T21:19:45.983Z</lastmod>
+    <lastmod>2023-12-21T02:58:35.703Z</lastmod>
   </url>
   <url>
     <loc>https://www.sabinanalytics.com/contact/index.html</loc>
-    <lastmod>2023-12-20T21:19:33.774Z</lastmod>
+    <lastmod>2023-12-21T02:55:21.906Z</lastmod>
   </url>
   <url>
     <loc>https://www.sabinanalytics.com/ratings/index.html</loc>
-    <lastmod>2023-12-20T21:19:35.999Z</lastmod>
+    <lastmod>2023-12-21T02:22:31.696Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.sabinanalytics.com/ratings/cfb/index.html</loc>
+    <lastmod>2023-12-21T21:24:29.369Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.sabinanalytics.com/ratings/soccer/index.html</loc>
+    <lastmod>2023-12-21T21:22:01.134Z</lastmod>
   </url>
 </urlset>

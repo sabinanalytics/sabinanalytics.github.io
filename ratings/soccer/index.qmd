@@ -1,0 +1,49 @@
+---
+title: "Soccer Power Ratings & Projections"
+title-block-banner: "#0062B8"
+title-block-banner-color: "#FFFFFF"
+page-layout: full
+toc: true
+toc-location: right
+---
+
+# English Premier League
+
+::: {#EPL}
+
+```{=html}
+<iframe width="780" height="1200" src="https://website-public-data.s3.amazonaws.com/soccer_data/tables/epl_projections.html" title=""></iframe>
+```
+
+
+:::
+
+# La Liga
+
+::: {#LaLiga}
+Coming soon!
+:::
+
+# Bundesliga
+
+::: {#Bundesliga}
+Coming soon!
+:::
+
+# Serie A
+
+::: {#SerieA}
+Coming soon!
+:::
+
+# Ligue Un
+
+::: {#LigueUn}
+Coming soon!
+:::
+
+# MLS
+
+::: {#MLS}
+Coming soon!
+:::

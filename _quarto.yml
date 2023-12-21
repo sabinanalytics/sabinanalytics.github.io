@@ -63,21 +63,36 @@ website:
   #   image: "/files/profiles/twitter-card-large.png"
   #   locale: en_US
   # 
+  sidebar:
+      id: ratings
+      title: "Ratings & Projections"
+      style: "docked"
+      background: light
+      collapse-level: 2
+      contents: 
+        - text: "Soccer"
+          file: ratings/soccer/index.qmd
+        - text: "College Football"
+          file: ratings/cfb/index.qmd
+  
   navbar:
+    background: primary
     pinned: true
+  
 
     left:
-      - text: "Ratings & Projections"
-        href: "ratings/index.qmd"
+      # - text: "Ratings & Projections"
+      #   file: "ratings/index.qmd"
       - text: "About Me"
-        href: "about.qmd"        
+        file: "about.qmd"        
       - text: "CV"
-        href: "cv/index.qmd"
+        file: "cv/index.qmd"
       - text: "Contact"
-        href: "contact/index.qmd"
+        file: "contact/index.qmd"
       - text: "Press"
-        href: "press/index.qmd"
-
+        file: "press/index.qmd"
+      - sidebar:ratings
+      
     right:
       - text: "{{< iconify bi envelope size=1.1em title='E-mail' >}}"
         href: "mailto:psabin88@wharton.upenn.edu"
@@ -93,8 +108,12 @@ website:
         rel: me
       - text: "{{< iconify fa6-brands google-scholar size=1.1em title='Google Scholar' >}}"
         href: https://scholar.google.com/citations?user=wAezxZ4AAAAJ&hl=en
-        rel: me    
-  
+        rel: me   
+
+
+
+
+
   page-footer:
     left: |
       <span class="faux-block">{{< fa brands creative-commons >}} {{< var years >}} Paul Sabin</span>
