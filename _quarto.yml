@@ -48,7 +48,7 @@ website:
   title: "Sabin Analytics"
   description: "Paul Sabin is a Sr. Fellow & Lecturer at Wharton. Formerly a Sr. Sports Data Scientist at ESPN & VP of Football Analytics at SumerSports."
   favicon: "/images/favicon-gridiron.png"
-  site-url: "https://www.sabinanalytics.com"
+  site-url: "https://sabinanalytics.com"
   # repo-url: "https://github.com/andrewheiss/ath-quarto"
 
   google-analytics: "G-YV4B7VVR0R"

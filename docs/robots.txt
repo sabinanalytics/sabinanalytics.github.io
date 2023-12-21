@@ -1,1 +1,1 @@
-Sitemap: https://www.sabinanalytics.com/sitemap.xml
+Sitemap: https://sabinanalytics.com/sitemap.xml
