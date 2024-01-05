@@ -1,0 +1,30 @@
+---
+title: "Sabin Analytics Blog"
+author: ""
+description: "Thoughts from Paul Sabin"
+listing:
+  - id: posts_2024
+    contents: "2024/**/index.qmd"
+    sort: "date desc"
+    template: ../html/blog/listing.ejs
+    categories: true
+
+page-layout: full
+toc-title: Year
+toc-location: right
+date-format: "MMMM D, YYYY"
+code-tools: false
+comments: false
+engine: knitr
+---
+
+```{css, echo=FALSE}
+#title-block-header .description {
+    display: none;
+}
+```
+
+## 2024
+
+:::{#posts_2024}
+:::

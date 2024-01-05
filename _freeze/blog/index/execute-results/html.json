@@ -1,0 +1,14 @@
+{
+  "hash": "96ffc1a5f809215737e60127adae2615",
+  "result": {
+    "markdown": "---\ntitle: \"Sabin Analytics Blog\"\nauthor: \"\"\ndescription: \"Thoughts from Paul Sabin\"\nlisting:\n  - id: posts_2024\n    contents: \"2024/**/index.qmd\"\n    sort: \"date desc\"\n    template: ../html/blog/listing.ejs\n    categories: true\n\npage-layout: full\ntoc-title: Year\ntoc-location: right\ndate-format: \"MMMM D, YYYY\"\ncode-tools: false\ncomments: false\nengine: knitr\n---\n\n::: {.cell}\n<style type=\"text/css\">\n#title-block-header .description {\n    display: none;\n}\n</style>\n:::\n\n\n## 2024\n\n:::{#posts_2024}\n:::",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

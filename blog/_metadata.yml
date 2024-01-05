@@ -1,0 +1,37 @@
+# Date format
+date-format: "dddd, MMMM D, YYYY"
+
+# Enable banner style title blocks
+title-block-banner: "#170C3A"
+
+# Add blog-post class to the banner header area
+format: 
+  html:
+    code-tools: true
+    comments:
+      giscus: 
+        repo: sabinanalytics/sabinanalytics.github.io
+        category: Blog comments
+        category-id: DIC_kwDOIg6EJc4CSz92
+        mapping: pathname
+    quarto-template-params:
+      banner-header-class: "blog-post"
+
+# Default for table of contents
+toc: true
+toc-title: Contents
+toc-location: left
+
+freeze: true
+
+# Default knitr options
+execute:
+  echo: false
+  message: false
+  warning: false
+
+# Default author
+author:
+  - name: Paul Sabin
+    url: https://www.sabinanalytics.com/
+    orcid: 0000-0001-9658-8408

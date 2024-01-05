@@ -23,14 +23,14 @@ sidebar: false
 #       href: https://github.com/sabinanalytics
 #     - text: Email
 #       href: mailto:psabin88@wharton.upenn.edu
-# website:
-#   cookie-consent:
-#     type: express
-#     style: headline
-#     palette: dark
-#   google-analytics:
-#     tracking-id: "G-YV4B7VVR0R"
-#     anonymize-ip: true
+website:
+  cookie-consent:
+    type: express
+    style: headline
+    palette: dark
+  google-analytics:
+    tracking-id: "G-YV4B7VVR0R"
+    anonymize-ip: true
 ---
 
 ::: grid

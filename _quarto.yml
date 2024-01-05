@@ -70,6 +70,7 @@ website:
       background: light
       collapse-level: 2
       contents: 
+        - text: "Ratings & Projections"
         - text: "Soccer"
           file: ratings/soccer/index.qmd
         - text: "College Football"
@@ -92,7 +93,8 @@ website:
       - text: "Press"
         file: "press/index.qmd"
       - sidebar:ratings
-      
+      - text: "Blog"
+        file: "blog/index.qmd"
     right:
       - text: "{{< iconify bi envelope size=1.1em title='E-mail' >}}"
         href: "mailto:psabin88@wharton.upenn.edu"
@@ -116,8 +118,7 @@ website:
 
   page-footer:
     left: |
-      <span class="faux-block">{{< fa brands creative-commons >}} {{< var years >}} Paul Sabin</span>
-      <span class="faux-block">All content licensed under<br>[{{< fa brands creative-commons >}} {{< fa brands creative-commons-by >}} Creative Commons CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)</span>      
+      <span class="faux-block">{{< iconify fa6-regular copyright >}} {{< var years >}} Paul Sabin</span>
     center: |
           <span class="faux-block"> </span>
     right: |
