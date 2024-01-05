@@ -95,9 +95,9 @@ nfl_pbp_simple <- nfl_pbp %>%
                 )
 ```
 
-EPA (expected points added) is being used too much. There, I said it. Hear me out before you revoke my analytics club membership. I also want to state that no single application of EPA has driven me to this conclusion but rather many over the years including my own work [quantifying player value using Bayesian models](https://www.degruyter.com/document/doi/10.1515/jqas-2020-0033/html) that EPA to assign player value! From scrutinizing my own work and others I've come to the conclusion that EPA's use as an evaluation tool should be limited largely to team drives and games, complete quarterback seasons, league-wide trends, and to inform other models like win probability. Use of EPA to evaluate per play averages in many specific game situations, in my opinion, should be discontinued.
+EPA (expected points added) is being used too much. There, I said it. Hear me out before you revoke my analytics club membership. I also want to state that no single application of EPA has driven me to this conclusion but rather many over the years including my own work [quantifying player value using Bayesian models](https://www.degruyter.com/document/doi/10.1515/jqas-2020-0033/html) that uses EPA to estimate player value! From scrutinizing my own work and others I've come to the conclusion that EPA's use as an evaluation tool should be limited largely to team drives and games, complete quarterback seasons, league-wide trends, and to inform other models like win probability. Use of EPA to evaluate per play averages in many specific game situations, in my opinion, should be discontinued.
 
-Virgil Carter & Robert Machol's attempt to frame football in terms of [expected points](https://pubsonline.informs.org/doi/abs/10.1287/opre.19.2.541) was revolutionary and perhaps the first influential sports analytics paper despite it being ignored for about 40 years. Thanks to Brian Burke's [site](https://www.advancedfootballanalytics.com/) and then later work to make expected points models public driven largely by [Ron Yurko](https://scholar.google.com/citations?view_op=view_citation&hl=en&user=CBT7NWQAAAAJ&citation_for_view=CBT7NWQAAAAJ:IjCSPb-OGe4C) and [Ben Baldwin](https://www.nflfastr.com/), expected points and EPA as a way to analyze football has finally become mainstream. I remember the first time I heard my ESPN colleague (at the time) Domonique Foxworth casually use "EPA" without explanation on *Around the Horn* and I couldn't stop smiling from my cubicle. We won!
+Virgil Carter & Robert Machol's attempt to frame football in terms of [expected points](https://pubsonline.informs.org/doi/abs/10.1287/opre.19.2.541) was revolutionary and perhaps the first influential sports analytics paper despite it being ignored for about 40 years. Thanks to Brian Burke's [site](https://www.advancedfootballanalytics.com/) and then later work to make expected points models public (driven largely by [Ron Yurko](https://scholar.google.com/citations?view_op=view_citation&hl=en&user=CBT7NWQAAAAJ&citation_for_view=CBT7NWQAAAAJ:IjCSPb-OGe4C) and [Ben Baldwin](https://www.nflfastr.com/)), expected points and EPA as a way to analyze football has finally become mainstream. I remember the first time I heard my ESPN colleague (at the time) Domonique Foxworth casually use "EPA" without explanation on *Around the Horn* and I couldn't stop smiling from my cubicle. We won!
 
 ## Humility
 
@@ -169,9 +169,9 @@ pbp_midfield %>%
           )
 ```
 
-For each down there is a bimodal distribution of outcomes which gets larger variance and more skewness for each additional down. This matters because the means are pulled away from the center of the distribution towards the side of the skew. Players and teams that are in these situations will get credit or blame in terms of EPA for simply performing at the median or 50th percentile. For example a 50th percentile performance for a run on 3rd down and 10 at the 50 is worth `r pbp_midfield_summary_long %>% filter(down == 3, play_type == "run", stat == "median") %>% pull(epa) %>% round(digits = 2)` EPA despite it being simply the median outcome! If we are using EPA per play to compare players in certain situations and one player happened to be in this situation more than others then that alone will make them appear better.
+For each down there is a bimodal distribution of outcomes whose variance and skewness increase for each additional down. This matters because the means are pulled away from the center of the distribution towards the side of the skew. Players and teams that are in these situations will get credit or blame in terms of EPA for simply performing at the median or 50th percentile. For example a 50th percentile performance for a run on 3rd down and 10 at the 50 is worth `r pbp_midfield_summary_long %>% filter(down == 3, play_type == "run", stat == "median") %>% pull(epa) %>% round(digits = 2)` EPA despite it being simply the median outcome! If we are using EPA per play to compare players in certain situations and one player happened to be in this situation more than others then that alone will make them appear better.
 
-We'll also look at the most common starting field position of the 25 yard line (usually after a kickoff) as well.
+We can also look at the most common starting field position of the 25 yard line (usually after a kickoff).
 
 ```{r}
 
@@ -281,18 +281,18 @@ pbp_goaltogo %>%
   scale_color_discrete("") +
   scale_linetype_discrete("") + 
   facet_wrap(~down, ncol = 1) +
-  ggtitle("EPA by Down Goal to Go Inside 5", 
+  ggtitle("EPA by Down, Goal to Go, Inside 5", 
           subtitle = paste0("NFL Plays ", min(nfl_pbp_simple$season), "-", max(nfl_pbp_simple$season), ", Data: NFLfastR" ) 
           )
 ```
 
 ## Player Credit
 
-EPA is used often to compare player performances. In fact total EPA gained on the season for quarterbacks mirrors closely the results of the [MVP voting](https://www.reddit.com/r/nfl/comments/rkppy0/oc_the_mvp_race_and_epa/)*.* In recent years, several attempts have been made to assign credit to players based on how that player's teams unit performs in terms of EPA (*Paul Sabin Plus-Minus, PFF WAR, Yurko nflWAR, Baldwin EPA+CPOE composite, Kevin Cole Plus-Minus*).
+EPA is used often to compare player performances. In fact total EPA gained on the season for quarterbacks mirrors closely the results of the [MVP voting](https://www.reddit.com/r/nfl/comments/rkppy0/oc_the_mvp_race_and_epa/). In recent years, several attempts have been made to assign credit to players based on how that player's teams unit performs in terms of EPA (*Paul Sabin Plus-Minus, PFF WAR, Yurko nflWAR, Baldwin EPA+CPOE composite, Kevin Cole Plus-Minus*).
 
-Barring extreme situations where a player intentionally gives himself up instead of scoring at the end of the game to preserve possession and ensure victory, or going out of bounds to stop the clock, the goal of each player on a football team on each play is to advance the ball as far as possible towards the end-zone as possible (*for the offense*) and likewise to prevent that from happening for the defense.
+Barring extreme situations where a player intentionally gives himself up instead of scoring at the end of the game to preserve possession and ensure victory, or going out of bounds to stop the clock, the goal of each player on a football team on each play is to advance the ball as far as possible towards the end-zone (*for the offense*) and likewise to prevent that from happening for the defense.
 
-This begs the question, do we use EPA as the preferred metric because it's the best metric to encapsulate individual and team performance on a play, or do we use it simply because it isn't *yards*? And why can't we just use yards in some situations? Is the same metric preferable for the whole season as for a set of plays in specific situations?
+This begs questions such as, do we use EPA as the preferred metric because it's the best metric to encapsulate individual and team performance on a play, or do we use it simply because it isn't *yards*? And why can't we just use yards in some situations? Is the same metric preferable for the whole season as for a set of plays in specific situations?
 
 # Flaws of EPA
 
@@ -338,7 +338,7 @@ input_epa <- read_rds("example_situation.rds")
 
 Now in terms of EPA, according to the NFLFastR model, the Expected Points before the play is `r round(input_epa$ep[1], 2)` while the EPA for Result A is `r round(input_epa$ep[2] - input_epa$ep[1], 2)` compared to result B of `r round(input_epa$ep[3] - input_epa$ep[1], 2)`.
 
-While in yards the team gained 10% more in situation B than A, in EPA one play is drastically different than the other. That is a massive difference for players with essentially a coin flip difference in result. In causal inference we would call this spatial proximity. That means the difference of the play resulting in 9 yards vs 10 yards is *mostly* due to chance yet EPA results in a massive difference of that evaluation. If we are comparing players or teams in specific situations, our sample sizes can be overrun by these cliffs. If we do this as analysts we are making the same mistake fans make by overrating a team with an abundance of close wins.
+While in yards the team gained 10% more in situation B than A, in EPA one play is drastically different than the other. That is a massive difference for players with close to a coin flip difference in result. In causal inference we would call this spatial proximity. That means the difference of the play resulting in 9 yards vs 10 yards is *mostly* due to chance yet EPA results in a massive difference of that evaluation. If we are comparing players or teams in specific situations, our sample sizes can be overrun by these cliffs. If we do this as analysts we are making the same mistake fans make by overrating a team with an abundance of close wins.
 
 ### Using Yards is OK
 
@@ -422,11 +422,11 @@ qb_avg_by_season %>%
 
 ```
 
-Sorted by EPA per play the top of this list looks very reasonable. Patrick Mathomes, Jalen Hurts, and Peyton Manning are all at the top but then we get into some interesting names that we don't typically think of when it comes to leading an NFL leaderboard of Quarterbacks like Carson Wentz, Derek Carr, and Geno Smith.
+Sorted by EPA per play, the top of this list looks very reasonable. Patrick Mathomes, Jalen Hurts, and Peyton Manning are all at the top but then we get into some interesting names that we don't typically think of when it comes to leading an NFL leaderboard of quarterbacks like Carson Wentz, Derek Carr, and Geno Smith.
 
 Sure, these are smaller sample sizes because I'm filtering down, but this whole exercise is to examine what happens to EPA when we filter down. As analysts we make these comparisons or see others make these comparisons with similar sample sizes all the time!
 
-Even though each season is a much smaller sample size, we can make some conclusions with almost 300 or so of these quarterback seasons available to us. We can look at the standard deviation from how a quarterback does one season to the next on 3rd and less than 5.
+Even though each season is a much smaller sample size, we can make some conclusions with almost 300 or so of these quarterback seasons available to us. We can look at the stability from how a quarterback does one season to the next on 3rd and less than 5.
 
 ```{r}
 qb_season_stability <- qb_avg_by_season %>% 
@@ -459,7 +459,7 @@ qb_season_stability %>%
 
 Small samples are noisy so none of these have high year to year correlation, but \~ 0.10 is still a lot higher than 0.003!
 
-Why is this?
+#### Why is this?
 
 Well for a QB, over the course of a season, the benefits of accounting for yardline, down, distance, time remaining, etc. in EPA will make it more predictive than yards. The opposite can be true when we start splicing certain game situations. When we splice the data for certain situations in a game or for situations in a play that are *correlated* with situations in a game, using EPA may now hurt predictability because, among other things, the jump at the first down line coupled with small sample sizes. The goal of every team and player is to get as many yards as possible (with some very limited exceptions) so it is ok **and** *can* be preferable to use yards when we are honing in on specific situations.
 
