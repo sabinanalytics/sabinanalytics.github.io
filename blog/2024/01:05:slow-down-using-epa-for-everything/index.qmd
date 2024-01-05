@@ -101,7 +101,7 @@ Virgil Carter & Robert Machol's attempt to frame football in terms of [expected 
 
 ## Humility
 
-We should all be more quick to acknowledge flaws with any metric and EPA is far from perfect. Work by UPenn PhD student Ryan Brill [recently](https://www.youtube.com/watch?v=uS4XxQ0LVfE) showed that expected points models are built on data rife with selection bias which can impacts how confident we can be in 4th down decision models.
+We should all be more quick to acknowledge flaws with any metric and EPA is far from perfect. Work by UPenn PhD student Ryan Brill [recently](https://www.youtube.com/watch?v=uS4XxQ0LVfE) showed that expected points models are built on data rife with selection bias which can impact how confident we can be in 4th down decision models.
 
 ## Distribution of EPA on a Play
 
@@ -288,7 +288,7 @@ pbp_goaltogo %>%
 
 ## Player Credit
 
-EPA is used often to compare player performances. In fact total EPA gained on the season for quarterbacks mirrors closely the results of the [MVP voting](https://www.reddit.com/r/nfl/comments/rkppy0/oc_the_mvp_race_and_epa/)*.* In recent years, several attempts have been made to assign credit to players based on how that player's teams unit performs in terms of EPA (Paul *Sabin Plus-Minus, PFF WAR, Yurko nflWAR, Baldwin EPA+CPOE composite, Kevin Cole Plus-Minus)*.
+EPA is used often to compare player performances. In fact total EPA gained on the season for quarterbacks mirrors closely the results of the [MVP voting](https://www.reddit.com/r/nfl/comments/rkppy0/oc_the_mvp_race_and_epa/)*.* In recent years, several attempts have been made to assign credit to players based on how that player's teams unit performs in terms of EPA (*Paul Sabin Plus-Minus, PFF WAR, Yurko nflWAR, Baldwin EPA+CPOE composite, Kevin Cole Plus-Minus*).
 
 Barring extreme situations where a player intentionally gives himself up instead of scoring at the end of the game to preserve possession and ensure victory, or going out of bounds to stop the clock, the goal of each player on a football team on each play is to advance the ball as far as possible towards the end-zone as possible (*for the offense*) and likewise to prevent that from happening for the defense.
 
@@ -308,8 +308,8 @@ We all know that 10 yards on 3rd and 10 and 10 yards on 3rd and 20 are **not** w
 
 Let's consider the hypothetical situation, it is 3rd and 10 at exactly midfield in the 1st quarter of a 0-0 game.
 
-- **Result A**: The team gains 9 yards.
-- **Result B**: The team gains 10 yards.
+-   **Result A**: The team gains 9 yards.
+-   **Result B**: The team gains 10 yards.
 
 ```{r}
 # nflfastR::calculate_expected_points()
@@ -342,7 +342,7 @@ While in yards the team gained 10% more in situation B than A, in EPA one play i
 
 ### Using Yards is OK
 
-EPA is still useful in many situations and so are yards. In fact, in a lot of situations *yards are a better evaluation* toolthan *EPA*. Plus Yards are understood better by casual fans and decision makers than EPA is.
+EPA is still useful in many situations and so are yards. In fact, in a lot of situations *yards are a better evaluation* tool than *EPA*. Plus yards are understood better by casual fans and decision makers than EPA is.
 
 Let's look at quarterbacks on 3rd down and less than 5 yards to go in the first half of games since 2011. I will include quarterback seasons with at least 25 snaps in this situation. I will also define Total Adjusted Net Yards as `yards_gained + 20*touchdown - 45*turnover` for all quarterback dropbacks (i.e. QB sacks, runs, and passes).
 
