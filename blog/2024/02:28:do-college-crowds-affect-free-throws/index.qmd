@@ -1,0 +1,647 @@
+---
+title: "Can A College Crowd Affect Free Throws?"
+date: 2024-02-28
+author: "Paul Sabin"
+description: "Analyzing if college student sections have a measurable impact on opposing team's free throw percentage."
+categories:
+  - college
+  - basketball
+  - bayesian
+  - free throws
+  - sports analytics
+image: "img/card.png"
+twitter-card:
+  image: "img/card.png"
+open-graph:
+  image: "img/card.png"
+format: html
+editor: visual
+execute:
+  echo: false
+  warning: false
+  error: false
+  message: false
+  cache: true
+---
+
+```{r}
+library(parallel)
+library(tidyverse)
+library(hoopR)
+library(ggridges)
+library(gt)
+library(gtExtras)
+library(viridis)
+library(rstan)
+library(tidybayes)
+library(rstanarm)
+library(broom.mixed)
+library(ggimage)
+library(kableExtra)
+library(splines)
+options(mc.cores = detectCores())
+options(tibble.width = Inf)
+
+run_model <- FALSE #whether to run the model from scratch
+start_season <- 2015
+end_season <- 2023
+
+#ignore 2020-21 season
+data_seasons <- start_season:end_season
+data_seasons <- data_seasons[!data_seasons == 2020]
+pbp <- NULL
+for(s in data_seasons){
+  pbp <- load_mbb_pbp(s) |> 
+    select(
+      tidyselect::any_of(
+        c("game_id",
+        "game_date_time",
+        "period_number",
+        "game_half",
+        "start_half_seconds_remaining",
+        "team_id",
+        "season",
+        "away_team_id",
+        "home_team_id",
+        "away_team_name",
+        "home_team_name",
+        "home_team_spread",
+        "game_spread",
+        "home_favorite",
+        "type_id",
+        "type_text",
+        "text",
+        "coordinate_x",
+        "coordinate_y",
+        "scoring_play",
+        "home_score",
+        "away_score")
+      )
+    ) |> 
+    mutate(across(contains("_id"), as.numeric) ) |> 
+    mutate(across(contains("scor"), as.numeric) ) |> 
+    # filter(coordinate_x == 25, coordinate_y == 0) |> 
+    filter(type_id == 540) |> #freethrows
+    mutate(make_ft = scoring_play) |> 
+    bind_rows(pbp)
+  # cat("finished season ", s, "\n")
+}
+
+mcbb_games <- hoopR::load_mbb_schedule(data_seasons)
+
+#denote who is shooting the free throws
+ft_half_summary <- pbp |> 
+  mutate(first_half = period_number == 1) |> 
+  group_by_at(vars(game_id,
+                   game_date_time,
+                   first_half,
+                   team_id:home_favorite)
+              ) |> 
+  summarize(fta = n(),
+            ftm = sum(make_ft)
+            ) |> 
+  mutate(ftp = ftm / fta) |> 
+  left_join(mcbb_games |> 
+              distinct(game_id, 
+                       neutral_site,
+                       home_logo,
+                       away_logo,
+                       attendance,
+                       home_score,
+                       away_score),
+            by = "game_id")
+
+ft_half_summary <- ft_half_summary |> 
+  mutate(ft_visiting_team = ifelse(team_id == away_team_id & !neutral_site, 1, 0),
+         ft_team = ifelse(team_id == home_team_id, 
+                          paste(home_team_name, season, sep = '-'),
+                          paste(away_team_name, season, sep = '-')
+                          ),
+         half_chr = ifelse(first_half, "first", "second"),
+         team_score = ifelse(team_id == home_team_id, home_score, away_score),
+         opp_score = ifelse(team_id == home_team_id, away_score, home_score),
+         team_spread = ifelse(team_id == home_team_id, home_team_spread, -home_team_spread),
+         team_vegas_pred = -team_spread
+         ) |>
+  ungroup()
+
+ft_half_summary_wide <- ft_half_summary |> 
+  select(-first_half) |> 
+  pivot_wider(names_from = half_chr,
+              values_from = c("fta", "ftm", "ftp"),
+              values_fill = 0)
+
+#define team names
+ft_team_tbl <- ft_half_summary_wide |> 
+  count(ft_team) |> 
+  mutate(adj_ft_team = ifelse(n >= 20, ft_team, "replacement_team"))
+
+home_team_name_tbl <- ft_half_summary_wide |> 
+  count(home_team_name) |> 
+  mutate(adj_home_team_name = ifelse(n >= 15, home_team_name, "replacement_team"))
+
+ft_half_summary_wide <- ft_half_summary_wide |> 
+  left_join(ft_team_tbl |> 
+              select(-n), 
+            by = "ft_team") |> 
+  left_join(home_team_name_tbl |> 
+              select(-n), 
+            by = "home_team_name") 
+
+ft_half_summary_wide <- ft_half_summary_wide |> 
+  mutate(across(ends_with("_score"), as.numeric) ) |> 
+  mutate(team_pt_diff = team_score - opp_score,
+         team_win = ifelse(team_pt_diff > 0, 1, 0) )
+
+```
+
+# Background
+
+College basketball holds a special place in my heart. My sister "snuck" me into Cameron Indoor Stadium posing in 10th grade when I posed as one of her graduate student friends. I was there for Jimmermania in 2011. My first published research paper was about college basketball TV audiences in the Final Four. My first major project at ESPN was to redo the college Basketball Power Index (BPI) and create Strength of Record (SOR). My algorithm is still what feeds those rankings on the NCAA selection committees team sheets.
+
+It is no secret that college basketball has among the largest home advantages in all of sports. There's many possible reasons why. From travel, rest, unfamiliarity of surroundings to more tangible ones like using a different basketball team to team to the uniqueness of college student sections. In the last decade student sections have gotten much more creative in their attempts to affect the outcome of opposing team shooters making their free throws.
+
+## Previous Research
+
+A [Duke medical student](https://www.dukechronicle.com/article/2023/11/duke-mens-basketball-free-throw-distractions-graduate-student-section) tabulated the miss percentage for games in the 2020-2021 and 2021-2022 seasons for various different distractions the graduate student section made behind the basket in the second half.
+
+![](images/duke_ft_barplot.png)
+
+![](images/cameron_crazies.png)
+
+Arizona State is known for its "curtain of distraction" which rose to fame in 2015 and at that time had a surprise distraction of shirtless olympian Michael Phelps.
+
+![](images/michael-phelps-48c63ea39d27e3cc.jpg)
+
+The Harvard Sports Analytics Collective did a [study](https://harvardsportsanalysis.org/2015/02/how-distracting-is-asus-curtain-of-distraction/) in 2015 about the Arizona State's "Curtain of Distraction" and reported that visiting teams shot 60.6% from the free-throw line in the second half compared to 68.6% in the first half. Their estimate was that this distraction was equal to approximately 1.41 points per game. They reported that there was not a statistically significant difference between first half and second half free throw percentages due to the small sample size of their data.
+
+Luke Benz, a current Harvard PhD student and author of the `ncaahoopR` package, [revisited](https://lukebenz.com/post/asu_curtain/) the Arizona State distraction in 2019 and found that there was not enough evidence to conclude that teams shoot worse against Arizona State than they do at other *road* games.
+
+Surely with another 5 years of data one should be able to discern once and for all if Arizona State's students have made a noticeable effect and if other teams have had similar impacts as well.
+
+# Data
+
+I used data from the 2015-2016 college basketball season until the current season's data (2023-2024). I excluded the 2020-21 seasons due to many arenas not having fans at their games due to the reaction to the COVID-19 pandemic. I grouped any home team that has less than 15 games in the dataset into one collective team.
+
+I made sure to only look at true road games, not games where the visiting team is playing at a neutral site. Whether or not something is listed as neutral site is sometimes subjective, I used the neutral site tag that can be found via the ESPN.com API.
+
+
+# Methodology
+
+Each of the previous methods take a slightly different approach to estimating a crowd's affect on free throw shooting. Each has its advantages but with more seasons I will attempt to revisit the 2nd half analysis as well as estimate which home venues affect free throws *throughout* the game as opposed to only the second half. 
+
+## 2nd Half Student Section Effect
+
+I filtered the data to teams that have at least 200 free throws attempted at their home court in *both* the first half and second half over the course of this data set. The top 10 in terms of **largest drop-off in free-throw percentage** from the first half to the second half can be seen in the table below.
+
+```{r}
+
+statistical_test_first_second_df <- ft_half_summary_wide |> 
+  filter(ft_visiting_team == 1) |> 
+  group_by(adj_home_team_name,
+           home_logo) |> 
+  summarize(fta_first = sum(fta_first),
+            ftm_first = sum(ftm_first),
+            fta_second = sum(fta_second),
+            ftm_second = sum(ftm_second),
+            ) |> 
+  ungroup() |> 
+  mutate(ftp_first = ftm_first / fta_first,
+         ftp_second = ftm_second / fta_second,
+         ftp_diff = ftp_second - ftp_first
+  ) |> 
+  arrange(ftp_diff)
+```
+
+```{r}
+
+#saving off data with at least 200 fta in both halfs
+statistical_test_first_second_df_for_plotting <- statistical_test_first_second_df |> 
+  filter(fta_first >= 200, 
+         fta_second >= 200) 
+
+#adjusting for the second half higher ft%
+avg_ftp_half_diff <- statistical_test_first_second_df_for_plotting |> 
+  mutate(tot_fta = fta_first + fta_second) |> 
+  summarize(avg_ftp_diff = weighted.mean(ftp_diff, w = tot_fta)) |> 
+  pull(avg_ftp_diff)
+
+ statistical_test_first_second_df_for_plotting <- statistical_test_first_second_df_for_plotting |> 
+  mutate(# I take off 1 percent of ftp in the second half
+         # since on average visiting teams shoot 1 percent better in 2nd half
+         ftp_diff_adj = ftp_diff - avg_ftp_half_diff,
+         ftp_diff_z = ftp_diff_adj / sqrt( 
+           ( ftp_first*(1-ftp_first) / fta_first ) + ( ftp_second*(1-ftp_second)) / fta_second ),
+         ftp_diff_pvalue = 2*pnorm(-abs(ftp_diff_z))
+         ) 
+
+```
+
+```{r}
+
+
+min_pct <- statistical_test_first_second_df_for_plotting |> select(ftp_first, ftp_second) |> min()
+max_pct <- statistical_test_first_second_df_for_plotting |> select(ftp_first, ftp_second) |> max()
+min_pct_plot <- floor(min_pct*10)/10
+max_pct_plot <- ceiling(max_pct*10)/10
+
+first_vs_second_half_scatter_plot <- statistical_test_first_second_df_for_plotting |> 
+  ggplot(aes(x = ftp_first,
+             y = ftp_second)
+         ) +
+  geom_smooth(method = 'glm', se = FALSE) +
+  geom_abline() + 
+  geom_image(aes(image = home_logo)) +
+  ggtitle("Visiting Team's Free Throw Percentage by Half",
+          subtitle = "2015-16 to 2023-24 Seasons (Min 200 FTA in Each Half)") +
+  xlab("First Half %") +
+  ylab("Second Half %") +
+  xlim(min_pct_plot, max_pct_plot) + 
+  ylim(min_pct_plot, max_pct_plot) +
+  theme_bw() +
+  theme(aspect.ratio = 1)
+  
+  first_vs_second_half_scatter_plot
+```
+
+I also plotted the histogram of the differences in free throw percentage from the first half to the second half by each home team. What is suprising in looking at first glance is that, on average, visiting teams shoot `r round(avg_ftp_half_diff*100, digits = 1)` percent *better* in the second half than compared to the first.
+
+This is likely due to the effect of the end of game scenarios in basketball. Typically, if a team is winning the losing team starts to foul towards the end of the game. The winning team knows this will happen and does its best to get the ball into the hands of their best free throw shooters before these fouls occur. You can see this trend in the following plot, where the difference in 2nd half free throw percentage goes up when a team wins by about 5-10, which is typically the range of outcomes where the other team was fouling.
+
+This doesn't explain the entire effect as even teams that lose tend to shoot better percentage wise for free throws in the second half. There's several possible explanations for this but my intuition was that as players got tired their free-throw percentages would decrease in the second half, which doesn't appear to be the case.
+
+```{r}
+ft_half_summary_wide |> 
+  mutate(ftp_second_vs_first = ftp_second - ftp_first) |> 
+  group_by(team_pt_diff) |> 
+  summarize(avg_ftp_second_vs_first = mean(ftp_second_vs_first), 
+            games = n() ) |> 
+  ggplot(aes(x = team_pt_diff, y = avg_ftp_second_vs_first) ) + 
+  geom_point() + 
+  # geom_smooth(aes(weight = games), se = FALSE) + 
+  xlim(-50, 50) + 
+  theme_bw() + 
+  theme(legend.position = 'bottom') + 
+  ylab("Avg. Diff in FT%") +
+  xlab("Final Point Difference") +
+  ggtitle("Second Half FT % Improvement by Pt. Difference")
+
+```
+
+To somewhat account for this second half effect I take that one percent in the second half off of a team's free throw percentage when assessing the difference between the first half and the second half via the z-score and p-value.
+
+```{r}
+statistical_test_first_second_df_for_plotting |> 
+  ggplot(aes(x = ftp_diff)) +
+  geom_histogram() +
+  geom_vline(xintercept = 0, color = 'red', linetype = 2) +
+  theme_bw() +
+  xlab("% Difference (2nd - 1st)") +
+  ggtitle("Visiting Team's Free Throw Percentage Change by Half",
+          subtitle = "2015-16 to 2023-24 Seasons (Min 200 FTA in Each Half)")
+```
+
+```{r}
+ftp_half_diff_gt_table <- statistical_test_first_second_df_for_plotting %>% 
+  dplyr::select(
+    home_team = adj_home_team_name,
+    home_logo,
+    ftp_first,
+    ftp_second,
+    ftp_diff,
+    ftp_diff_pvalue
+  ) %>% 
+  gt() %>% 
+  cols_label(
+    home_team = "Home Court",
+    home_logo = "",
+    ftp_first = "1st",
+    ftp_second = "2nd",
+    ftp_diff = "Diff",
+    ftp_diff_pvalue = "PValue"
+  ) %>%
+  # # text_transform(
+  # #   locations = cells_body(c("fbref_logo_url")),
+  # #   fn = function(x) {
+  # #     map(x, ~ web_image(.x))
+  # #   }
+  # # ) %>% 
+  # tab_style(
+  #   style = cell_text(weight = "bold"),
+  #   locations = cells_column_labels()
+  # ) %>%
+  cols_align(
+    align = c("center"),
+    columns = everything()
+  ) %>%
+  fmt_percent(columns = ftp_first:ftp_diff,
+             decimals = 0) %>%
+  fmt_number(columns = ftp_diff_pvalue,
+             decimals = 2) %>%
+  gt_img_rows(columns = home_logo, img_source = "web", height = 30) %>%
+  tab_header(
+    title = "Visiting Free Throw % by Half",
+    subtitle = "2015-16 to 2023-24 Seasons"
+  ) %>%
+  # gt_theme_538() %>%
+  data_color(
+    columns = c(ftp_first, ftp_second, ftp_diff, ftp_diff_pvalue),
+    colors = scales::col_numeric(
+      palette = viridis(10),
+      domain = NULL)  # You can adjust the number of colors as needed
+  ) %>%
+  opt_interactive()
+
+ftp_half_diff_gt_table
+
+```
+
+There are some familiar names, including our famous "Curtain of Distraction" team, Arizona State among the biggest drop offs from the first half to the second, and with the additional years of data, the result is statistically significant.
+
+BYU, another team that is increasingly known for its wild student section behind the basket in the second half, is also high on this list. While I don't have data on all the teams and where their student sections are I did quick research on where many of the teams in the top 10 of this list have their student sections in the second half.
+
+-   Valparaiso: *behind visiting basket*
+-   Lamar: I couldn't find
+-   Milwaukee: *behind visiting basket*
+-   Arizona State: *behind visiting basket*
+-   BYU: *behind visiting basket*
+-   Middle Tennessee State: *behind visiting basket*
+
+![BYU's Student Section Attempting to Distract Opposing Shooter](images/byu_student_section.png)
+
+Some not surprising names appear near the top of this list. Although, it is possible that with over 350 Division I basketball teams, that some by shear randomness, some will have a significant first half to second half effect on opposing free throw shooters.
+
+There are some corrections for significance testing for multiple tests that one can do such as the Bonferroni correction which would lower a significance threshold by dividing by the number of tests, so if we had a $\alpha = 0.05$ threshold the new one would be $\frac{\alpha}{n}$ where $n=355$ teams in our dataset. Bonferroni is known for being overly conservative, and this surely would be an extremely high standard.
+
+I used the Benjamini–Hochberg procedure to determine if there are some values for which one should still reject the null hypothesis that second half free throw percentage shouldn't decrease from the first for a team. (Remember that I adjusted for the fact that on average second half free throw percentages increase by 1 percent that of the first half.) Unfortunately there are also no teams that clear this multiple testing threshold.
+
+```{r}
+#| eval: false
+statistical_test_first_second_df_for_plotting |> 
+  arrange(ftp_diff_z) |> 
+  mutate(pvalue_rank = min_rank(ftp_diff_z), 
+         n_teams = n(),
+         bh_cutoff = (pvalue_rank / n_teams) * 0.05
+         )
+
+```
+
+
+This brought me to an interesting conundrum in this analysis. I allowed every team in the nation in my sample. If I restricted it to ones I had specific hypotheses about them this would be stronger evidence. Arizona State was one of those teams. In isolation its effect is explained beyond randomness alone. I went to BYU and was curious about their fans and certainly, in isolation, their student section seems to impact free throw shots from the visiting team.
+
+This simple analysis is not accounting for specific free throw shooters ability and game situation which muddies the results. In my personal opinion, there is a mechanism, such as the students displaying distractions behind the basket, that explains why certain teams may have an effect. To me, that enhances the evidence. 
+
+If I were smart, I wouldn't be testing this for every team in the country, but only for teams that I know have their students behind the basket trying to distract the shooter. That is a minority of the 350+ schools in the nation. Most stadiums don't have that atmosphere.
+
+<!-- I will plot the observed z-scores compared to the expected z-scores based on the quantiles of our data. This is referred to as a QQ Plot. If our z-scores are purely due to chance a perfect line on $y=x$ will appear. -->
+
+```{r}
+qq_plot_data <- statistical_test_first_second_df_for_plotting |> 
+  select(ftp_diff_z,
+         ftp_diff_pvalue) |> 
+  arrange(ftp_diff_z) |> 
+  mutate(normal_quantile_z = qnorm(row_number()/n()))
+
+```
+
+```{r}
+qq_plot <- qq_plot_data |> 
+  ggplot(aes(x = ftp_diff_z,
+             y = normal_quantile_z)) + 
+  geom_point() +
+  geom_abline() + 
+  xlab("Observed Z-values") +
+  ylab("Theoretical Z-values") +
+  theme_bw() +
+  xlim(-3.3,3.3) +
+  ylim(-3.3,3.3) +
+  theme(aspect.ratio = 1) +
+  ggtitle("QQ Plot")
+
+# qq_plot
+```
+
+## Entire Game Effect
+
+Everything so far has been to look at the first half vs the second half free throw percentage for each team. Some teams don't put their student sections behind the basket or don't have a set routine to distract shooters. In fact, college basketball has many teams in Division I with no stands behind the basket whatsoever.
+
+A different way to analyze the affect a crowd has on free throw shooting would be to build a model that adjusted for the visiting team's true ability in free throw shooting percentage. This model would ignore half by half effects and simply look at each game as a whole.
+
+#### Why Use Team Performance?
+
+Free throws should follow a Poisson-Binomial process. While each shot is an independent event, the probability of success should vary because each player has a different shooting ability. Player shooting samples sizes are too small for game by game analysis, so I stuck to using a team's free throw shooting percentage on a game to game basis. I used the difference of the visiting team's free throw shooting percentage in that game to its  free throw shooting percentage in home games that season.
+
+Others have pointed out that it is not clear whether a better comparison for effectiveness of a crowd would be to compare free throw percentage of the visiting team's other *road* games or to compare them to their *home* games.
+
+I chose home games. I did this because each team's home games are in the same location each time, reducing the effect that a unique road schedule may have on teams in certain conferences more than others. One example would be teams that have to, on average, travel further or to higher elevations in their conference. My [previous work](https://www.espn.com/blog/statsinfo/post/_/id/130346/bracket-tips-from-the-basketball-power-index) on BPI and SOR at ESPN consistently showed elevation to have an effect on team efficiency in college basketball and [this paper](https://arxiv.org/pdf/1701.05976) from Lopez, Matthews, & Baumer suggested market lines adjust for it in professional sports.
+
+For the purposes of assessing which fan bases may have an effect, I grouped all season's together for the home team when assessing a fan base, but for the individual team shooting performances I treated each season separately.
+
+My model can be defined as
+
+```{=tex}
+\begin{align}
+y_i &= \beta_0 + \gamma_j + g(x_{1,i})\boldsymbol{\beta} + \epsilon\\
+\gamma_j &\sim Laplace(0,1)\\
+\epsilon & \sim N(0,\sigma^2)
+\end{align}
+```
+where $y_i$ is the difference the visiting team's free throw percentage in game $i$ and its free throw percentage in their home games that season. $\gamma_j$ is the effect of the home team $j$'s home crowd/venue on the free throw percentage for the visiting team. $g(x_i)$ is a nonlinear natural spline on the absolute value of the final score margin. This was motivated by wanting to adjust for free throw differences in games that are close at the end compared to others.
+
+The home venue effect is given a Laplace prior distribution centered around 0. The Laplace prior is equivalent to LASSO regression and shrinks estimates towards 0. I also weighted the observations by the total number of free throw attempts in the game.
+
+This method can't differentiate between crowd effects and the effect of long travel or high elevation since that data wasn't as readily available. The model should be able to account for differences in visiting teams free throw ability, overall difficulty of shooting free throws on the road, the effect of close games, and the empirical average impact of the venue played at.
+
+# Results
+
+```{r}
+### For simpler method: calculate home team ft% for each season
+## model only away games the difference in ft% vs home
+
+ft_half_summary_wide <- ft_half_summary_wide |> 
+  mutate(fta_game = fta_second + fta_first,
+         ftm_game = ftm_second + ftm_first)
+
+#ft percentage in non-away games
+team_season_home_ft_pct <- ft_half_summary_wide |> 
+  filter(ft_visiting_team == 0) |> 
+  group_by(adj_ft_team) |> 
+  summarize(tot_fta = sum(fta_game),
+            tot_ftm = sum(ftm_game),
+            games = n(),
+            avg_fta = mean(fta_game),
+            avg_ftm = mean(ftm_game),
+            avg_ftp = sum(ftm_game) / sum(fta_game)
+  )
+
+away_team_game_summary <- ft_half_summary_wide |> 
+  filter(ft_visiting_team == 1) |> 
+  left_join(team_season_home_ft_pct |> 
+              rename_at(
+                vars(tot_fta:last_col()), 
+                ~paste0("home_court_", .x)
+                ),
+            by = c("adj_ft_team")
+            ) |> 
+  mutate(ftp_game = ftm_game / fta_game,
+         diff_ftp_from_home = ftp_game - home_court_avg_ftp)
+
+if(run_model){
+  diff_ftp_model <- stan_lmer(diff_ftp_from_home ~ 1 + (1 | adj_home_team_name) + ns(abs(team_pt_diff), df = 3),#the home court team 
+                                data = away_team_game_summary,
+                                prior = lasso(),
+                                weights = fta_game,
+                                iter = 800,
+                                chains = 4)
+  diff_ftp_model |> write_rds("diff_ftp_model.rds")
+}else{
+  
+  diff_ftp_model <- read_rds("diff_ftp_model.rds")
+
+}
+
+
+
+
+```
+
+Using the posterior draws for the team effects from the model I calculated the estimated effect a team's home court has on the opposing team's free throw percentage. I also calculated the *probability* that a team's home court has an effect that decreases the probability of an opponent making a free throw **above that of the average road venue**.
+
+```{r}
+tidy(diff_ftp_model) |> 
+  kable(digits = 3,
+        column.names = c("term", "est", "std. error"),
+        caption = "Fixed Effects on Visiting Team Free Throw Percentage") |> 
+  kable_classic()
+
+```
+
+The negative coefficients of the absolute value of the scoring difference confirms that there is an effect of a close game on free throw percentage. Closer games have higher free throw shooting percentages. The intercept is interpreted as the average change in free throw percentage for playing on the road versus at home (a decrease of 1.2%). 
+
+```{r}
+
+
+# summary(diff_ftp_model)
+#avg home court effects
+
+home_team_effect_draws <- tidybayes::spread_draws(diff_ftp_model, b[term,group]) |> 
+  mutate(home_team_name = str_remove(group, "adj_home_team_name:") |> str_replace_all("_", " ")) |> 
+  rename(home_effect = b) |> 
+  ungroup() |> 
+  dplyr::select(-term,
+                -group
+                )
+
+
+home_team_ft_effect_summary <- home_team_effect_draws |> 
+  group_by(home_team_name) |> 
+  summarize(prob_less_0 = mean(home_effect < 0),
+            avg_effect = mean(home_effect),
+            sd_effect = sd(home_effect)
+            ) |> 
+  ungroup() |> 
+  arrange(desc(prob_less_0),
+          avg_effect) |> 
+  left_join(ft_half_summary_wide |> 
+              distinct(home_team_name, 
+                       home_logo) |> 
+              na.omit(),
+            by = c("home_team_name")
+)
+
+
+
+home_team_ft_effect_summary_gt_table <- home_team_ft_effect_summary %>% 
+  dplyr::select(
+    home_team = home_team_name,
+    home_logo,
+    avg_effect,
+    sd_effect,
+    prob_less_0 
+  ) %>% 
+  gt() %>% 
+  cols_label(
+    home_team = "Home Court",
+    home_logo = "",
+    avg_effect = "Effect on FT%",
+    sd_effect = "Std. Dev.",
+    prob_less_0 = "Prob(Effect < 0)" 
+  ) %>%
+  # # text_transform(
+  # #   locations = cells_body(c("fbref_logo_url")),
+  # #   fn = function(x) {
+  # #     map(x, ~ web_image(.x))
+  # #   }
+  # # ) %>% 
+  # tab_style(
+  #   style = cell_text(weight = "bold"),
+  #   locations = cells_column_labels()
+  # ) %>%
+  cols_align(
+    align = c("center"),
+    columns = everything()
+  ) %>%
+  fmt_percent(columns = avg_effect:prob_less_0,
+             decimals = 1) %>%
+  gt_img_rows(columns = home_logo, img_source = "web", height = 30) %>%
+  tab_header(
+    title = "Home Team's Venue Effect on Visiting Free Throws (vs Avg. Road Venue)",
+    subtitle = "Hierarchical Bayesian Model Using 2015-16 to 2023-24 Seasons"
+  ) %>%
+  # gt_theme_538() %>%
+  data_color(
+    columns = c(avg_effect, sd_effect, prob_less_0),
+    colors = scales::col_numeric(
+      palette = viridis(10),
+      domain = NULL)  # You can adjust the number of colors as needed
+  ) %>%
+  opt_interactive(page_size_default = 25)
+
+home_team_ft_effect_summary_gt_table
+
+
+```
+
+
+There are a lot of teams that have a noticeable effect beyond that of an average team. I combined the effects estimated on 2nd half free throws and the game impact of a venue on visiting team's free throw percentage.
+
+There isn't a much of a relationship between the two, but some teams in the lower left hand corner have a noticeable impact in the second half compared to the first and as a whole throughout the entire game.
+
+
+```{r}
+both_ft_impact_plot <- home_team_ft_effect_summary |> 
+  left_join(statistical_test_first_second_df_for_plotting |> 
+              select(home_team_name = adj_home_team_name,
+                     ftp_diff),
+            by = c("home_team_name")
+  ) |> 
+  filter(!is.na(ftp_diff)) |> 
+  ggplot(aes(y = avg_effect, x = ftp_diff)) +
+  geom_image(aes(image = home_logo)) +
+  geom_smooth(method = 'glm', se = FALSE, linetype = 2, size = 0.5) +
+  geom_vline(xintercept = 0, col = 'black', size = 0.25, linetype = 3) +
+  geom_hline(yintercept = 0, col = 'black', size = 0.25, linetype = 3) +
+  theme_bw() +
+  ylab("Home Court Effect per Game (Pct.)") +
+  xlab("Diff in FT% (2nd Half - 1st)") +
+  annotate("text", x = -0.04, y = -0.036, label = "Harder Whole Game & 2nd Half") +
+  annotate("text", x = 0.06, y = 0.036, label = "Easier Whole Game & 2nd Half") +
+ggtitle("Impact on Visiting Team Free Throws by Home Court",
+          subtitle = "2015-16 to 2023-24")
+
+both_ft_impact_plot
+
+```
+
+# Conclusion
+
+Although a handful of teams have a statistically significant impact on 2nd half free throw percentage compared to first for the visiting team, it doesn't hold up if one adjusts for testing every team in the country. If you were to do a multiple test on only teams with student sections behind the visiting team's second half basket (data I don't have) it likely would hold up for some teams under a multiple tests adjustment.
+
+The magnitude of the effect is important here. The average free throw attempts (FTA) per game is `r round(mean(away_team_game_summary$home_court_avg_fta), digits = 1)`. The average 2nd half FTA per game is `r round(mean(away_team_game_summary$fta_second), digits = 1)`. That means the impact of the crowd with the largest second half free throw effect is roughly `r round(mean(away_team_game_summary$fta_second) *abs(min(statistical_test_first_second_df_for_plotting$ftp_diff)), digits = 1 )` points per 2nd half.
+
+For the whole game, teams playing at NJIT had a -4.5% estimated decrease in free throw percentage. This would equate to a $0.045*20.3 = 0.9$ points per game impact based on free throws alone over the average venue in the country. That is something! But it is a bit smaller than the 1.4 points per game for Arizona State that was estimated in previous work.
+
+It's important to note that effects for the entire game are confounded with altitude, distance traveled and day's rest. Certain visiting team's schedules may over index on those factors than others, meaning it may be more than just the crowd that impacts a visiting team's free throws at one venue over this study period.
+
+So can a good crowd impact the road team's free throw making? I think the evidence suggests that it can! But ... that effect is at the extreme end no more than 1 point per game or 0.7 points in the second half.
+

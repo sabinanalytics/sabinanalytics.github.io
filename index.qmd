@@ -51,10 +51,10 @@ website:
 :::
 
 ::: {.g-col-12 .g-col-sm-8}
-I'm a Senior Fellow at [The Wharton Sports Analytics & Business Initiative](https://wsb.wharton.upenn.edu/) and a Lecturer in the Department of Statistics and Data Science at [The Wharton School](https://www.wharton.upenn.edu/) of [The University of Pennsylvania](https://www.upenn.edu/).
+I'm a Senior Fellow at [The Wharton Sports Analytics & Business Initiative](https://wsb.wharton.upenn.edu/) and a Lecturer in the Department of Statistics and Data Science at [The Wharton School](https://www.wharton.upenn.edu/) of [The University of Pennsylvania](https://www.upenn.edu/). My formal education is in statistics and French and I have spent my entire career as a sports analytics professional.
 
-Previously I was the VP of Football Analytics at [SumerSports](sumersports.com) and a Senior Sports Data Scientist at [ESPN](https://www.espn.com/analytics/) where I authored analytics articles on [ESPN.com](espn.com) in addition to creating models and projections including, but not limited to, the Basketball Power Index [BPI](espn.com/bpi), [The Allstate Playoff Predictor](https://www.espn.com/espn/feature/story/_/page/cfbplayoffpredictor/cfb-playoff-predictor), Fantasy Soccer Projections, [NFL FPI](https://www.espn.com/nfl/fpi). While at ESPN I also created the first of its kind objective data-based rating system for all college football and NFL players.
+Previously I was the VP of Football Analytics at [SumerSports](sumersports.com) and a Senior Sports Data Scientist at [ESPN](https://www.espn.com/analytics/). In 2016 at ESPN for college basketball I recreated [BPI](espn.com/bpi)  and introduced Strength of Record (SOR). For college football I was the original creator of [The Allstate Playoff Predictor](https://www.espn.com/espn/feature/story/_/page/cfbplayoffpredictor/cfb-playoff-predictor), Fantasy Soccer Projections, and worked on other metrics such as [NFL FPI](https://www.espn.com/nfl/fpi) and NBA BPI. I authored many articles for espn.com in addition to creating the first of its kind objective data-based rating system for all college football and NFL players.
 
-I teach at Wharton and at Virginia Tech. I also provide Sports Analytics, statistics, and expert witness consulting services. To contact me, click the email button at the top of the site.
+I teach and lead sports analytics research projects at Wharton but I also provide consulting services to a professional baseball team, European soccer team, and ESPN. With my training and expertise I am qualified to be an expert witness on statistical and sports analytics matters. To contact me, click the email button at the top of the site.
 :::
 :::

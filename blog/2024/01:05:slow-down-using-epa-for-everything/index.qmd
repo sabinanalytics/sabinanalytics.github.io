@@ -1,6 +1,17 @@
 ---
 title: "Slow Down Using EPA for Everything"
+date: 2024-01-05
 author: "Paul Sabin"
+description: "Is using EPA always the best metric of choice? Occam's razor would suggest sometimes its best to stick with simpler measurements such as yards."
+categories:
+  - football
+  - sports analytics
+  - EPA
+image: "img/card.png"
+twitter-card:
+  image: "img/card.png"
+open-graph:
+  image: "img/card.png"
 format: html
 editor: visual
 execute:

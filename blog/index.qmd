@@ -8,7 +8,6 @@ listing:
     sort: "date desc"
     template: ../html/blog/listing.ejs
     categories: true
-
 page-layout: full
 toc-title: Year
 toc-location: right

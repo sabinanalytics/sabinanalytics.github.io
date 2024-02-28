@@ -15,9 +15,11 @@ In addition to my day to day I offer consulting services and expert witness abil
 
 -   Sports Analytics, with most expertise in:
     -   Football (American)
-    -   Soccer (internation football)
+    -   Soccer (International Football)
     -   Basketball
+    -   Baseball
 -   Statistical Methodology
+-   French language
 -   Data Science
 -   Analytics & Data Science Leadership
 -   Speaking to large groups

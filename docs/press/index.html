@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.4.549">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -44,16 +44,22 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../site_libs/quarto-contrib/iconify-1.0.7/iconify-icon.min.js"></script>
 <link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
-<script src="../site_libs/quarto-contrib/iconify-1.0.7/iconify-icon.min.js"></script>
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -62,6 +68,7 @@ ul.task-list li input[type="checkbox"] {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -183,15 +190,42 @@ background: #0062B8;
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 </head>
 
 <body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Sabin Analytics</span>
     </a>
@@ -203,63 +237,67 @@ background: #0062B8;
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../about.html" rel="" target="">
- <span class="menu-text">About Me</span></a>
+    <a class="nav-link" href="../about.html"> 
+<span class="menu-text">About Me</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../cv/index.html" rel="" target="">
- <span class="menu-text">CV</span></a>
+    <a class="nav-link" href="../cv/index.html"> 
+<span class="menu-text">CV</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../contact/index.html" rel="" target="">
- <span class="menu-text">Contact</span></a>
+    <a class="nav-link" href="../contact/index.html"> 
+<span class="menu-text">Contact</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../press/index.html" rel="" target="" aria-current="page">
- <span class="menu-text">Press</span></a>
+    <a class="nav-link active" href="../press/index.html" aria-current="page"> 
+<span class="menu-text">Press</span></a>
   </li>  
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-ratings--projections" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-ratings--projections" role="button" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Ratings &amp; Projections</span>
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-ratings--projections">    
         <li>
-    <a class="dropdown-item" href="../ratings/soccer.qmd" rel="" target="">
+    <a class="dropdown-item" href="../ratings/soccer/index.html">
  <span class="dropdown-text">Soccer</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../ratings/cfb.qmd" rel="" target="">
+    <a class="dropdown-item" href="../ratings/cfb/index.html">
  <span class="dropdown-text">College Football</span></a>
   </li>  
     </ul>
   </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="mailto:psabin88@wharton.upenn.edu" rel="" target="">
- <span class="menu-text"><iconify-icon inline="" icon="bi:envelope" style="font-size: 1.1em;" e-mail=""></iconify-icon></span></a>
+    <a class="nav-link" href="mailto:psabin88@wharton.upenn.edu"> 
+<span class="menu-text"><iconify-icon inline="" icon="bi:envelope" style="font-size: 1.1em;" e-mail=""></iconify-icon></span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="https://twitter.com/SabinAnalytics" rel="me" target="">
- <span class="menu-text"><iconify-icon inline="" icon="fa6-brands:square-x-twitter" style="font-size: 1.1em;" x=""></iconify-icon></span></a>
+    <a class="nav-link" href="https://twitter.com/SabinAnalytics" rel="me"> 
+<span class="menu-text"><iconify-icon inline="" icon="fa6-brands:square-x-twitter" style="font-size: 1.1em;" x=""></iconify-icon></span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="https://github.com/sabinanalytics" rel="me" target="">
- <span class="menu-text"><iconify-icon inline="" icon="bi:github" style="font-size: 1.1em;" github=""></iconify-icon></span></a>
+    <a class="nav-link" href="https://github.com/sabinanalytics" rel="me"> 
+<span class="menu-text"><iconify-icon inline="" icon="bi:github" style="font-size: 1.1em;" github=""></iconify-icon></span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="https://www.linkedin.com/in/rpaulsabin" rel="me" target="">
- <span class="menu-text"><iconify-icon inline="" icon="bi:linkedin" style="font-size: 1.1em;" linkedin=""></iconify-icon></span></a>
+    <a class="nav-link" href="https://www.linkedin.com/in/rpaulsabin" rel="me"> 
+<span class="menu-text"><iconify-icon inline="" icon="bi:linkedin" style="font-size: 1.1em;" linkedin=""></iconify-icon></span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="https://scholar.google.com/citations?user=wAezxZ4AAAAJ&amp;hl=en" rel="me" target="">
- <span class="menu-text"><iconify-icon inline="" icon="fa6-brands:google-scholar" style="font-size: 1.1em;" google="" scholar=""></iconify-icon></span></a>
+    <a class="nav-link" href="https://scholar.google.com/citations?user=wAezxZ4AAAAJ&amp;hl=en" rel="me"> 
+<span class="menu-text"><iconify-icon inline="" icon="fa6-brands:google-scholar" style="font-size: 1.1em;" google="" scholar=""></iconify-icon></span></a>
   </li>  
 </ul>
-            <div class="quarto-navbar-tools">
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
-          </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -272,7 +310,7 @@ background: #0062B8;
   </div>
     
   
-  <div class="quarto-title-meta">
+  <div class="quarto-title-meta column-page-left">
 
       
     
@@ -300,6 +338,7 @@ background: #0062B8;
 
 
 
+
 <p>This page lists notable appearances I’ve made on various media outlets as well as my own personal published work and other media that features me or my work.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -317,7 +356,9 @@ Note
 <section id="podcast-tv-webinar-appearances" class="level2">
 <h2 class="anchored" data-anchor-id="podcast-tv-webinar-appearances">Podcast, TV, &amp; Webinar Appearances</h2>
 <div id="listing-podcast_tv_webinar" class="quarto-listing quarto-listing-container-custom">
+
 <div class="press">
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">August 3, 2022</p>
@@ -325,15 +366,23 @@ Note
         <div class="body">
             <p class="title"></p>
             <p class="description">The Wharton Moneyball Podcast | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://podcasts.apple.com/ar/podcast/8-3-2022-covid-19-mlb-nfl-sabin/id1159695411?i=1000574895827">
+                    
                         <i class=""></i> COVID-19, MLB, NFL, Sabin (8/3/2022)
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">February 16, 2022</p>
@@ -341,15 +390,23 @@ Note
         <div class="body">
             <p class="title"></p>
             <p class="description">Northern Virginia Technology Council | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.youtube.com/watch?v=jFqbtn0e9BU">
+                    
                         <i class=""></i> Nerds and Jocks Unite -- What's Next in Sports Analytics
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">December 9, 2021</p>
@@ -357,15 +414,23 @@ Note
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN+ | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/watch/player/_/id/d16b00e6-7c01-40d8-ba12-92013d83df45">
+                    
                         <i class=""></i> College Sports Summit
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">August 3, 2020</p>
@@ -373,15 +438,23 @@ Note
         <div class="body">
             <p class="title"></p>
             <p class="description">Dataiku | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://podcasts.apple.com/ar/podcast/8-3-2022-covid-19-mlb-nfl-sabin/id1159695411?i=1000574895827">
+                    
                         <i class=""></i> The Scope of Data Science in the Sports World
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">January 8, 2020</p>
@@ -389,15 +462,23 @@ Note
         <div class="body">
             <p class="title"></p>
             <p class="description">TruMedia Expected Value Podcast | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.trumedianetworks.com/expected-value-podcast/paul-sabin">
+                    
                         <i class=""></i> Paul Sabin
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">July 21, 2017</p>
@@ -405,15 +486,23 @@ Note
         <div class="body">
             <p class="title"></p>
             <p class="description">BYU Sports Nation | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.youtube.com/watch?v=sSk_py867Fs">
+                    
                         <i class=""></i> Paul Sabin of ESPN Analytics
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
 </div>
 <div class="listing-no-matching d-none">
 No matching items
@@ -423,7 +512,9 @@ No matching items
 <section id="featured-in" class="level2">
 <h2 class="anchored" data-anchor-id="featured-in">Featured In</h2>
 <div id="listing-featured_in" class="quarto-listing quarto-listing-container-custom">
+
 <div class="press">
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">October 16, 2023</p>
@@ -431,15 +522,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">Analytics at Wharton News | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://analytics.wharton.upenn.edu/news/senior-fellows-join-aaw/">
+                    
                         <i class=""></i> Eric Eisenstein and Paul Sabin Join Analytics at Wharton as Senior Fellows
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">February 11, 2022</p>
@@ -447,15 +546,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">Virginia Tech News | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://news.vt.edu/articles/2022/02/science-paul_sabin_espn_sports_analytics_talk.html">
+                    
                         <i class=""></i> Analytics in sports, There's a stat for that
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">April 30, 2021</p>
@@ -463,15 +570,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">UCI Department of Statistics | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.stat.uci.edu/exploring-and-strengthening-sports-stats-at-uci/">
+                    
                         <i class=""></i> Exploring and Strengthening Sports Stats at UCI
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">January 3, 2020</p>
@@ -479,15 +594,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">Virginia Tech Innovation and Partnerships | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.vt.edu/link/aluminate/profiles/paul-sabin.html">
+                    
                         <i class=""></i> Industry Leader Spotlight, Paul Sabin
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">April 26, 2019</p>
@@ -495,15 +618,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">Sports Business Journal | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.sportsbusinessjournal.com/Daily/Issues/2019/04/26/Technology/espn-presents-nfl-draft-predictions-virtual-studio-stats.aspx">
+                    
                         <i class=""></i> ESPN Presents NFL Draft Predictions in New Virtual Studio
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">February 23, 2018</p>
@@ -511,15 +642,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">Forbes | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.forbes.com/sites/prishe/2018/02/23/day-1-recap-of-2018-sloan-sports-analytics-conference/?sh=1d64f690563a">
+                    
                         <i class=""></i> Day 1 Recap Of 2018 Sloan Sports Analytics Conference
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">March 24, 2014</p>
@@ -527,15 +666,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">Wall Street Journal | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.wsj.com/articles/SB10001424052702303949704579459521730353830">
+                    
                         <i class=""></i> NFL Looks to Expand Playoffs in 2015 (Not 2014)
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">March 23, 2014</p>
@@ -543,15 +690,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">BYU University Communications | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://news.byu.edu/news/teams-would-bring-biggest-final-four-ratings">
+                    
                         <i class=""></i> The teams that would bring the biggest Final Four ratings
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
 </div>
 <div class="listing-no-matching d-none">
 No matching items
@@ -561,7 +716,9 @@ No matching items
 <section id="published-articles" class="level2">
 <h2 class="anchored" data-anchor-id="published-articles">Published Articles</h2>
 <div id="listing-published_articles" class="quarto-listing quarto-listing-container-custom">
+
 <div class="press">
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">April 23, 2023</p>
@@ -569,15 +726,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">SumerSports | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://sumersports.com/the-zone/playing-the-fields/">
+                    
                         <i class=""></i> Playing the Fields
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">April 21, 2021</p>
@@ -585,15 +750,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/nfl/draft2021/insider/story/_/id/31295433/which-nfl-teams-draft-first-round-quarterbacks-projecting-rookies-versus-10-current-starters">
+                    
                         <i class=""></i> Which NFL teams should draft first-round quarterbacks? Projecting rookies versus 10 current starters
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">December 2, 2020</p>
@@ -601,15 +774,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/mens-college-basketball/story/_/id/30428295/men-college-basketball-bpi-projections-2020-21-season">
+                    
                         <i class=""></i> Breaking down this season's BPI projections and why Gonzaga is not the favorite
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">November 17, 2020</p>
@@ -617,15 +798,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://espndeportes.espn.com/basquetbol/nota/_/id/7759180/proyecciones-draft-2020-nba-mejores-prospectos-sobrevalorados-subestimados">
+                    
                         <i class=""></i> Proyecciones del draft 2020 de la NBA, mejores prospectos, más sobrevalorados y más subestimados
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">November 17, 2020</p>
@@ -633,15 +822,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/nba/insider/story/_/id/30333453/nba-draft-2020-projections-best-prospects-most-overrated-most-underrated">
+                    
                         <i class=""></i> NBA draft 2020 projections, Best prospects, most overrated and most underrated
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">October 30, 2020</p>
@@ -649,15 +846,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/college-football/story/_/page/weeklyscenario103020/college-football-playoff-simulation-scenarios-byu-semis-oregon-winning-all">
+                    
                         <i class=""></i> College Football Playoff simulation scenarios, BYU in the semis? Oregon winning it all?
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">February 27, 2020</p>
@@ -665,15 +870,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/mens-college-basketball/story/_/id/28787171/would-three-ncaa-tournament-bids-make-wcc-college-basketball-power-conference">
+                    
                         <i class=""></i> Would three NCAA tournament bids make the WCC a college basketball power conference?
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">February 6, 2020</p>
@@ -681,15 +894,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/mens-college-basketball/story/_/id/28641359/indiana-teams-facing-major-ncaa-tournament-bubble-matchups">
+                    
                         <i class=""></i> Indiana among teams facing major NCAA tournament bubble matchups
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">January 30, 2020</p>
@@ -697,15 +918,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/mens-college-basketball/story/_/id/28594520/bpi-says-college-basketball-teams-better-their-places-standings">
+                    
                         <i class=""></i> BPI says these college basketball teams are better than their places in the standings
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">January 23, 2020</p>
@@ -713,15 +942,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/mens-college-basketball/story/_/id/28538905/bpi-vs-bracketology-which-college-basketball-teams-leagues-buy-sell">
+                    
                         <i class=""></i> BPI vs. Bracketology, Which college basketball teams, leagues should we buy and sell?
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">January 16, 2020</p>
@@ -729,15 +966,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/mens-college-basketball/story/_/id/28495975/why-no-3-duke-fresh-loss-clemson-underrated">
+                    
                         <i class=""></i> Why No. 3 Duke -- fresh off a loss to Clemson -- is still underrated
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">January 12, 2020</p>
@@ -745,15 +990,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/espn/now?nowId=21-41090158-4">
+                    
                         <i class=""></i> The BPI Bracket Predictor...
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">January 9, 2020</p>
@@ -761,15 +1014,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/mens-college-basketball/story/_/id/28449960/why-memphis-looks-more-bubble-team-march">
+                    
                         <i class=""></i> Why Memphis looks more like a bubble team in March
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">January 3, 2020</p>
@@ -777,15 +1038,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/mens-college-basketball/story/_/id/28414992/bpi-says-acc-big-ten-trending-different-directions">
+                    
                         <i class=""></i> BPI says ACC, Big Ten trending in different directions
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">November 4, 2019</p>
@@ -793,15 +1062,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/espn/now?nowId=21-41083799-4">
+                    
                         <i class=""></i> According to the Allstate Playoff Predictor...
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">November 1, 2019</p>
@@ -809,15 +1086,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/mens-college-basketball/story/_/id/27975683/college-basketball-bpi-likes-michigan-state-skeptical-memphis">
+                    
                         <i class=""></i> Preseason BPI rankings like Michigan State, skeptical about Memphis
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">September 30, 2019</p>
@@ -825,15 +1110,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/espn/now?nowId=21-41078732-4">
+                    
                         <i class=""></i> FPI views the Redskins as...
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">August 19, 2019</p>
@@ -841,15 +1134,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/college-football/story/_/page/PSimpactrating0819/introducing-new-way-rate-college-football-players">
+                    
                         <i class=""></i> Introducing a new way to rate college football players
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">March 18, 2019</p>
@@ -857,15 +1158,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://abc11.com/sports/bpi-says-duke-was-harmed-north-carolina-helped-by-bracketing/5202882/">
+                    
                         <i class=""></i> BPI says Duke was harmed, North Carolina helped by bracketing
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">February 17, 2019</p>
@@ -873,15 +1182,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/mens-college-basketball/insider/story/_/id/25948479/how-net-rankings-impact-kansas-gonzaga-2-others">
+                    
                         <i class=""></i> How NET rankings could impact Kansas, Gonzaga and 2 others
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">February 15, 2019</p>
@@ -889,15 +1206,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/mens-college-basketball/insider/story/_/id/25998700/three-19-teams-not-just-duke-rank-most-dominant-decade">
+                    
                         <i class=""></i> Three '19 teams (not just Duke) rank among most dominant of decade
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">January 31, 2019</p>
@@ -905,15 +1230,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/mens-college-basketball/insider/story/_/id/25895478/your-bpi-influenced-ncaa-tournament-draft">
+                    
                         <i class=""></i> Your BPI-influenced NCAA tournament draft
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">January 25, 2019</p>
@@ -921,15 +1254,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/mens-college-basketball/insider/story/_/id/25844811/buying-teams-latest-round-bracketology">
+                    
                         <i class=""></i> Buying teams in the latest round of Bracketology
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">December 11, 2018</p>
@@ -937,15 +1278,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/espn/now?nowId=21-41048366-4">
+                    
                         <i class=""></i> BPI loves the ACC right now...
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">November 8, 2018</p>
@@ -953,15 +1302,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/nfl/story/_/id/25205192/nfl-teams-almost-always-attempt-two-point-conversions-touchdowns-2018">
+                    
                         <i class=""></i> Why the Steelers and Panthers should (almost) always go for two
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">November 1, 2018</p>
@@ -969,15 +1326,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/mens-college-basketball/insider/story/_/id/25146229/analytics-preseason-college-bpi-rankings">
+                    
                         <i class=""></i> Preseason BPI rankings, Kansas, UNC, Virginia lead the pack
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">July 29, 2018</p>
@@ -985,15 +1350,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://africa.espn.com/mens-college-basketball/story/_/id/24199936/kansas-jayhawks-gonzaga-bulldogs-lead-espn-college-basketball-bpi-2018">
+                    
                         <i class=""></i> ESPN's BPI tabs Kansas, Gonzaga as best teams in nation
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">June 18, 2018</p>
@@ -1001,15 +1374,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://abcnews.go.com/Sports/boom-bust-espns-draft-analytics-model-predicts-top/story?id=55981818">
+                    
                         <i class=""></i> Boom or bust, ESPN's Draft Analytics model predicts top players in 2018 NBA draft
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">June 13, 2018</p>
@@ -1017,15 +1398,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/nba/story/_/id/23771351/espn-draft-analytics-model-makes-nba-draft-projections">
+                    
                         <i class=""></i> Boom or bust, ESPN's Draft Analytics model predicts top players in 2018 NBA draft
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">January 24, 2018</p>
@@ -1033,15 +1422,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/mens-college-basketball/insider/story/_/id/22190208/finding-giant-killers-latest-installment-bracketology">
+                    
                         <i class=""></i> A spin through the bracket to find the Giant Killers
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">May 17, 2017</p>
@@ -1049,15 +1446,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/nba/story/_/id/19403402/potential-2017-nba-draft-steals">
+                    
                         <i class=""></i> Potential 2017 NBA draft steals
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">April 12, 2017</p>
@@ -1065,15 +1470,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/blog/statsinfo/post/_/id/131084/how-did-espns-upgraded-bpi-perform-this-college-basketball-season">
+                    
                         <i class=""></i> How did ESPN's upgraded BPI perform this college basketball season?
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">April 3, 2017</p>
@@ -1081,15 +1494,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/blog/statsinfo/post/_/id/130820/a-bpi-look-at-the-journey-to-the-title-game">
+                    
                         <i class=""></i> A BPI look at the journey to the title game
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">March 8, 2017</p>
@@ -1097,15 +1518,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">FiveThirtyEight | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://fivethirtyeight.com/features/on-the-ncaa-bubble-heres-the-number-to-watch/">
+                    
                         <i class=""></i> On The NCAA Bubble? Here’s The Number To Watch
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">February 20, 2017</p>
@@ -1113,15 +1542,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/blog/statsinfo/post/_/id/129767/north-carolina-the-biggest-mover-in-bpi-but-villanova-still-no-1">
+                    
                         <i class=""></i> North Carolina the biggest mover in BPI, but Villanova still No. 1
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">December 6, 2016</p>
@@ -1129,15 +1566,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/mens-college-basketball/story/_/id/18219027/uconn-climb-big-mountain-make-ncaa-case">
+                    
                         <i class=""></i> UConn still must climb big mountain to make NCAA case
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">November 23, 2016</p>
@@ -1145,15 +1590,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/mens-college-basketball/story/_/id/18121612/why-fort-wayne-win-indiana-shocking">
+                    
                         <i class=""></i> Why Fort Waynes win over Indiana isn't that shocking
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
     <div class="talk-entry">
         <div class="metadata">          
             <p class="date">June 9, 2016</p>
@@ -1161,15 +1614,23 @@ No matching items
         <div class="body">
             <p class="title"></p>
             <p class="description">ESPN | </p>
+
+            
             <ul class="talk-links">
+                
                 <li class="talk-link">
+                    
                     <a href="https://www.espn.com/nba/story/_/id/16069613/espn-analytics-prospect-projections-ben-simmons-brandon-ingram-more-2016-nba-draft">
+                    
                         <i class=""></i> NBA draft projections, Ranking Simmons, Ingram and top 40
                     </a>
                 </li>
+                
+            
             </ul>
         </div>
     </div>
+    
 </div>
 <div class="listing-no-matching d-none">
 No matching items
@@ -1225,6 +1686,33 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       } else {
         el.classList.add('notransition');
       }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
     }
   }
   const toggleColorMode = (alternate) => {
@@ -1293,13 +1781,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return localAlternateSentinel;
     }
   }
-  let localAlternateSentinel = 'default';
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
   // Dark / light mode switch
   window.quartoToggleColorScheme = () => {
     // Read the current dark / light value 
     let toAlternate = !hasAlternateSentinel();
     toggleColorMode(toAlternate);
     setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
   };
   // Ensure there is a toggle, if there isn't float one in the top right
   if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
@@ -1378,10 +1868,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1391,8 +1880,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1405,6 +1903,125 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1448,6 +2065,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1473,6 +2091,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1535,12 +2179,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-    <div class="nav-footer-left"><span class="faux-block"><i class="fa-brands fa-creative-commons" aria-label="creative-commons"></i> 2023-2024 Paul Sabin</span> <span class="faux-block">All content licensed under<br><a href="https://creativecommons.org/licenses/by/4.0/"><i class="fa-brands fa-creative-commons" aria-label="creative-commons"></i> <i class="fa-brands fa-creative-commons-by" aria-label="creative-commons-by"></i> Creative Commons CC BY 4.0</a></span><br>
+    <div class="nav-footer-left">
+<p><span class="faux-block"><iconify-icon inline="" icon="fa6-regular:copyright"></iconify-icon> 2023-2024 Paul Sabin</span></p>
 </div>   
-    <div class="nav-footer-center"><span class="faux-block"> </span></div>
-    <div class="nav-footer-right"><span class="faux-block">Made with <i class="fa-brands fa-r-project" aria-label="r-project"></i> and <a href="https://quarto.org/">Quarto</a></span></div>
+    <div class="nav-footer-center">
+<p><span class="faux-block"> </span></p>
+</div>
+    <div class="nav-footer-right">
+<p><span class="faux-block">Made with <i class="fa-brands fa-r-project" aria-label="r-project"></i> and <a href="https://quarto.org/">Quarto</a></span></p>
+</div>
   </div>
 </footer>
+
 
 
 
