@@ -12,7 +12,7 @@ toc-location: right
 ::: {#EPL}
 
 ```{=html}
-<iframe width="780" height="1200" src="https://website-public-data.s3.amazonaws.com/soccer_data/tables/epl_projections.html" title=""></iframe>
+<iframe width="1000" height="1200" src="https://website-public-data.s3.amazonaws.com/soccer_data/tables/epl_projections.html" title=""></iframe>
 ```
 
 
