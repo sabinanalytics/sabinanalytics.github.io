@@ -185,10 +185,9 @@ I used data from the 2015-2016 college basketball season until the current seaso
 
 I made sure to only look at true road games, not games where the visiting team is playing at a neutral site. Whether or not something is listed as neutral site is sometimes subjective, I used the neutral site tag that can be found via the ESPN.com API.
 
-
 # Methodology
 
-Each of the previous methods take a slightly different approach to estimating a crowd's affect on free throw shooting. Each has its advantages but with more seasons I will attempt to revisit the 2nd half analysis as well as estimate which home venues affect free throws *throughout* the game as opposed to only the second half. 
+Each of the previous methods take a slightly different approach to estimating a crowd's affect on free throw shooting. Each has its advantages but with more seasons I will attempt to revisit the 2nd half analysis as well as estimate which home venues affect free throws *throughout* the game as opposed to only the second half.
 
 ## 2nd Half Student Section Effect
 
@@ -386,10 +385,9 @@ statistical_test_first_second_df_for_plotting |>
 
 ```
 
-
 This brought me to an interesting conundrum in this analysis. I allowed every team in the nation in my sample. If I restricted it to ones I had specific hypotheses about them this would be stronger evidence. Arizona State was one of those teams. In isolation its effect is explained beyond randomness alone. I went to BYU and was curious about their fans and certainly, in isolation, their student section seems to impact free throw shots from the visiting team.
 
-This simple analysis is not accounting for specific free throw shooters ability and game situation which muddies the results. In my personal opinion, there is a mechanism, such as the students displaying distractions behind the basket, that explains why certain teams may have an effect. To me, that enhances the evidence. 
+This simple analysis is not accounting for specific free throw shooters ability and game situation which muddies the results. In my personal opinion, there is a mechanism, such as the students displaying distractions behind the basket, that explains why certain teams may have an effect. To me, that enhances the evidence.
 
 If I were smart, I wouldn't be testing this for every team in the country, but only for teams that I know have their students behind the basket trying to distract the shooter. That is a minority of the 350+ schools in the nation. Most stadiums don't have that atmosphere.
 
@@ -429,7 +427,7 @@ A different way to analyze the affect a crowd has on free throw shooting would b
 
 #### Why Use Team Performance?
 
-Free throws should follow a Poisson-Binomial process. While each shot is an independent event, the probability of success should vary because each player has a different shooting ability. Player shooting samples sizes are too small for game by game analysis, so I stuck to using a team's free throw shooting percentage on a game to game basis. I used the difference of the visiting team's free throw shooting percentage in that game to its  free throw shooting percentage in home games that season.
+Free throws should follow a Poisson-Binomial process. While each shot is an independent event, the probability of success should vary because each player has a different shooting ability. Player shooting samples sizes are too small for game by game analysis, so I stuck to using a team's free throw shooting percentage on a game to game basis. I used the difference of the visiting team's free throw shooting percentage in that game to its free throw shooting percentage in home games that season.
 
 Others have pointed out that it is not clear whether a better comparison for effectiveness of a crowd would be to compare free throw percentage of the visiting team's other *road* games or to compare them to their *home* games.
 
@@ -516,7 +514,7 @@ tidy(diff_ftp_model) |>
 
 ```
 
-The negative coefficients of the absolute value of the scoring difference confirms that there is an effect of a close game on free throw percentage. Closer games have higher free throw shooting percentages. The intercept is interpreted as the average change in free throw percentage for playing on the road versus at home (a decrease of 1.2%). 
+The negative coefficients of the absolute value of the scoring difference confirms that there is an effect of a close game on free throw percentage. Closer games have higher free throw shooting percentages. The intercept is interpreted as the average change in free throw percentage for playing on the road versus at home (a decrease of 1.2%).
 
 ```{r}
 
@@ -602,11 +600,9 @@ home_team_ft_effect_summary_gt_table
 
 ```
 
-
 There are a lot of teams that have a noticeable effect beyond that of an average team. I combined the effects estimated on 2nd half free throws and the game impact of a venue on visiting team's free throw percentage.
 
 There isn't a much of a relationship between the two, but some teams in the lower left hand corner have a noticeable impact in the second half compared to the first and as a whole throughout the entire game.
-
 
 ```{r}
 both_ft_impact_plot <- home_team_ft_effect_summary |> 
@@ -644,4 +640,3 @@ For the whole game, teams playing at NJIT had a -4.5% estimated decrease in free
 It's important to note that effects for the entire game are confounded with altitude, distance traveled and day's rest. Certain visiting team's schedules may over index on those factors than others, meaning it may be more than just the crowd that impacts a visiting team's free throws at one venue over this study period.
 
 So can a good crowd impact the road team's free throw making? I think the evidence suggests that it can! But ... that effect is at the extreme end no more than 1 point per game or 0.7 points in the second half.
-

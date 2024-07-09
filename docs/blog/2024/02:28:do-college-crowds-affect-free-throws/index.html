@@ -2138,459 +2138,455 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a>I made sure to only look at true road games, not games where the visiting team is playing at a neutral site. Whether or not something is listed as neutral site is sometimes subjective, I used the neutral site tag that can be found via the ESPN.com API.</span>
 <span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a><span class="fu"># Methodology</span></span>
-<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a>Each of the previous methods take a slightly different approach to estimating a crowd's affect on free throw shooting. Each has its advantages but with more seasons I will attempt to revisit the 2nd half analysis as well as estimate which home venues affect free throws *throughout* the game as opposed to only the second half. </span>
-<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2nd Half Student Section Effect</span></span>
-<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a>I filtered the data to teams that have at least 200 free throws attempted at their home court in *both* the first half and second half over the course of this data set. The top 10 in terms of **largest drop-off in free-throw percentage** from the first half to the second half can be seen in the table below.</span>
-<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb1-202"><a href="#cb1-202" aria-hidden="true" tabindex="-1"></a>statistical_test_first_second_df <span class="ot">&lt;-</span> ft_half_summary_wide <span class="sc">|&gt;</span> </span>
-<span id="cb1-203"><a href="#cb1-203" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ft_visiting_team <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb1-204"><a href="#cb1-204" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(adj_home_team_name,</span>
-<span id="cb1-205"><a href="#cb1-205" aria-hidden="true" tabindex="-1"></a>           home_logo) <span class="sc">|&gt;</span> </span>
-<span id="cb1-206"><a href="#cb1-206" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">fta_first =</span> <span class="fu">sum</span>(fta_first),</span>
-<span id="cb1-207"><a href="#cb1-207" aria-hidden="true" tabindex="-1"></a>            <span class="at">ftm_first =</span> <span class="fu">sum</span>(ftm_first),</span>
-<span id="cb1-208"><a href="#cb1-208" aria-hidden="true" tabindex="-1"></a>            <span class="at">fta_second =</span> <span class="fu">sum</span>(fta_second),</span>
-<span id="cb1-209"><a href="#cb1-209" aria-hidden="true" tabindex="-1"></a>            <span class="at">ftm_second =</span> <span class="fu">sum</span>(ftm_second),</span>
-<span id="cb1-210"><a href="#cb1-210" aria-hidden="true" tabindex="-1"></a>            ) <span class="sc">|&gt;</span> </span>
-<span id="cb1-211"><a href="#cb1-211" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb1-212"><a href="#cb1-212" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ftp_first =</span> ftm_first <span class="sc">/</span> fta_first,</span>
-<span id="cb1-213"><a href="#cb1-213" aria-hidden="true" tabindex="-1"></a>         <span class="at">ftp_second =</span> ftm_second <span class="sc">/</span> fta_second,</span>
-<span id="cb1-214"><a href="#cb1-214" aria-hidden="true" tabindex="-1"></a>         <span class="at">ftp_diff =</span> ftp_second <span class="sc">-</span> ftp_first</span>
-<span id="cb1-215"><a href="#cb1-215" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb1-216"><a href="#cb1-216" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(ftp_diff)</span>
-<span id="cb1-217"><a href="#cb1-217" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb1-218"><a href="#cb1-218" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-221"><a href="#cb1-221" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb1-222"><a href="#cb1-222" aria-hidden="true" tabindex="-1"></a><span class="co">#saving off data with at least 200 fta in both halfs</span></span>
-<span id="cb1-223"><a href="#cb1-223" aria-hidden="true" tabindex="-1"></a>statistical_test_first_second_df_for_plotting <span class="ot">&lt;-</span> statistical_test_first_second_df <span class="sc">|&gt;</span> </span>
-<span id="cb1-224"><a href="#cb1-224" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(fta_first <span class="sc">&gt;=</span> <span class="dv">200</span>, </span>
-<span id="cb1-225"><a href="#cb1-225" aria-hidden="true" tabindex="-1"></a>         fta_second <span class="sc">&gt;=</span> <span class="dv">200</span>) </span>
-<span id="cb1-226"><a href="#cb1-226" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-227"><a href="#cb1-227" aria-hidden="true" tabindex="-1"></a><span class="co">#adjusting for the second half higher ft%</span></span>
-<span id="cb1-228"><a href="#cb1-228" aria-hidden="true" tabindex="-1"></a>avg_ftp_half_diff <span class="ot">&lt;-</span> statistical_test_first_second_df_for_plotting <span class="sc">|&gt;</span> </span>
-<span id="cb1-229"><a href="#cb1-229" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tot_fta =</span> fta_first <span class="sc">+</span> fta_second) <span class="sc">|&gt;</span> </span>
-<span id="cb1-230"><a href="#cb1-230" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">avg_ftp_diff =</span> <span class="fu">weighted.mean</span>(ftp_diff, <span class="at">w =</span> tot_fta)) <span class="sc">|&gt;</span> </span>
-<span id="cb1-231"><a href="#cb1-231" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(avg_ftp_diff)</span>
-<span id="cb1-232"><a href="#cb1-232" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-233"><a href="#cb1-233" aria-hidden="true" tabindex="-1"></a> statistical_test_first_second_df_for_plotting <span class="ot">&lt;-</span> statistical_test_first_second_df_for_plotting <span class="sc">|&gt;</span> </span>
-<span id="cb1-234"><a href="#cb1-234" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="co"># I take off 1 percent of ftp in the second half</span></span>
-<span id="cb1-235"><a href="#cb1-235" aria-hidden="true" tabindex="-1"></a>         <span class="co"># since on average visiting teams shoot 1 percent better in 2nd half</span></span>
-<span id="cb1-236"><a href="#cb1-236" aria-hidden="true" tabindex="-1"></a>         <span class="at">ftp_diff_adj =</span> ftp_diff <span class="sc">-</span> avg_ftp_half_diff,</span>
-<span id="cb1-237"><a href="#cb1-237" aria-hidden="true" tabindex="-1"></a>         <span class="at">ftp_diff_z =</span> ftp_diff_adj <span class="sc">/</span> <span class="fu">sqrt</span>( </span>
-<span id="cb1-238"><a href="#cb1-238" aria-hidden="true" tabindex="-1"></a>           ( ftp_first<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>ftp_first) <span class="sc">/</span> fta_first ) <span class="sc">+</span> ( ftp_second<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>ftp_second)) <span class="sc">/</span> fta_second ),</span>
-<span id="cb1-239"><a href="#cb1-239" aria-hidden="true" tabindex="-1"></a>         <span class="at">ftp_diff_pvalue =</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">pnorm</span>(<span class="sc">-</span><span class="fu">abs</span>(ftp_diff_z))</span>
-<span id="cb1-240"><a href="#cb1-240" aria-hidden="true" tabindex="-1"></a>         ) </span>
-<span id="cb1-241"><a href="#cb1-241" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-242"><a href="#cb1-242" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb1-243"><a href="#cb1-243" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-246"><a href="#cb1-246" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb1-247"><a href="#cb1-247" aria-hidden="true" tabindex="-1"></a>min_pct <span class="ot">&lt;-</span> statistical_test_first_second_df_for_plotting <span class="sc">|&gt;</span> <span class="fu">select</span>(ftp_first, ftp_second) <span class="sc">|&gt;</span> <span class="fu">min</span>()</span>
-<span id="cb1-248"><a href="#cb1-248" aria-hidden="true" tabindex="-1"></a>max_pct <span class="ot">&lt;-</span> statistical_test_first_second_df_for_plotting <span class="sc">|&gt;</span> <span class="fu">select</span>(ftp_first, ftp_second) <span class="sc">|&gt;</span> <span class="fu">max</span>()</span>
-<span id="cb1-249"><a href="#cb1-249" aria-hidden="true" tabindex="-1"></a>min_pct_plot <span class="ot">&lt;-</span> <span class="fu">floor</span>(min_pct<span class="sc">*</span><span class="dv">10</span>)<span class="sc">/</span><span class="dv">10</span></span>
-<span id="cb1-250"><a href="#cb1-250" aria-hidden="true" tabindex="-1"></a>max_pct_plot <span class="ot">&lt;-</span> <span class="fu">ceiling</span>(max_pct<span class="sc">*</span><span class="dv">10</span>)<span class="sc">/</span><span class="dv">10</span></span>
-<span id="cb1-251"><a href="#cb1-251" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-252"><a href="#cb1-252" aria-hidden="true" tabindex="-1"></a>first_vs_second_half_scatter_plot <span class="ot">&lt;-</span> statistical_test_first_second_df_for_plotting <span class="sc">|&gt;</span> </span>
-<span id="cb1-253"><a href="#cb1-253" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> ftp_first,</span>
-<span id="cb1-254"><a href="#cb1-254" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> ftp_second)</span>
-<span id="cb1-255"><a href="#cb1-255" aria-hidden="true" tabindex="-1"></a>         ) <span class="sc">+</span></span>
-<span id="cb1-256"><a href="#cb1-256" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">'glm'</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb1-257"><a href="#cb1-257" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>() <span class="sc">+</span> </span>
-<span id="cb1-258"><a href="#cb1-258" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_image</span>(<span class="fu">aes</span>(<span class="at">image =</span> home_logo)) <span class="sc">+</span></span>
-<span id="cb1-259"><a href="#cb1-259" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Visiting Team's Free Throw Percentage by Half"</span>,</span>
-<span id="cb1-260"><a href="#cb1-260" aria-hidden="true" tabindex="-1"></a>          <span class="at">subtitle =</span> <span class="st">"2015-16 to 2023-24 Seasons (Min 200 FTA in Each Half)"</span>) <span class="sc">+</span></span>
-<span id="cb1-261"><a href="#cb1-261" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"First Half %"</span>) <span class="sc">+</span></span>
-<span id="cb1-262"><a href="#cb1-262" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Second Half %"</span>) <span class="sc">+</span></span>
-<span id="cb1-263"><a href="#cb1-263" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(min_pct_plot, max_pct_plot) <span class="sc">+</span> </span>
-<span id="cb1-264"><a href="#cb1-264" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(min_pct_plot, max_pct_plot) <span class="sc">+</span></span>
-<span id="cb1-265"><a href="#cb1-265" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb1-266"><a href="#cb1-266" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="dv">1</span>)</span>
-<span id="cb1-267"><a href="#cb1-267" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-268"><a href="#cb1-268" aria-hidden="true" tabindex="-1"></a>  first_vs_second_half_scatter_plot</span>
-<span id="cb1-269"><a href="#cb1-269" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb1-270"><a href="#cb1-270" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-271"><a href="#cb1-271" aria-hidden="true" tabindex="-1"></a>I also plotted the histogram of the differences in free throw percentage from the first half to the second half by each home team. What is suprising in looking at first glance is that, on average, visiting teams shoot <span class="in">`r round(avg_ftp_half_diff*100, digits = 1)`</span> percent *better* in the second half than compared to the first.</span>
-<span id="cb1-272"><a href="#cb1-272" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-273"><a href="#cb1-273" aria-hidden="true" tabindex="-1"></a>This is likely due to the effect of the end of game scenarios in basketball. Typically, if a team is winning the losing team starts to foul towards the end of the game. The winning team knows this will happen and does its best to get the ball into the hands of their best free throw shooters before these fouls occur. You can see this trend in the following plot, where the difference in 2nd half free throw percentage goes up when a team wins by about 5-10, which is typically the range of outcomes where the other team was fouling.</span>
-<span id="cb1-274"><a href="#cb1-274" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-275"><a href="#cb1-275" aria-hidden="true" tabindex="-1"></a>This doesn't explain the entire effect as even teams that lose tend to shoot better percentage wise for free throws in the second half. There's several possible explanations for this but my intuition was that as players got tired their free-throw percentages would decrease in the second half, which doesn't appear to be the case.</span>
-<span id="cb1-276"><a href="#cb1-276" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-279"><a href="#cb1-279" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb1-280"><a href="#cb1-280" aria-hidden="true" tabindex="-1"></a>ft_half_summary_wide <span class="sc">|&gt;</span> </span>
-<span id="cb1-281"><a href="#cb1-281" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ftp_second_vs_first =</span> ftp_second <span class="sc">-</span> ftp_first) <span class="sc">|&gt;</span> </span>
-<span id="cb1-282"><a href="#cb1-282" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(team_pt_diff) <span class="sc">|&gt;</span> </span>
-<span id="cb1-283"><a href="#cb1-283" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">avg_ftp_second_vs_first =</span> <span class="fu">mean</span>(ftp_second_vs_first), </span>
-<span id="cb1-284"><a href="#cb1-284" aria-hidden="true" tabindex="-1"></a>            <span class="at">games =</span> <span class="fu">n</span>() ) <span class="sc">|&gt;</span> </span>
-<span id="cb1-285"><a href="#cb1-285" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> team_pt_diff, <span class="at">y =</span> avg_ftp_second_vs_first) ) <span class="sc">+</span> </span>
-<span id="cb1-286"><a href="#cb1-286" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb1-287"><a href="#cb1-287" aria-hidden="true" tabindex="-1"></a>  <span class="co"># geom_smooth(aes(weight = games), se = FALSE) + </span></span>
-<span id="cb1-288"><a href="#cb1-288" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="sc">-</span><span class="dv">50</span>, <span class="dv">50</span>) <span class="sc">+</span> </span>
-<span id="cb1-289"><a href="#cb1-289" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
-<span id="cb1-290"><a href="#cb1-290" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">'bottom'</span>) <span class="sc">+</span> </span>
-<span id="cb1-291"><a href="#cb1-291" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Avg. Diff in FT%"</span>) <span class="sc">+</span></span>
-<span id="cb1-292"><a href="#cb1-292" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Final Point Difference"</span>) <span class="sc">+</span></span>
-<span id="cb1-293"><a href="#cb1-293" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Second Half FT % Improvement by Pt. Difference"</span>)</span>
-<span id="cb1-294"><a href="#cb1-294" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-295"><a href="#cb1-295" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb1-296"><a href="#cb1-296" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-297"><a href="#cb1-297" aria-hidden="true" tabindex="-1"></a>To somewhat account for this second half effect I take that one percent in the second half off of a team's free throw percentage when assessing the difference between the first half and the second half via the z-score and p-value.</span>
-<span id="cb1-298"><a href="#cb1-298" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-301"><a href="#cb1-301" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb1-302"><a href="#cb1-302" aria-hidden="true" tabindex="-1"></a>statistical_test_first_second_df_for_plotting <span class="sc">|&gt;</span> </span>
-<span id="cb1-303"><a href="#cb1-303" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> ftp_diff)) <span class="sc">+</span></span>
-<span id="cb1-304"><a href="#cb1-304" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
-<span id="cb1-305"><a href="#cb1-305" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">'red'</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb1-306"><a href="#cb1-306" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb1-307"><a href="#cb1-307" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"% Difference (2nd - 1st)"</span>) <span class="sc">+</span></span>
-<span id="cb1-308"><a href="#cb1-308" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Visiting Team's Free Throw Percentage Change by Half"</span>,</span>
-<span id="cb1-309"><a href="#cb1-309" aria-hidden="true" tabindex="-1"></a>          <span class="at">subtitle =</span> <span class="st">"2015-16 to 2023-24 Seasons (Min 200 FTA in Each Half)"</span>)</span>
-<span id="cb1-310"><a href="#cb1-310" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb1-311"><a href="#cb1-311" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-314"><a href="#cb1-314" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb1-315"><a href="#cb1-315" aria-hidden="true" tabindex="-1"></a>ftp_half_diff_gt_table <span class="ot">&lt;-</span> statistical_test_first_second_df_for_plotting <span class="sc">%&gt;%</span> </span>
-<span id="cb1-316"><a href="#cb1-316" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(</span>
-<span id="cb1-317"><a href="#cb1-317" aria-hidden="true" tabindex="-1"></a>    <span class="at">home_team =</span> adj_home_team_name,</span>
-<span id="cb1-318"><a href="#cb1-318" aria-hidden="true" tabindex="-1"></a>    home_logo,</span>
-<span id="cb1-319"><a href="#cb1-319" aria-hidden="true" tabindex="-1"></a>    ftp_first,</span>
-<span id="cb1-320"><a href="#cb1-320" aria-hidden="true" tabindex="-1"></a>    ftp_second,</span>
-<span id="cb1-321"><a href="#cb1-321" aria-hidden="true" tabindex="-1"></a>    ftp_diff,</span>
-<span id="cb1-322"><a href="#cb1-322" aria-hidden="true" tabindex="-1"></a>    ftp_diff_pvalue</span>
-<span id="cb1-323"><a href="#cb1-323" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-324"><a href="#cb1-324" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb1-325"><a href="#cb1-325" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
-<span id="cb1-326"><a href="#cb1-326" aria-hidden="true" tabindex="-1"></a>    <span class="at">home_team =</span> <span class="st">"Home Court"</span>,</span>
-<span id="cb1-327"><a href="#cb1-327" aria-hidden="true" tabindex="-1"></a>    <span class="at">home_logo =</span> <span class="st">""</span>,</span>
-<span id="cb1-328"><a href="#cb1-328" aria-hidden="true" tabindex="-1"></a>    <span class="at">ftp_first =</span> <span class="st">"1st"</span>,</span>
-<span id="cb1-329"><a href="#cb1-329" aria-hidden="true" tabindex="-1"></a>    <span class="at">ftp_second =</span> <span class="st">"2nd"</span>,</span>
-<span id="cb1-330"><a href="#cb1-330" aria-hidden="true" tabindex="-1"></a>    <span class="at">ftp_diff =</span> <span class="st">"Diff"</span>,</span>
-<span id="cb1-331"><a href="#cb1-331" aria-hidden="true" tabindex="-1"></a>    <span class="at">ftp_diff_pvalue =</span> <span class="st">"PValue"</span></span>
-<span id="cb1-332"><a href="#cb1-332" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb1-333"><a href="#cb1-333" aria-hidden="true" tabindex="-1"></a>  <span class="co"># # text_transform(</span></span>
-<span id="cb1-334"><a href="#cb1-334" aria-hidden="true" tabindex="-1"></a>  <span class="co"># #   locations = cells_body(c("fbref_logo_url")),</span></span>
-<span id="cb1-335"><a href="#cb1-335" aria-hidden="true" tabindex="-1"></a>  <span class="co"># #   fn = function(x) {</span></span>
-<span id="cb1-336"><a href="#cb1-336" aria-hidden="true" tabindex="-1"></a>  <span class="co"># #     map(x, ~ web_image(.x))</span></span>
-<span id="cb1-337"><a href="#cb1-337" aria-hidden="true" tabindex="-1"></a>  <span class="co"># #   }</span></span>
-<span id="cb1-338"><a href="#cb1-338" aria-hidden="true" tabindex="-1"></a>  <span class="co"># # ) %&gt;% </span></span>
-<span id="cb1-339"><a href="#cb1-339" aria-hidden="true" tabindex="-1"></a>  <span class="co"># tab_style(</span></span>
-<span id="cb1-340"><a href="#cb1-340" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   style = cell_text(weight = "bold"),</span></span>
-<span id="cb1-341"><a href="#cb1-341" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   locations = cells_column_labels()</span></span>
-<span id="cb1-342"><a href="#cb1-342" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ) %&gt;%</span></span>
-<span id="cb1-343"><a href="#cb1-343" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_align</span>(</span>
-<span id="cb1-344"><a href="#cb1-344" aria-hidden="true" tabindex="-1"></a>    <span class="at">align =</span> <span class="fu">c</span>(<span class="st">"center"</span>),</span>
-<span id="cb1-345"><a href="#cb1-345" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">everything</span>()</span>
-<span id="cb1-346"><a href="#cb1-346" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb1-347"><a href="#cb1-347" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_percent</span>(<span class="at">columns =</span> ftp_first<span class="sc">:</span>ftp_diff,</span>
-<span id="cb1-348"><a href="#cb1-348" aria-hidden="true" tabindex="-1"></a>             <span class="at">decimals =</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb1-349"><a href="#cb1-349" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_number</span>(<span class="at">columns =</span> ftp_diff_pvalue,</span>
-<span id="cb1-350"><a href="#cb1-350" aria-hidden="true" tabindex="-1"></a>             <span class="at">decimals =</span> <span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb1-351"><a href="#cb1-351" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt_img_rows</span>(<span class="at">columns =</span> home_logo, <span class="at">img_source =</span> <span class="st">"web"</span>, <span class="at">height =</span> <span class="dv">30</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb1-352"><a href="#cb1-352" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(</span>
-<span id="cb1-353"><a href="#cb1-353" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Visiting Free Throw % by Half"</span>,</span>
-<span id="cb1-354"><a href="#cb1-354" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"2015-16 to 2023-24 Seasons"</span></span>
-<span id="cb1-355"><a href="#cb1-355" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb1-356"><a href="#cb1-356" aria-hidden="true" tabindex="-1"></a>  <span class="co"># gt_theme_538() %&gt;%</span></span>
-<span id="cb1-357"><a href="#cb1-357" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data_color</span>(</span>
-<span id="cb1-358"><a href="#cb1-358" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">c</span>(ftp_first, ftp_second, ftp_diff, ftp_diff_pvalue),</span>
-<span id="cb1-359"><a href="#cb1-359" aria-hidden="true" tabindex="-1"></a>    <span class="at">colors =</span> scales<span class="sc">::</span><span class="fu">col_numeric</span>(</span>
-<span id="cb1-360"><a href="#cb1-360" aria-hidden="true" tabindex="-1"></a>      <span class="at">palette =</span> <span class="fu">viridis</span>(<span class="dv">10</span>),</span>
-<span id="cb1-361"><a href="#cb1-361" aria-hidden="true" tabindex="-1"></a>      <span class="at">domain =</span> <span class="cn">NULL</span>)  <span class="co"># You can adjust the number of colors as needed</span></span>
-<span id="cb1-362"><a href="#cb1-362" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb1-363"><a href="#cb1-363" aria-hidden="true" tabindex="-1"></a>  <span class="fu">opt_interactive</span>()</span>
-<span id="cb1-364"><a href="#cb1-364" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-365"><a href="#cb1-365" aria-hidden="true" tabindex="-1"></a>ftp_half_diff_gt_table</span>
-<span id="cb1-366"><a href="#cb1-366" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-367"><a href="#cb1-367" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb1-368"><a href="#cb1-368" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-369"><a href="#cb1-369" aria-hidden="true" tabindex="-1"></a>There are some familiar names, including our famous "Curtain of Distraction" team, Arizona State among the biggest drop offs from the first half to the second, and with the additional years of data, the result is statistically significant.</span>
-<span id="cb1-370"><a href="#cb1-370" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-371"><a href="#cb1-371" aria-hidden="true" tabindex="-1"></a>BYU, another team that is increasingly known for its wild student section behind the basket in the second half, is also high on this list. While I don't have data on all the teams and where their student sections are I did quick research on where many of the teams in the top 10 of this list have their student sections in the second half.</span>
-<span id="cb1-372"><a href="#cb1-372" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-373"><a href="#cb1-373" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Valparaiso: *behind visiting basket*</span>
-<span id="cb1-374"><a href="#cb1-374" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Lamar: I couldn't find</span>
-<span id="cb1-375"><a href="#cb1-375" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Milwaukee: *behind visiting basket*</span>
-<span id="cb1-376"><a href="#cb1-376" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Arizona State: *behind visiting basket*</span>
-<span id="cb1-377"><a href="#cb1-377" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>BYU: *behind visiting basket*</span>
-<span id="cb1-378"><a href="#cb1-378" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Middle Tennessee State: *behind visiting basket*</span>
-<span id="cb1-379"><a href="#cb1-379" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-380"><a href="#cb1-380" aria-hidden="true" tabindex="-1"></a><span class="al">![BYU's Student Section Attempting to Distract Opposing Shooter](images/byu_student_section.png)</span></span>
-<span id="cb1-381"><a href="#cb1-381" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-382"><a href="#cb1-382" aria-hidden="true" tabindex="-1"></a>Some not surprising names appear near the top of this list. Although, it is possible that with over 350 Division I basketball teams, that some by shear randomness, some will have a significant first half to second half effect on opposing free throw shooters.</span>
-<span id="cb1-383"><a href="#cb1-383" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-384"><a href="#cb1-384" aria-hidden="true" tabindex="-1"></a>There are some corrections for significance testing for multiple tests that one can do such as the Bonferroni correction which would lower a significance threshold by dividing by the number of tests, so if we had a $\alpha = 0.05$ threshold the new one would be $\frac{\alpha}{n}$ where $n=355$ teams in our dataset. Bonferroni is known for being overly conservative, and this surely would be an extremely high standard.</span>
-<span id="cb1-385"><a href="#cb1-385" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-386"><a href="#cb1-386" aria-hidden="true" tabindex="-1"></a>I used the Benjamini–Hochberg procedure to determine if there are some values for which one should still reject the null hypothesis that second half free throw percentage shouldn't decrease from the first for a team. (Remember that I adjusted for the fact that on average second half free throw percentages increase by 1 percent that of the first half.) Unfortunately there are also no teams that clear this multiple testing threshold.</span>
-<span id="cb1-387"><a href="#cb1-387" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-390"><a href="#cb1-390" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb1-391"><a href="#cb1-391" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb1-392"><a href="#cb1-392" aria-hidden="true" tabindex="-1"></a>statistical_test_first_second_df_for_plotting <span class="sc">|&gt;</span> </span>
-<span id="cb1-393"><a href="#cb1-393" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(ftp_diff_z) <span class="sc">|&gt;</span> </span>
-<span id="cb1-394"><a href="#cb1-394" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pvalue_rank =</span> <span class="fu">min_rank</span>(ftp_diff_z), </span>
-<span id="cb1-395"><a href="#cb1-395" aria-hidden="true" tabindex="-1"></a>         <span class="at">n_teams =</span> <span class="fu">n</span>(),</span>
-<span id="cb1-396"><a href="#cb1-396" aria-hidden="true" tabindex="-1"></a>         <span class="at">bh_cutoff =</span> (pvalue_rank <span class="sc">/</span> n_teams) <span class="sc">*</span> <span class="fl">0.05</span></span>
-<span id="cb1-397"><a href="#cb1-397" aria-hidden="true" tabindex="-1"></a>         )</span>
-<span id="cb1-398"><a href="#cb1-398" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-399"><a href="#cb1-399" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb1-400"><a href="#cb1-400" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a><span class="fu"># Methodology</span></span>
+<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a>Each of the previous methods take a slightly different approach to estimating a crowd's affect on free throw shooting. Each has its advantages but with more seasons I will attempt to revisit the 2nd half analysis as well as estimate which home venues affect free throws *throughout* the game as opposed to only the second half.</span>
+<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2nd Half Student Section Effect</span></span>
+<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a>I filtered the data to teams that have at least 200 free throws attempted at their home court in *both* the first half and second half over the course of this data set. The top 10 in terms of **largest drop-off in free-throw percentage** from the first half to the second half can be seen in the table below.</span>
+<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a>statistical_test_first_second_df <span class="ot">&lt;-</span> ft_half_summary_wide <span class="sc">|&gt;</span> </span>
+<span id="cb1-202"><a href="#cb1-202" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ft_visiting_team <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-203"><a href="#cb1-203" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(adj_home_team_name,</span>
+<span id="cb1-204"><a href="#cb1-204" aria-hidden="true" tabindex="-1"></a>           home_logo) <span class="sc">|&gt;</span> </span>
+<span id="cb1-205"><a href="#cb1-205" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">fta_first =</span> <span class="fu">sum</span>(fta_first),</span>
+<span id="cb1-206"><a href="#cb1-206" aria-hidden="true" tabindex="-1"></a>            <span class="at">ftm_first =</span> <span class="fu">sum</span>(ftm_first),</span>
+<span id="cb1-207"><a href="#cb1-207" aria-hidden="true" tabindex="-1"></a>            <span class="at">fta_second =</span> <span class="fu">sum</span>(fta_second),</span>
+<span id="cb1-208"><a href="#cb1-208" aria-hidden="true" tabindex="-1"></a>            <span class="at">ftm_second =</span> <span class="fu">sum</span>(ftm_second),</span>
+<span id="cb1-209"><a href="#cb1-209" aria-hidden="true" tabindex="-1"></a>            ) <span class="sc">|&gt;</span> </span>
+<span id="cb1-210"><a href="#cb1-210" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb1-211"><a href="#cb1-211" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ftp_first =</span> ftm_first <span class="sc">/</span> fta_first,</span>
+<span id="cb1-212"><a href="#cb1-212" aria-hidden="true" tabindex="-1"></a>         <span class="at">ftp_second =</span> ftm_second <span class="sc">/</span> fta_second,</span>
+<span id="cb1-213"><a href="#cb1-213" aria-hidden="true" tabindex="-1"></a>         <span class="at">ftp_diff =</span> ftp_second <span class="sc">-</span> ftp_first</span>
+<span id="cb1-214"><a href="#cb1-214" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb1-215"><a href="#cb1-215" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(ftp_diff)</span>
+<span id="cb1-216"><a href="#cb1-216" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-217"><a href="#cb1-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-220"><a href="#cb1-220" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb1-221"><a href="#cb1-221" aria-hidden="true" tabindex="-1"></a><span class="co">#saving off data with at least 200 fta in both halfs</span></span>
+<span id="cb1-222"><a href="#cb1-222" aria-hidden="true" tabindex="-1"></a>statistical_test_first_second_df_for_plotting <span class="ot">&lt;-</span> statistical_test_first_second_df <span class="sc">|&gt;</span> </span>
+<span id="cb1-223"><a href="#cb1-223" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(fta_first <span class="sc">&gt;=</span> <span class="dv">200</span>, </span>
+<span id="cb1-224"><a href="#cb1-224" aria-hidden="true" tabindex="-1"></a>         fta_second <span class="sc">&gt;=</span> <span class="dv">200</span>) </span>
+<span id="cb1-225"><a href="#cb1-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-226"><a href="#cb1-226" aria-hidden="true" tabindex="-1"></a><span class="co">#adjusting for the second half higher ft%</span></span>
+<span id="cb1-227"><a href="#cb1-227" aria-hidden="true" tabindex="-1"></a>avg_ftp_half_diff <span class="ot">&lt;-</span> statistical_test_first_second_df_for_plotting <span class="sc">|&gt;</span> </span>
+<span id="cb1-228"><a href="#cb1-228" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tot_fta =</span> fta_first <span class="sc">+</span> fta_second) <span class="sc">|&gt;</span> </span>
+<span id="cb1-229"><a href="#cb1-229" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">avg_ftp_diff =</span> <span class="fu">weighted.mean</span>(ftp_diff, <span class="at">w =</span> tot_fta)) <span class="sc">|&gt;</span> </span>
+<span id="cb1-230"><a href="#cb1-230" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(avg_ftp_diff)</span>
+<span id="cb1-231"><a href="#cb1-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-232"><a href="#cb1-232" aria-hidden="true" tabindex="-1"></a> statistical_test_first_second_df_for_plotting <span class="ot">&lt;-</span> statistical_test_first_second_df_for_plotting <span class="sc">|&gt;</span> </span>
+<span id="cb1-233"><a href="#cb1-233" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="co"># I take off 1 percent of ftp in the second half</span></span>
+<span id="cb1-234"><a href="#cb1-234" aria-hidden="true" tabindex="-1"></a>         <span class="co"># since on average visiting teams shoot 1 percent better in 2nd half</span></span>
+<span id="cb1-235"><a href="#cb1-235" aria-hidden="true" tabindex="-1"></a>         <span class="at">ftp_diff_adj =</span> ftp_diff <span class="sc">-</span> avg_ftp_half_diff,</span>
+<span id="cb1-236"><a href="#cb1-236" aria-hidden="true" tabindex="-1"></a>         <span class="at">ftp_diff_z =</span> ftp_diff_adj <span class="sc">/</span> <span class="fu">sqrt</span>( </span>
+<span id="cb1-237"><a href="#cb1-237" aria-hidden="true" tabindex="-1"></a>           ( ftp_first<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>ftp_first) <span class="sc">/</span> fta_first ) <span class="sc">+</span> ( ftp_second<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>ftp_second)) <span class="sc">/</span> fta_second ),</span>
+<span id="cb1-238"><a href="#cb1-238" aria-hidden="true" tabindex="-1"></a>         <span class="at">ftp_diff_pvalue =</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">pnorm</span>(<span class="sc">-</span><span class="fu">abs</span>(ftp_diff_z))</span>
+<span id="cb1-239"><a href="#cb1-239" aria-hidden="true" tabindex="-1"></a>         ) </span>
+<span id="cb1-240"><a href="#cb1-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-241"><a href="#cb1-241" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-242"><a href="#cb1-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-245"><a href="#cb1-245" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb1-246"><a href="#cb1-246" aria-hidden="true" tabindex="-1"></a>min_pct <span class="ot">&lt;-</span> statistical_test_first_second_df_for_plotting <span class="sc">|&gt;</span> <span class="fu">select</span>(ftp_first, ftp_second) <span class="sc">|&gt;</span> <span class="fu">min</span>()</span>
+<span id="cb1-247"><a href="#cb1-247" aria-hidden="true" tabindex="-1"></a>max_pct <span class="ot">&lt;-</span> statistical_test_first_second_df_for_plotting <span class="sc">|&gt;</span> <span class="fu">select</span>(ftp_first, ftp_second) <span class="sc">|&gt;</span> <span class="fu">max</span>()</span>
+<span id="cb1-248"><a href="#cb1-248" aria-hidden="true" tabindex="-1"></a>min_pct_plot <span class="ot">&lt;-</span> <span class="fu">floor</span>(min_pct<span class="sc">*</span><span class="dv">10</span>)<span class="sc">/</span><span class="dv">10</span></span>
+<span id="cb1-249"><a href="#cb1-249" aria-hidden="true" tabindex="-1"></a>max_pct_plot <span class="ot">&lt;-</span> <span class="fu">ceiling</span>(max_pct<span class="sc">*</span><span class="dv">10</span>)<span class="sc">/</span><span class="dv">10</span></span>
+<span id="cb1-250"><a href="#cb1-250" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-251"><a href="#cb1-251" aria-hidden="true" tabindex="-1"></a>first_vs_second_half_scatter_plot <span class="ot">&lt;-</span> statistical_test_first_second_df_for_plotting <span class="sc">|&gt;</span> </span>
+<span id="cb1-252"><a href="#cb1-252" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> ftp_first,</span>
+<span id="cb1-253"><a href="#cb1-253" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> ftp_second)</span>
+<span id="cb1-254"><a href="#cb1-254" aria-hidden="true" tabindex="-1"></a>         ) <span class="sc">+</span></span>
+<span id="cb1-255"><a href="#cb1-255" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">'glm'</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb1-256"><a href="#cb1-256" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>() <span class="sc">+</span> </span>
+<span id="cb1-257"><a href="#cb1-257" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_image</span>(<span class="fu">aes</span>(<span class="at">image =</span> home_logo)) <span class="sc">+</span></span>
+<span id="cb1-258"><a href="#cb1-258" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Visiting Team's Free Throw Percentage by Half"</span>,</span>
+<span id="cb1-259"><a href="#cb1-259" aria-hidden="true" tabindex="-1"></a>          <span class="at">subtitle =</span> <span class="st">"2015-16 to 2023-24 Seasons (Min 200 FTA in Each Half)"</span>) <span class="sc">+</span></span>
+<span id="cb1-260"><a href="#cb1-260" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"First Half %"</span>) <span class="sc">+</span></span>
+<span id="cb1-261"><a href="#cb1-261" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Second Half %"</span>) <span class="sc">+</span></span>
+<span id="cb1-262"><a href="#cb1-262" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(min_pct_plot, max_pct_plot) <span class="sc">+</span> </span>
+<span id="cb1-263"><a href="#cb1-263" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(min_pct_plot, max_pct_plot) <span class="sc">+</span></span>
+<span id="cb1-264"><a href="#cb1-264" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb1-265"><a href="#cb1-265" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="dv">1</span>)</span>
+<span id="cb1-266"><a href="#cb1-266" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-267"><a href="#cb1-267" aria-hidden="true" tabindex="-1"></a>  first_vs_second_half_scatter_plot</span>
+<span id="cb1-268"><a href="#cb1-268" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-269"><a href="#cb1-269" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-270"><a href="#cb1-270" aria-hidden="true" tabindex="-1"></a>I also plotted the histogram of the differences in free throw percentage from the first half to the second half by each home team. What is suprising in looking at first glance is that, on average, visiting teams shoot <span class="in">`r round(avg_ftp_half_diff*100, digits = 1)`</span> percent *better* in the second half than compared to the first.</span>
+<span id="cb1-271"><a href="#cb1-271" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-272"><a href="#cb1-272" aria-hidden="true" tabindex="-1"></a>This is likely due to the effect of the end of game scenarios in basketball. Typically, if a team is winning the losing team starts to foul towards the end of the game. The winning team knows this will happen and does its best to get the ball into the hands of their best free throw shooters before these fouls occur. You can see this trend in the following plot, where the difference in 2nd half free throw percentage goes up when a team wins by about 5-10, which is typically the range of outcomes where the other team was fouling.</span>
+<span id="cb1-273"><a href="#cb1-273" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-274"><a href="#cb1-274" aria-hidden="true" tabindex="-1"></a>This doesn't explain the entire effect as even teams that lose tend to shoot better percentage wise for free throws in the second half. There's several possible explanations for this but my intuition was that as players got tired their free-throw percentages would decrease in the second half, which doesn't appear to be the case.</span>
+<span id="cb1-275"><a href="#cb1-275" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-278"><a href="#cb1-278" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb1-279"><a href="#cb1-279" aria-hidden="true" tabindex="-1"></a>ft_half_summary_wide <span class="sc">|&gt;</span> </span>
+<span id="cb1-280"><a href="#cb1-280" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ftp_second_vs_first =</span> ftp_second <span class="sc">-</span> ftp_first) <span class="sc">|&gt;</span> </span>
+<span id="cb1-281"><a href="#cb1-281" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(team_pt_diff) <span class="sc">|&gt;</span> </span>
+<span id="cb1-282"><a href="#cb1-282" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">avg_ftp_second_vs_first =</span> <span class="fu">mean</span>(ftp_second_vs_first), </span>
+<span id="cb1-283"><a href="#cb1-283" aria-hidden="true" tabindex="-1"></a>            <span class="at">games =</span> <span class="fu">n</span>() ) <span class="sc">|&gt;</span> </span>
+<span id="cb1-284"><a href="#cb1-284" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> team_pt_diff, <span class="at">y =</span> avg_ftp_second_vs_first) ) <span class="sc">+</span> </span>
+<span id="cb1-285"><a href="#cb1-285" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb1-286"><a href="#cb1-286" aria-hidden="true" tabindex="-1"></a>  <span class="co"># geom_smooth(aes(weight = games), se = FALSE) + </span></span>
+<span id="cb1-287"><a href="#cb1-287" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="sc">-</span><span class="dv">50</span>, <span class="dv">50</span>) <span class="sc">+</span> </span>
+<span id="cb1-288"><a href="#cb1-288" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb1-289"><a href="#cb1-289" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">'bottom'</span>) <span class="sc">+</span> </span>
+<span id="cb1-290"><a href="#cb1-290" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Avg. Diff in FT%"</span>) <span class="sc">+</span></span>
+<span id="cb1-291"><a href="#cb1-291" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Final Point Difference"</span>) <span class="sc">+</span></span>
+<span id="cb1-292"><a href="#cb1-292" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Second Half FT % Improvement by Pt. Difference"</span>)</span>
+<span id="cb1-293"><a href="#cb1-293" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-294"><a href="#cb1-294" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-295"><a href="#cb1-295" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-296"><a href="#cb1-296" aria-hidden="true" tabindex="-1"></a>To somewhat account for this second half effect I take that one percent in the second half off of a team's free throw percentage when assessing the difference between the first half and the second half via the z-score and p-value.</span>
+<span id="cb1-297"><a href="#cb1-297" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-300"><a href="#cb1-300" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb1-301"><a href="#cb1-301" aria-hidden="true" tabindex="-1"></a>statistical_test_first_second_df_for_plotting <span class="sc">|&gt;</span> </span>
+<span id="cb1-302"><a href="#cb1-302" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> ftp_diff)) <span class="sc">+</span></span>
+<span id="cb1-303"><a href="#cb1-303" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
+<span id="cb1-304"><a href="#cb1-304" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">'red'</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb1-305"><a href="#cb1-305" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb1-306"><a href="#cb1-306" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"% Difference (2nd - 1st)"</span>) <span class="sc">+</span></span>
+<span id="cb1-307"><a href="#cb1-307" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Visiting Team's Free Throw Percentage Change by Half"</span>,</span>
+<span id="cb1-308"><a href="#cb1-308" aria-hidden="true" tabindex="-1"></a>          <span class="at">subtitle =</span> <span class="st">"2015-16 to 2023-24 Seasons (Min 200 FTA in Each Half)"</span>)</span>
+<span id="cb1-309"><a href="#cb1-309" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-310"><a href="#cb1-310" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-313"><a href="#cb1-313" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb1-314"><a href="#cb1-314" aria-hidden="true" tabindex="-1"></a>ftp_half_diff_gt_table <span class="ot">&lt;-</span> statistical_test_first_second_df_for_plotting <span class="sc">%&gt;%</span> </span>
+<span id="cb1-315"><a href="#cb1-315" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(</span>
+<span id="cb1-316"><a href="#cb1-316" aria-hidden="true" tabindex="-1"></a>    <span class="at">home_team =</span> adj_home_team_name,</span>
+<span id="cb1-317"><a href="#cb1-317" aria-hidden="true" tabindex="-1"></a>    home_logo,</span>
+<span id="cb1-318"><a href="#cb1-318" aria-hidden="true" tabindex="-1"></a>    ftp_first,</span>
+<span id="cb1-319"><a href="#cb1-319" aria-hidden="true" tabindex="-1"></a>    ftp_second,</span>
+<span id="cb1-320"><a href="#cb1-320" aria-hidden="true" tabindex="-1"></a>    ftp_diff,</span>
+<span id="cb1-321"><a href="#cb1-321" aria-hidden="true" tabindex="-1"></a>    ftp_diff_pvalue</span>
+<span id="cb1-322"><a href="#cb1-322" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-323"><a href="#cb1-323" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb1-324"><a href="#cb1-324" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
+<span id="cb1-325"><a href="#cb1-325" aria-hidden="true" tabindex="-1"></a>    <span class="at">home_team =</span> <span class="st">"Home Court"</span>,</span>
+<span id="cb1-326"><a href="#cb1-326" aria-hidden="true" tabindex="-1"></a>    <span class="at">home_logo =</span> <span class="st">""</span>,</span>
+<span id="cb1-327"><a href="#cb1-327" aria-hidden="true" tabindex="-1"></a>    <span class="at">ftp_first =</span> <span class="st">"1st"</span>,</span>
+<span id="cb1-328"><a href="#cb1-328" aria-hidden="true" tabindex="-1"></a>    <span class="at">ftp_second =</span> <span class="st">"2nd"</span>,</span>
+<span id="cb1-329"><a href="#cb1-329" aria-hidden="true" tabindex="-1"></a>    <span class="at">ftp_diff =</span> <span class="st">"Diff"</span>,</span>
+<span id="cb1-330"><a href="#cb1-330" aria-hidden="true" tabindex="-1"></a>    <span class="at">ftp_diff_pvalue =</span> <span class="st">"PValue"</span></span>
+<span id="cb1-331"><a href="#cb1-331" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb1-332"><a href="#cb1-332" aria-hidden="true" tabindex="-1"></a>  <span class="co"># # text_transform(</span></span>
+<span id="cb1-333"><a href="#cb1-333" aria-hidden="true" tabindex="-1"></a>  <span class="co"># #   locations = cells_body(c("fbref_logo_url")),</span></span>
+<span id="cb1-334"><a href="#cb1-334" aria-hidden="true" tabindex="-1"></a>  <span class="co"># #   fn = function(x) {</span></span>
+<span id="cb1-335"><a href="#cb1-335" aria-hidden="true" tabindex="-1"></a>  <span class="co"># #     map(x, ~ web_image(.x))</span></span>
+<span id="cb1-336"><a href="#cb1-336" aria-hidden="true" tabindex="-1"></a>  <span class="co"># #   }</span></span>
+<span id="cb1-337"><a href="#cb1-337" aria-hidden="true" tabindex="-1"></a>  <span class="co"># # ) %&gt;% </span></span>
+<span id="cb1-338"><a href="#cb1-338" aria-hidden="true" tabindex="-1"></a>  <span class="co"># tab_style(</span></span>
+<span id="cb1-339"><a href="#cb1-339" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   style = cell_text(weight = "bold"),</span></span>
+<span id="cb1-340"><a href="#cb1-340" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   locations = cells_column_labels()</span></span>
+<span id="cb1-341"><a href="#cb1-341" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ) %&gt;%</span></span>
+<span id="cb1-342"><a href="#cb1-342" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_align</span>(</span>
+<span id="cb1-343"><a href="#cb1-343" aria-hidden="true" tabindex="-1"></a>    <span class="at">align =</span> <span class="fu">c</span>(<span class="st">"center"</span>),</span>
+<span id="cb1-344"><a href="#cb1-344" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">everything</span>()</span>
+<span id="cb1-345"><a href="#cb1-345" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb1-346"><a href="#cb1-346" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_percent</span>(<span class="at">columns =</span> ftp_first<span class="sc">:</span>ftp_diff,</span>
+<span id="cb1-347"><a href="#cb1-347" aria-hidden="true" tabindex="-1"></a>             <span class="at">decimals =</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-348"><a href="#cb1-348" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_number</span>(<span class="at">columns =</span> ftp_diff_pvalue,</span>
+<span id="cb1-349"><a href="#cb1-349" aria-hidden="true" tabindex="-1"></a>             <span class="at">decimals =</span> <span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-350"><a href="#cb1-350" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt_img_rows</span>(<span class="at">columns =</span> home_logo, <span class="at">img_source =</span> <span class="st">"web"</span>, <span class="at">height =</span> <span class="dv">30</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-351"><a href="#cb1-351" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(</span>
+<span id="cb1-352"><a href="#cb1-352" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Visiting Free Throw % by Half"</span>,</span>
+<span id="cb1-353"><a href="#cb1-353" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"2015-16 to 2023-24 Seasons"</span></span>
+<span id="cb1-354"><a href="#cb1-354" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb1-355"><a href="#cb1-355" aria-hidden="true" tabindex="-1"></a>  <span class="co"># gt_theme_538() %&gt;%</span></span>
+<span id="cb1-356"><a href="#cb1-356" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data_color</span>(</span>
+<span id="cb1-357"><a href="#cb1-357" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">c</span>(ftp_first, ftp_second, ftp_diff, ftp_diff_pvalue),</span>
+<span id="cb1-358"><a href="#cb1-358" aria-hidden="true" tabindex="-1"></a>    <span class="at">colors =</span> scales<span class="sc">::</span><span class="fu">col_numeric</span>(</span>
+<span id="cb1-359"><a href="#cb1-359" aria-hidden="true" tabindex="-1"></a>      <span class="at">palette =</span> <span class="fu">viridis</span>(<span class="dv">10</span>),</span>
+<span id="cb1-360"><a href="#cb1-360" aria-hidden="true" tabindex="-1"></a>      <span class="at">domain =</span> <span class="cn">NULL</span>)  <span class="co"># You can adjust the number of colors as needed</span></span>
+<span id="cb1-361"><a href="#cb1-361" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb1-362"><a href="#cb1-362" aria-hidden="true" tabindex="-1"></a>  <span class="fu">opt_interactive</span>()</span>
+<span id="cb1-363"><a href="#cb1-363" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-364"><a href="#cb1-364" aria-hidden="true" tabindex="-1"></a>ftp_half_diff_gt_table</span>
+<span id="cb1-365"><a href="#cb1-365" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-366"><a href="#cb1-366" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-367"><a href="#cb1-367" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-368"><a href="#cb1-368" aria-hidden="true" tabindex="-1"></a>There are some familiar names, including our famous "Curtain of Distraction" team, Arizona State among the biggest drop offs from the first half to the second, and with the additional years of data, the result is statistically significant.</span>
+<span id="cb1-369"><a href="#cb1-369" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-370"><a href="#cb1-370" aria-hidden="true" tabindex="-1"></a>BYU, another team that is increasingly known for its wild student section behind the basket in the second half, is also high on this list. While I don't have data on all the teams and where their student sections are I did quick research on where many of the teams in the top 10 of this list have their student sections in the second half.</span>
+<span id="cb1-371"><a href="#cb1-371" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-372"><a href="#cb1-372" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Valparaiso: *behind visiting basket*</span>
+<span id="cb1-373"><a href="#cb1-373" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Lamar: I couldn't find</span>
+<span id="cb1-374"><a href="#cb1-374" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Milwaukee: *behind visiting basket*</span>
+<span id="cb1-375"><a href="#cb1-375" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Arizona State: *behind visiting basket*</span>
+<span id="cb1-376"><a href="#cb1-376" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>BYU: *behind visiting basket*</span>
+<span id="cb1-377"><a href="#cb1-377" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Middle Tennessee State: *behind visiting basket*</span>
+<span id="cb1-378"><a href="#cb1-378" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-379"><a href="#cb1-379" aria-hidden="true" tabindex="-1"></a><span class="al">![BYU's Student Section Attempting to Distract Opposing Shooter](images/byu_student_section.png)</span></span>
+<span id="cb1-380"><a href="#cb1-380" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-381"><a href="#cb1-381" aria-hidden="true" tabindex="-1"></a>Some not surprising names appear near the top of this list. Although, it is possible that with over 350 Division I basketball teams, that some by shear randomness, some will have a significant first half to second half effect on opposing free throw shooters.</span>
+<span id="cb1-382"><a href="#cb1-382" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-383"><a href="#cb1-383" aria-hidden="true" tabindex="-1"></a>There are some corrections for significance testing for multiple tests that one can do such as the Bonferroni correction which would lower a significance threshold by dividing by the number of tests, so if we had a $\alpha = 0.05$ threshold the new one would be $\frac{\alpha}{n}$ where $n=355$ teams in our dataset. Bonferroni is known for being overly conservative, and this surely would be an extremely high standard.</span>
+<span id="cb1-384"><a href="#cb1-384" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-385"><a href="#cb1-385" aria-hidden="true" tabindex="-1"></a>I used the Benjamini–Hochberg procedure to determine if there are some values for which one should still reject the null hypothesis that second half free throw percentage shouldn't decrease from the first for a team. (Remember that I adjusted for the fact that on average second half free throw percentages increase by 1 percent that of the first half.) Unfortunately there are also no teams that clear this multiple testing threshold.</span>
+<span id="cb1-386"><a href="#cb1-386" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-389"><a href="#cb1-389" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb1-390"><a href="#cb1-390" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb1-391"><a href="#cb1-391" aria-hidden="true" tabindex="-1"></a>statistical_test_first_second_df_for_plotting <span class="sc">|&gt;</span> </span>
+<span id="cb1-392"><a href="#cb1-392" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(ftp_diff_z) <span class="sc">|&gt;</span> </span>
+<span id="cb1-393"><a href="#cb1-393" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pvalue_rank =</span> <span class="fu">min_rank</span>(ftp_diff_z), </span>
+<span id="cb1-394"><a href="#cb1-394" aria-hidden="true" tabindex="-1"></a>         <span class="at">n_teams =</span> <span class="fu">n</span>(),</span>
+<span id="cb1-395"><a href="#cb1-395" aria-hidden="true" tabindex="-1"></a>         <span class="at">bh_cutoff =</span> (pvalue_rank <span class="sc">/</span> n_teams) <span class="sc">*</span> <span class="fl">0.05</span></span>
+<span id="cb1-396"><a href="#cb1-396" aria-hidden="true" tabindex="-1"></a>         )</span>
+<span id="cb1-397"><a href="#cb1-397" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-398"><a href="#cb1-398" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-399"><a href="#cb1-399" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-400"><a href="#cb1-400" aria-hidden="true" tabindex="-1"></a>This brought me to an interesting conundrum in this analysis. I allowed every team in the nation in my sample. If I restricted it to ones I had specific hypotheses about them this would be stronger evidence. Arizona State was one of those teams. In isolation its effect is explained beyond randomness alone. I went to BYU and was curious about their fans and certainly, in isolation, their student section seems to impact free throw shots from the visiting team.</span>
 <span id="cb1-401"><a href="#cb1-401" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-402"><a href="#cb1-402" aria-hidden="true" tabindex="-1"></a>This brought me to an interesting conundrum in this analysis. I allowed every team in the nation in my sample. If I restricted it to ones I had specific hypotheses about them this would be stronger evidence. Arizona State was one of those teams. In isolation its effect is explained beyond randomness alone. I went to BYU and was curious about their fans and certainly, in isolation, their student section seems to impact free throw shots from the visiting team.</span>
+<span id="cb1-402"><a href="#cb1-402" aria-hidden="true" tabindex="-1"></a>This simple analysis is not accounting for specific free throw shooters ability and game situation which muddies the results. In my personal opinion, there is a mechanism, such as the students displaying distractions behind the basket, that explains why certain teams may have an effect. To me, that enhances the evidence.</span>
 <span id="cb1-403"><a href="#cb1-403" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-404"><a href="#cb1-404" aria-hidden="true" tabindex="-1"></a>This simple analysis is not accounting for specific free throw shooters ability and game situation which muddies the results. In my personal opinion, there is a mechanism, such as the students displaying distractions behind the basket, that explains why certain teams may have an effect. To me, that enhances the evidence. </span>
+<span id="cb1-404"><a href="#cb1-404" aria-hidden="true" tabindex="-1"></a>If I were smart, I wouldn't be testing this for every team in the country, but only for teams that I know have their students behind the basket trying to distract the shooter. That is a minority of the 350+ schools in the nation. Most stadiums don't have that atmosphere.</span>
 <span id="cb1-405"><a href="#cb1-405" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-406"><a href="#cb1-406" aria-hidden="true" tabindex="-1"></a>If I were smart, I wouldn't be testing this for every team in the country, but only for teams that I know have their students behind the basket trying to distract the shooter. That is a minority of the 350+ schools in the nation. Most stadiums don't have that atmosphere.</span>
+<span id="cb1-406"><a href="#cb1-406" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- I will plot the observed z-scores compared to the expected z-scores based on the quantiles of our data. This is referred to as a QQ Plot. If our z-scores are purely due to chance a perfect line on $y=x$ will appear. --&gt;</span></span>
 <span id="cb1-407"><a href="#cb1-407" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-408"><a href="#cb1-408" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- I will plot the observed z-scores compared to the expected z-scores based on the quantiles of our data. This is referred to as a QQ Plot. If our z-scores are purely due to chance a perfect line on $y=x$ will appear. --&gt;</span></span>
-<span id="cb1-409"><a href="#cb1-409" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-412"><a href="#cb1-412" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb1-413"><a href="#cb1-413" aria-hidden="true" tabindex="-1"></a>qq_plot_data <span class="ot">&lt;-</span> statistical_test_first_second_df_for_plotting <span class="sc">|&gt;</span> </span>
-<span id="cb1-414"><a href="#cb1-414" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(ftp_diff_z,</span>
-<span id="cb1-415"><a href="#cb1-415" aria-hidden="true" tabindex="-1"></a>         ftp_diff_pvalue) <span class="sc">|&gt;</span> </span>
-<span id="cb1-416"><a href="#cb1-416" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(ftp_diff_z) <span class="sc">|&gt;</span> </span>
-<span id="cb1-417"><a href="#cb1-417" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">normal_quantile_z =</span> <span class="fu">qnorm</span>(<span class="fu">row_number</span>()<span class="sc">/</span><span class="fu">n</span>()))</span>
+<span id="cb1-410"><a href="#cb1-410" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb1-411"><a href="#cb1-411" aria-hidden="true" tabindex="-1"></a>qq_plot_data <span class="ot">&lt;-</span> statistical_test_first_second_df_for_plotting <span class="sc">|&gt;</span> </span>
+<span id="cb1-412"><a href="#cb1-412" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(ftp_diff_z,</span>
+<span id="cb1-413"><a href="#cb1-413" aria-hidden="true" tabindex="-1"></a>         ftp_diff_pvalue) <span class="sc">|&gt;</span> </span>
+<span id="cb1-414"><a href="#cb1-414" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(ftp_diff_z) <span class="sc">|&gt;</span> </span>
+<span id="cb1-415"><a href="#cb1-415" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">normal_quantile_z =</span> <span class="fu">qnorm</span>(<span class="fu">row_number</span>()<span class="sc">/</span><span class="fu">n</span>()))</span>
+<span id="cb1-416"><a href="#cb1-416" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-417"><a href="#cb1-417" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb1-418"><a href="#cb1-418" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-419"><a href="#cb1-419" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb1-420"><a href="#cb1-420" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-423"><a href="#cb1-423" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb1-424"><a href="#cb1-424" aria-hidden="true" tabindex="-1"></a>qq_plot <span class="ot">&lt;-</span> qq_plot_data <span class="sc">|&gt;</span> </span>
-<span id="cb1-425"><a href="#cb1-425" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> ftp_diff_z,</span>
-<span id="cb1-426"><a href="#cb1-426" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> normal_quantile_z)) <span class="sc">+</span> </span>
-<span id="cb1-427"><a href="#cb1-427" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb1-428"><a href="#cb1-428" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>() <span class="sc">+</span> </span>
-<span id="cb1-429"><a href="#cb1-429" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Observed Z-values"</span>) <span class="sc">+</span></span>
-<span id="cb1-430"><a href="#cb1-430" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Theoretical Z-values"</span>) <span class="sc">+</span></span>
-<span id="cb1-431"><a href="#cb1-431" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb1-432"><a href="#cb1-432" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="sc">-</span><span class="fl">3.3</span>,<span class="fl">3.3</span>) <span class="sc">+</span></span>
-<span id="cb1-433"><a href="#cb1-433" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="sc">-</span><span class="fl">3.3</span>,<span class="fl">3.3</span>) <span class="sc">+</span></span>
-<span id="cb1-434"><a href="#cb1-434" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb1-435"><a href="#cb1-435" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"QQ Plot"</span>)</span>
-<span id="cb1-436"><a href="#cb1-436" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-437"><a href="#cb1-437" aria-hidden="true" tabindex="-1"></a><span class="co"># qq_plot</span></span>
-<span id="cb1-438"><a href="#cb1-438" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-421"><a href="#cb1-421" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb1-422"><a href="#cb1-422" aria-hidden="true" tabindex="-1"></a>qq_plot <span class="ot">&lt;-</span> qq_plot_data <span class="sc">|&gt;</span> </span>
+<span id="cb1-423"><a href="#cb1-423" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> ftp_diff_z,</span>
+<span id="cb1-424"><a href="#cb1-424" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> normal_quantile_z)) <span class="sc">+</span> </span>
+<span id="cb1-425"><a href="#cb1-425" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb1-426"><a href="#cb1-426" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>() <span class="sc">+</span> </span>
+<span id="cb1-427"><a href="#cb1-427" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Observed Z-values"</span>) <span class="sc">+</span></span>
+<span id="cb1-428"><a href="#cb1-428" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Theoretical Z-values"</span>) <span class="sc">+</span></span>
+<span id="cb1-429"><a href="#cb1-429" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb1-430"><a href="#cb1-430" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="sc">-</span><span class="fl">3.3</span>,<span class="fl">3.3</span>) <span class="sc">+</span></span>
+<span id="cb1-431"><a href="#cb1-431" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="sc">-</span><span class="fl">3.3</span>,<span class="fl">3.3</span>) <span class="sc">+</span></span>
+<span id="cb1-432"><a href="#cb1-432" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb1-433"><a href="#cb1-433" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"QQ Plot"</span>)</span>
+<span id="cb1-434"><a href="#cb1-434" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-435"><a href="#cb1-435" aria-hidden="true" tabindex="-1"></a><span class="co"># qq_plot</span></span>
+<span id="cb1-436"><a href="#cb1-436" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-437"><a href="#cb1-437" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-438"><a href="#cb1-438" aria-hidden="true" tabindex="-1"></a><span class="fu">## Entire Game Effect</span></span>
 <span id="cb1-439"><a href="#cb1-439" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-440"><a href="#cb1-440" aria-hidden="true" tabindex="-1"></a><span class="fu">## Entire Game Effect</span></span>
+<span id="cb1-440"><a href="#cb1-440" aria-hidden="true" tabindex="-1"></a>Everything so far has been to look at the first half vs the second half free throw percentage for each team. Some teams don't put their student sections behind the basket or don't have a set routine to distract shooters. In fact, college basketball has many teams in Division I with no stands behind the basket whatsoever.</span>
 <span id="cb1-441"><a href="#cb1-441" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-442"><a href="#cb1-442" aria-hidden="true" tabindex="-1"></a>Everything so far has been to look at the first half vs the second half free throw percentage for each team. Some teams don't put their student sections behind the basket or don't have a set routine to distract shooters. In fact, college basketball has many teams in Division I with no stands behind the basket whatsoever.</span>
+<span id="cb1-442"><a href="#cb1-442" aria-hidden="true" tabindex="-1"></a>A different way to analyze the affect a crowd has on free throw shooting would be to build a model that adjusted for the visiting team's true ability in free throw shooting percentage. This model would ignore half by half effects and simply look at each game as a whole.</span>
 <span id="cb1-443"><a href="#cb1-443" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-444"><a href="#cb1-444" aria-hidden="true" tabindex="-1"></a>A different way to analyze the affect a crowd has on free throw shooting would be to build a model that adjusted for the visiting team's true ability in free throw shooting percentage. This model would ignore half by half effects and simply look at each game as a whole.</span>
+<span id="cb1-444"><a href="#cb1-444" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Why Use Team Performance?</span></span>
 <span id="cb1-445"><a href="#cb1-445" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-446"><a href="#cb1-446" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Why Use Team Performance?</span></span>
+<span id="cb1-446"><a href="#cb1-446" aria-hidden="true" tabindex="-1"></a>Free throws should follow a Poisson-Binomial process. While each shot is an independent event, the probability of success should vary because each player has a different shooting ability. Player shooting samples sizes are too small for game by game analysis, so I stuck to using a team's free throw shooting percentage on a game to game basis. I used the difference of the visiting team's free throw shooting percentage in that game to its free throw shooting percentage in home games that season.</span>
 <span id="cb1-447"><a href="#cb1-447" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-448"><a href="#cb1-448" aria-hidden="true" tabindex="-1"></a>Free throws should follow a Poisson-Binomial process. While each shot is an independent event, the probability of success should vary because each player has a different shooting ability. Player shooting samples sizes are too small for game by game analysis, so I stuck to using a team's free throw shooting percentage on a game to game basis. I used the difference of the visiting team's free throw shooting percentage in that game to its  free throw shooting percentage in home games that season.</span>
+<span id="cb1-448"><a href="#cb1-448" aria-hidden="true" tabindex="-1"></a>Others have pointed out that it is not clear whether a better comparison for effectiveness of a crowd would be to compare free throw percentage of the visiting team's other *road* games or to compare them to their *home* games.</span>
 <span id="cb1-449"><a href="#cb1-449" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-450"><a href="#cb1-450" aria-hidden="true" tabindex="-1"></a>Others have pointed out that it is not clear whether a better comparison for effectiveness of a crowd would be to compare free throw percentage of the visiting team's other *road* games or to compare them to their *home* games.</span>
+<span id="cb1-450"><a href="#cb1-450" aria-hidden="true" tabindex="-1"></a>I chose home games. I did this because each team's home games are in the same location each time, reducing the effect that a unique road schedule may have on teams in certain conferences more than others. One example would be teams that have to, on average, travel further or to higher elevations in their conference. My <span class="co">[</span><span class="ot">previous work</span><span class="co">](https://www.espn.com/blog/statsinfo/post/_/id/130346/bracket-tips-from-the-basketball-power-index)</span> on BPI and SOR at ESPN consistently showed elevation to have an effect on team efficiency in college basketball and <span class="co">[</span><span class="ot">this paper</span><span class="co">](https://arxiv.org/pdf/1701.05976)</span> from Lopez, Matthews, &amp; Baumer suggested market lines adjust for it in professional sports.</span>
 <span id="cb1-451"><a href="#cb1-451" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-452"><a href="#cb1-452" aria-hidden="true" tabindex="-1"></a>I chose home games. I did this because each team's home games are in the same location each time, reducing the effect that a unique road schedule may have on teams in certain conferences more than others. One example would be teams that have to, on average, travel further or to higher elevations in their conference. My <span class="co">[</span><span class="ot">previous work</span><span class="co">](https://www.espn.com/blog/statsinfo/post/_/id/130346/bracket-tips-from-the-basketball-power-index)</span> on BPI and SOR at ESPN consistently showed elevation to have an effect on team efficiency in college basketball and <span class="co">[</span><span class="ot">this paper</span><span class="co">](https://arxiv.org/pdf/1701.05976)</span> from Lopez, Matthews, &amp; Baumer suggested market lines adjust for it in professional sports.</span>
+<span id="cb1-452"><a href="#cb1-452" aria-hidden="true" tabindex="-1"></a>For the purposes of assessing which fan bases may have an effect, I grouped all season's together for the home team when assessing a fan base, but for the individual team shooting performances I treated each season separately.</span>
 <span id="cb1-453"><a href="#cb1-453" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-454"><a href="#cb1-454" aria-hidden="true" tabindex="-1"></a>For the purposes of assessing which fan bases may have an effect, I grouped all season's together for the home team when assessing a fan base, but for the individual team shooting performances I treated each season separately.</span>
+<span id="cb1-454"><a href="#cb1-454" aria-hidden="true" tabindex="-1"></a>My model can be defined as</span>
 <span id="cb1-455"><a href="#cb1-455" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-456"><a href="#cb1-456" aria-hidden="true" tabindex="-1"></a>My model can be defined as</span>
-<span id="cb1-457"><a href="#cb1-457" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-458"><a href="#cb1-458" aria-hidden="true" tabindex="-1"></a><span class="in">```{=tex}</span></span>
-<span id="cb1-459"><a href="#cb1-459" aria-hidden="true" tabindex="-1"></a><span class="in">\begin{align}</span></span>
-<span id="cb1-460"><a href="#cb1-460" aria-hidden="true" tabindex="-1"></a><span class="in">y_i &amp;= \beta_0 + \gamma_j + g(x_{1,i})\boldsymbol{\beta} + \epsilon\\</span></span>
-<span id="cb1-461"><a href="#cb1-461" aria-hidden="true" tabindex="-1"></a><span class="in">\gamma_j &amp;\sim Laplace(0,1)\\</span></span>
-<span id="cb1-462"><a href="#cb1-462" aria-hidden="true" tabindex="-1"></a><span class="in">\epsilon &amp; \sim N(0,\sigma^2)</span></span>
-<span id="cb1-463"><a href="#cb1-463" aria-hidden="true" tabindex="-1"></a><span class="in">\end{align}</span></span>
-<span id="cb1-464"><a href="#cb1-464" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb1-465"><a href="#cb1-465" aria-hidden="true" tabindex="-1"></a>where $y_i$ is the difference the visiting team's free throw percentage in game $i$ and its free throw percentage in their home games that season. $\gamma_j$ is the effect of the home team $j$'s home crowd/venue on the free throw percentage for the visiting team. $g(x_i)$ is a nonlinear natural spline on the absolute value of the final score margin. This was motivated by wanting to adjust for free throw differences in games that are close at the end compared to others.</span>
+<span id="cb1-456"><a href="#cb1-456" aria-hidden="true" tabindex="-1"></a><span class="in">```{=tex}</span></span>
+<span id="cb1-457"><a href="#cb1-457" aria-hidden="true" tabindex="-1"></a><span class="in">\begin{align}</span></span>
+<span id="cb1-458"><a href="#cb1-458" aria-hidden="true" tabindex="-1"></a><span class="in">y_i &amp;= \beta_0 + \gamma_j + g(x_{1,i})\boldsymbol{\beta} + \epsilon\\</span></span>
+<span id="cb1-459"><a href="#cb1-459" aria-hidden="true" tabindex="-1"></a><span class="in">\gamma_j &amp;\sim Laplace(0,1)\\</span></span>
+<span id="cb1-460"><a href="#cb1-460" aria-hidden="true" tabindex="-1"></a><span class="in">\epsilon &amp; \sim N(0,\sigma^2)</span></span>
+<span id="cb1-461"><a href="#cb1-461" aria-hidden="true" tabindex="-1"></a><span class="in">\end{align}</span></span>
+<span id="cb1-462"><a href="#cb1-462" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-463"><a href="#cb1-463" aria-hidden="true" tabindex="-1"></a>where $y_i$ is the difference the visiting team's free throw percentage in game $i$ and its free throw percentage in their home games that season. $\gamma_j$ is the effect of the home team $j$'s home crowd/venue on the free throw percentage for the visiting team. $g(x_i)$ is a nonlinear natural spline on the absolute value of the final score margin. This was motivated by wanting to adjust for free throw differences in games that are close at the end compared to others.</span>
+<span id="cb1-464"><a href="#cb1-464" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-465"><a href="#cb1-465" aria-hidden="true" tabindex="-1"></a>The home venue effect is given a Laplace prior distribution centered around 0. The Laplace prior is equivalent to LASSO regression and shrinks estimates towards 0. I also weighted the observations by the total number of free throw attempts in the game.</span>
 <span id="cb1-466"><a href="#cb1-466" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-467"><a href="#cb1-467" aria-hidden="true" tabindex="-1"></a>The home venue effect is given a Laplace prior distribution centered around 0. The Laplace prior is equivalent to LASSO regression and shrinks estimates towards 0. I also weighted the observations by the total number of free throw attempts in the game.</span>
+<span id="cb1-467"><a href="#cb1-467" aria-hidden="true" tabindex="-1"></a>This method can't differentiate between crowd effects and the effect of long travel or high elevation since that data wasn't as readily available. The model should be able to account for differences in visiting teams free throw ability, overall difficulty of shooting free throws on the road, the effect of close games, and the empirical average impact of the venue played at.</span>
 <span id="cb1-468"><a href="#cb1-468" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-469"><a href="#cb1-469" aria-hidden="true" tabindex="-1"></a>This method can't differentiate between crowd effects and the effect of long travel or high elevation since that data wasn't as readily available. The model should be able to account for differences in visiting teams free throw ability, overall difficulty of shooting free throws on the road, the effect of close games, and the empirical average impact of the venue played at.</span>
+<span id="cb1-469"><a href="#cb1-469" aria-hidden="true" tabindex="-1"></a><span class="fu"># Results</span></span>
 <span id="cb1-470"><a href="#cb1-470" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-471"><a href="#cb1-471" aria-hidden="true" tabindex="-1"></a><span class="fu"># Results</span></span>
-<span id="cb1-472"><a href="#cb1-472" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-475"><a href="#cb1-475" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb1-476"><a href="#cb1-476" aria-hidden="true" tabindex="-1"></a><span class="do">### For simpler method: calculate home team ft% for each season</span></span>
-<span id="cb1-477"><a href="#cb1-477" aria-hidden="true" tabindex="-1"></a><span class="do">## model only away games the difference in ft% vs home</span></span>
-<span id="cb1-478"><a href="#cb1-478" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-479"><a href="#cb1-479" aria-hidden="true" tabindex="-1"></a>ft_half_summary_wide <span class="ot">&lt;-</span> ft_half_summary_wide <span class="sc">|&gt;</span> </span>
-<span id="cb1-480"><a href="#cb1-480" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fta_game =</span> fta_second <span class="sc">+</span> fta_first,</span>
-<span id="cb1-481"><a href="#cb1-481" aria-hidden="true" tabindex="-1"></a>         <span class="at">ftm_game =</span> ftm_second <span class="sc">+</span> ftm_first)</span>
-<span id="cb1-482"><a href="#cb1-482" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-483"><a href="#cb1-483" aria-hidden="true" tabindex="-1"></a><span class="co">#ft percentage in non-away games</span></span>
-<span id="cb1-484"><a href="#cb1-484" aria-hidden="true" tabindex="-1"></a>team_season_home_ft_pct <span class="ot">&lt;-</span> ft_half_summary_wide <span class="sc">|&gt;</span> </span>
-<span id="cb1-485"><a href="#cb1-485" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ft_visiting_team <span class="sc">==</span> <span class="dv">0</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb1-486"><a href="#cb1-486" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(adj_ft_team) <span class="sc">|&gt;</span> </span>
-<span id="cb1-487"><a href="#cb1-487" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">tot_fta =</span> <span class="fu">sum</span>(fta_game),</span>
-<span id="cb1-488"><a href="#cb1-488" aria-hidden="true" tabindex="-1"></a>            <span class="at">tot_ftm =</span> <span class="fu">sum</span>(ftm_game),</span>
-<span id="cb1-489"><a href="#cb1-489" aria-hidden="true" tabindex="-1"></a>            <span class="at">games =</span> <span class="fu">n</span>(),</span>
-<span id="cb1-490"><a href="#cb1-490" aria-hidden="true" tabindex="-1"></a>            <span class="at">avg_fta =</span> <span class="fu">mean</span>(fta_game),</span>
-<span id="cb1-491"><a href="#cb1-491" aria-hidden="true" tabindex="-1"></a>            <span class="at">avg_ftm =</span> <span class="fu">mean</span>(ftm_game),</span>
-<span id="cb1-492"><a href="#cb1-492" aria-hidden="true" tabindex="-1"></a>            <span class="at">avg_ftp =</span> <span class="fu">sum</span>(ftm_game) <span class="sc">/</span> <span class="fu">sum</span>(fta_game)</span>
-<span id="cb1-493"><a href="#cb1-493" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb1-494"><a href="#cb1-494" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-495"><a href="#cb1-495" aria-hidden="true" tabindex="-1"></a>away_team_game_summary <span class="ot">&lt;-</span> ft_half_summary_wide <span class="sc">|&gt;</span> </span>
-<span id="cb1-496"><a href="#cb1-496" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ft_visiting_team <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb1-497"><a href="#cb1-497" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(team_season_home_ft_pct <span class="sc">|&gt;</span> </span>
-<span id="cb1-498"><a href="#cb1-498" aria-hidden="true" tabindex="-1"></a>              <span class="fu">rename_at</span>(</span>
-<span id="cb1-499"><a href="#cb1-499" aria-hidden="true" tabindex="-1"></a>                <span class="fu">vars</span>(tot_fta<span class="sc">:</span><span class="fu">last_col</span>()), </span>
-<span id="cb1-500"><a href="#cb1-500" aria-hidden="true" tabindex="-1"></a>                <span class="sc">~</span><span class="fu">paste0</span>(<span class="st">"home_court_"</span>, .x)</span>
-<span id="cb1-501"><a href="#cb1-501" aria-hidden="true" tabindex="-1"></a>                ),</span>
-<span id="cb1-502"><a href="#cb1-502" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"adj_ft_team"</span>)</span>
-<span id="cb1-503"><a href="#cb1-503" aria-hidden="true" tabindex="-1"></a>            ) <span class="sc">|&gt;</span> </span>
-<span id="cb1-504"><a href="#cb1-504" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ftp_game =</span> ftm_game <span class="sc">/</span> fta_game,</span>
-<span id="cb1-505"><a href="#cb1-505" aria-hidden="true" tabindex="-1"></a>         <span class="at">diff_ftp_from_home =</span> ftp_game <span class="sc">-</span> home_court_avg_ftp)</span>
-<span id="cb1-506"><a href="#cb1-506" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-507"><a href="#cb1-507" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(run_model){</span>
-<span id="cb1-508"><a href="#cb1-508" aria-hidden="true" tabindex="-1"></a>  diff_ftp_model <span class="ot">&lt;-</span> <span class="fu">stan_lmer</span>(diff_ftp_from_home <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> adj_home_team_name) <span class="sc">+</span> <span class="fu">ns</span>(<span class="fu">abs</span>(team_pt_diff), <span class="at">df =</span> <span class="dv">3</span>),<span class="co">#the home court team </span></span>
-<span id="cb1-509"><a href="#cb1-509" aria-hidden="true" tabindex="-1"></a>                                <span class="at">data =</span> away_team_game_summary,</span>
-<span id="cb1-510"><a href="#cb1-510" aria-hidden="true" tabindex="-1"></a>                                <span class="at">prior =</span> <span class="fu">lasso</span>(),</span>
-<span id="cb1-511"><a href="#cb1-511" aria-hidden="true" tabindex="-1"></a>                                <span class="at">weights =</span> fta_game,</span>
-<span id="cb1-512"><a href="#cb1-512" aria-hidden="true" tabindex="-1"></a>                                <span class="at">iter =</span> <span class="dv">800</span>,</span>
-<span id="cb1-513"><a href="#cb1-513" aria-hidden="true" tabindex="-1"></a>                                <span class="at">chains =</span> <span class="dv">4</span>)</span>
-<span id="cb1-514"><a href="#cb1-514" aria-hidden="true" tabindex="-1"></a>  diff_ftp_model <span class="sc">|&gt;</span> <span class="fu">write_rds</span>(<span class="st">"diff_ftp_model.rds"</span>)</span>
-<span id="cb1-515"><a href="#cb1-515" aria-hidden="true" tabindex="-1"></a>}<span class="cf">else</span>{</span>
-<span id="cb1-516"><a href="#cb1-516" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-517"><a href="#cb1-517" aria-hidden="true" tabindex="-1"></a>  diff_ftp_model <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"diff_ftp_model.rds"</span>)</span>
+<span id="cb1-473"><a href="#cb1-473" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb1-474"><a href="#cb1-474" aria-hidden="true" tabindex="-1"></a><span class="do">### For simpler method: calculate home team ft% for each season</span></span>
+<span id="cb1-475"><a href="#cb1-475" aria-hidden="true" tabindex="-1"></a><span class="do">## model only away games the difference in ft% vs home</span></span>
+<span id="cb1-476"><a href="#cb1-476" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-477"><a href="#cb1-477" aria-hidden="true" tabindex="-1"></a>ft_half_summary_wide <span class="ot">&lt;-</span> ft_half_summary_wide <span class="sc">|&gt;</span> </span>
+<span id="cb1-478"><a href="#cb1-478" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fta_game =</span> fta_second <span class="sc">+</span> fta_first,</span>
+<span id="cb1-479"><a href="#cb1-479" aria-hidden="true" tabindex="-1"></a>         <span class="at">ftm_game =</span> ftm_second <span class="sc">+</span> ftm_first)</span>
+<span id="cb1-480"><a href="#cb1-480" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-481"><a href="#cb1-481" aria-hidden="true" tabindex="-1"></a><span class="co">#ft percentage in non-away games</span></span>
+<span id="cb1-482"><a href="#cb1-482" aria-hidden="true" tabindex="-1"></a>team_season_home_ft_pct <span class="ot">&lt;-</span> ft_half_summary_wide <span class="sc">|&gt;</span> </span>
+<span id="cb1-483"><a href="#cb1-483" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ft_visiting_team <span class="sc">==</span> <span class="dv">0</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-484"><a href="#cb1-484" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(adj_ft_team) <span class="sc">|&gt;</span> </span>
+<span id="cb1-485"><a href="#cb1-485" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">tot_fta =</span> <span class="fu">sum</span>(fta_game),</span>
+<span id="cb1-486"><a href="#cb1-486" aria-hidden="true" tabindex="-1"></a>            <span class="at">tot_ftm =</span> <span class="fu">sum</span>(ftm_game),</span>
+<span id="cb1-487"><a href="#cb1-487" aria-hidden="true" tabindex="-1"></a>            <span class="at">games =</span> <span class="fu">n</span>(),</span>
+<span id="cb1-488"><a href="#cb1-488" aria-hidden="true" tabindex="-1"></a>            <span class="at">avg_fta =</span> <span class="fu">mean</span>(fta_game),</span>
+<span id="cb1-489"><a href="#cb1-489" aria-hidden="true" tabindex="-1"></a>            <span class="at">avg_ftm =</span> <span class="fu">mean</span>(ftm_game),</span>
+<span id="cb1-490"><a href="#cb1-490" aria-hidden="true" tabindex="-1"></a>            <span class="at">avg_ftp =</span> <span class="fu">sum</span>(ftm_game) <span class="sc">/</span> <span class="fu">sum</span>(fta_game)</span>
+<span id="cb1-491"><a href="#cb1-491" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1-492"><a href="#cb1-492" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-493"><a href="#cb1-493" aria-hidden="true" tabindex="-1"></a>away_team_game_summary <span class="ot">&lt;-</span> ft_half_summary_wide <span class="sc">|&gt;</span> </span>
+<span id="cb1-494"><a href="#cb1-494" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ft_visiting_team <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-495"><a href="#cb1-495" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(team_season_home_ft_pct <span class="sc">|&gt;</span> </span>
+<span id="cb1-496"><a href="#cb1-496" aria-hidden="true" tabindex="-1"></a>              <span class="fu">rename_at</span>(</span>
+<span id="cb1-497"><a href="#cb1-497" aria-hidden="true" tabindex="-1"></a>                <span class="fu">vars</span>(tot_fta<span class="sc">:</span><span class="fu">last_col</span>()), </span>
+<span id="cb1-498"><a href="#cb1-498" aria-hidden="true" tabindex="-1"></a>                <span class="sc">~</span><span class="fu">paste0</span>(<span class="st">"home_court_"</span>, .x)</span>
+<span id="cb1-499"><a href="#cb1-499" aria-hidden="true" tabindex="-1"></a>                ),</span>
+<span id="cb1-500"><a href="#cb1-500" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"adj_ft_team"</span>)</span>
+<span id="cb1-501"><a href="#cb1-501" aria-hidden="true" tabindex="-1"></a>            ) <span class="sc">|&gt;</span> </span>
+<span id="cb1-502"><a href="#cb1-502" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ftp_game =</span> ftm_game <span class="sc">/</span> fta_game,</span>
+<span id="cb1-503"><a href="#cb1-503" aria-hidden="true" tabindex="-1"></a>         <span class="at">diff_ftp_from_home =</span> ftp_game <span class="sc">-</span> home_court_avg_ftp)</span>
+<span id="cb1-504"><a href="#cb1-504" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-505"><a href="#cb1-505" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(run_model){</span>
+<span id="cb1-506"><a href="#cb1-506" aria-hidden="true" tabindex="-1"></a>  diff_ftp_model <span class="ot">&lt;-</span> <span class="fu">stan_lmer</span>(diff_ftp_from_home <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> adj_home_team_name) <span class="sc">+</span> <span class="fu">ns</span>(<span class="fu">abs</span>(team_pt_diff), <span class="at">df =</span> <span class="dv">3</span>),<span class="co">#the home court team </span></span>
+<span id="cb1-507"><a href="#cb1-507" aria-hidden="true" tabindex="-1"></a>                                <span class="at">data =</span> away_team_game_summary,</span>
+<span id="cb1-508"><a href="#cb1-508" aria-hidden="true" tabindex="-1"></a>                                <span class="at">prior =</span> <span class="fu">lasso</span>(),</span>
+<span id="cb1-509"><a href="#cb1-509" aria-hidden="true" tabindex="-1"></a>                                <span class="at">weights =</span> fta_game,</span>
+<span id="cb1-510"><a href="#cb1-510" aria-hidden="true" tabindex="-1"></a>                                <span class="at">iter =</span> <span class="dv">800</span>,</span>
+<span id="cb1-511"><a href="#cb1-511" aria-hidden="true" tabindex="-1"></a>                                <span class="at">chains =</span> <span class="dv">4</span>)</span>
+<span id="cb1-512"><a href="#cb1-512" aria-hidden="true" tabindex="-1"></a>  diff_ftp_model <span class="sc">|&gt;</span> <span class="fu">write_rds</span>(<span class="st">"diff_ftp_model.rds"</span>)</span>
+<span id="cb1-513"><a href="#cb1-513" aria-hidden="true" tabindex="-1"></a>}<span class="cf">else</span>{</span>
+<span id="cb1-514"><a href="#cb1-514" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-515"><a href="#cb1-515" aria-hidden="true" tabindex="-1"></a>  diff_ftp_model <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"diff_ftp_model.rds"</span>)</span>
+<span id="cb1-516"><a href="#cb1-516" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-517"><a href="#cb1-517" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb1-518"><a href="#cb1-518" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-519"><a href="#cb1-519" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-519"><a href="#cb1-519" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-520"><a href="#cb1-520" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-521"><a href="#cb1-521" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-522"><a href="#cb1-522" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-522"><a href="#cb1-522" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb1-523"><a href="#cb1-523" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-524"><a href="#cb1-524" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-524"><a href="#cb1-524" aria-hidden="true" tabindex="-1"></a>Using the posterior draws for the team effects from the model I calculated the estimated effect a team's home court has on the opposing team's free throw percentage. I also calculated the *probability* that a team's home court has an effect that decreases the probability of an opponent making a free throw **above that of the average road venue**.</span>
 <span id="cb1-525"><a href="#cb1-525" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-526"><a href="#cb1-526" aria-hidden="true" tabindex="-1"></a>Using the posterior draws for the team effects from the model I calculated the estimated effect a team's home court has on the opposing team's free throw percentage. I also calculated the *probability* that a team's home court has an effect that decreases the probability of an opponent making a free throw **above that of the average road venue**.</span>
-<span id="cb1-527"><a href="#cb1-527" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-530"><a href="#cb1-530" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb1-531"><a href="#cb1-531" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(diff_ftp_model) <span class="sc">|&gt;</span> </span>
-<span id="cb1-532"><a href="#cb1-532" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>,</span>
-<span id="cb1-533"><a href="#cb1-533" aria-hidden="true" tabindex="-1"></a>        <span class="at">column.names =</span> <span class="fu">c</span>(<span class="st">"term"</span>, <span class="st">"est"</span>, <span class="st">"std. error"</span>),</span>
-<span id="cb1-534"><a href="#cb1-534" aria-hidden="true" tabindex="-1"></a>        <span class="at">caption =</span> <span class="st">"Fixed Effects on Visiting Team Free Throw Percentage"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb1-535"><a href="#cb1-535" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_classic</span>()</span>
+<span id="cb1-528"><a href="#cb1-528" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb1-529"><a href="#cb1-529" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(diff_ftp_model) <span class="sc">|&gt;</span> </span>
+<span id="cb1-530"><a href="#cb1-530" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>,</span>
+<span id="cb1-531"><a href="#cb1-531" aria-hidden="true" tabindex="-1"></a>        <span class="at">column.names =</span> <span class="fu">c</span>(<span class="st">"term"</span>, <span class="st">"est"</span>, <span class="st">"std. error"</span>),</span>
+<span id="cb1-532"><a href="#cb1-532" aria-hidden="true" tabindex="-1"></a>        <span class="at">caption =</span> <span class="st">"Fixed Effects on Visiting Team Free Throw Percentage"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-533"><a href="#cb1-533" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_classic</span>()</span>
+<span id="cb1-534"><a href="#cb1-534" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-535"><a href="#cb1-535" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb1-536"><a href="#cb1-536" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-537"><a href="#cb1-537" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-537"><a href="#cb1-537" aria-hidden="true" tabindex="-1"></a>The negative coefficients of the absolute value of the scoring difference confirms that there is an effect of a close game on free throw percentage. Closer games have higher free throw shooting percentages. The intercept is interpreted as the average change in free throw percentage for playing on the road versus at home (a decrease of 1.2%).</span>
 <span id="cb1-538"><a href="#cb1-538" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-539"><a href="#cb1-539" aria-hidden="true" tabindex="-1"></a>The negative coefficients of the absolute value of the scoring difference confirms that there is an effect of a close game on free throw percentage. Closer games have higher free throw shooting percentages. The intercept is interpreted as the average change in free throw percentage for playing on the road versus at home (a decrease of 1.2%). </span>
-<span id="cb1-540"><a href="#cb1-540" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-543"><a href="#cb1-543" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb1-544"><a href="#cb1-544" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(diff_ftp_model)</span></span>
-<span id="cb1-545"><a href="#cb1-545" aria-hidden="true" tabindex="-1"></a><span class="co">#avg home court effects</span></span>
-<span id="cb1-546"><a href="#cb1-546" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-547"><a href="#cb1-547" aria-hidden="true" tabindex="-1"></a>home_team_effect_draws <span class="ot">&lt;-</span> tidybayes<span class="sc">::</span><span class="fu">spread_draws</span>(diff_ftp_model, b[term,group]) <span class="sc">|&gt;</span> </span>
-<span id="cb1-548"><a href="#cb1-548" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">home_team_name =</span> <span class="fu">str_remove</span>(group, <span class="st">"adj_home_team_name:"</span>) <span class="sc">|&gt;</span> <span class="fu">str_replace_all</span>(<span class="st">"_"</span>, <span class="st">" "</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb1-549"><a href="#cb1-549" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">home_effect =</span> b) <span class="sc">|&gt;</span> </span>
-<span id="cb1-550"><a href="#cb1-550" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb1-551"><a href="#cb1-551" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>term,</span>
-<span id="cb1-552"><a href="#cb1-552" aria-hidden="true" tabindex="-1"></a>                <span class="sc">-</span>group</span>
-<span id="cb1-553"><a href="#cb1-553" aria-hidden="true" tabindex="-1"></a>                )</span>
-<span id="cb1-554"><a href="#cb1-554" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-555"><a href="#cb1-555" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-556"><a href="#cb1-556" aria-hidden="true" tabindex="-1"></a>home_team_ft_effect_summary <span class="ot">&lt;-</span> home_team_effect_draws <span class="sc">|&gt;</span> </span>
-<span id="cb1-557"><a href="#cb1-557" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(home_team_name) <span class="sc">|&gt;</span> </span>
-<span id="cb1-558"><a href="#cb1-558" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">prob_less_0 =</span> <span class="fu">mean</span>(home_effect <span class="sc">&lt;</span> <span class="dv">0</span>),</span>
-<span id="cb1-559"><a href="#cb1-559" aria-hidden="true" tabindex="-1"></a>            <span class="at">avg_effect =</span> <span class="fu">mean</span>(home_effect),</span>
-<span id="cb1-560"><a href="#cb1-560" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd_effect =</span> <span class="fu">sd</span>(home_effect)</span>
-<span id="cb1-561"><a href="#cb1-561" aria-hidden="true" tabindex="-1"></a>            ) <span class="sc">|&gt;</span> </span>
-<span id="cb1-562"><a href="#cb1-562" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb1-563"><a href="#cb1-563" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(prob_less_0),</span>
-<span id="cb1-564"><a href="#cb1-564" aria-hidden="true" tabindex="-1"></a>          avg_effect) <span class="sc">|&gt;</span> </span>
-<span id="cb1-565"><a href="#cb1-565" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(ft_half_summary_wide <span class="sc">|&gt;</span> </span>
-<span id="cb1-566"><a href="#cb1-566" aria-hidden="true" tabindex="-1"></a>              <span class="fu">distinct</span>(home_team_name, </span>
-<span id="cb1-567"><a href="#cb1-567" aria-hidden="true" tabindex="-1"></a>                       home_logo) <span class="sc">|&gt;</span> </span>
-<span id="cb1-568"><a href="#cb1-568" aria-hidden="true" tabindex="-1"></a>              <span class="fu">na.omit</span>(),</span>
-<span id="cb1-569"><a href="#cb1-569" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"home_team_name"</span>)</span>
-<span id="cb1-570"><a href="#cb1-570" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-541"><a href="#cb1-541" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb1-542"><a href="#cb1-542" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(diff_ftp_model)</span></span>
+<span id="cb1-543"><a href="#cb1-543" aria-hidden="true" tabindex="-1"></a><span class="co">#avg home court effects</span></span>
+<span id="cb1-544"><a href="#cb1-544" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-545"><a href="#cb1-545" aria-hidden="true" tabindex="-1"></a>home_team_effect_draws <span class="ot">&lt;-</span> tidybayes<span class="sc">::</span><span class="fu">spread_draws</span>(diff_ftp_model, b[term,group]) <span class="sc">|&gt;</span> </span>
+<span id="cb1-546"><a href="#cb1-546" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">home_team_name =</span> <span class="fu">str_remove</span>(group, <span class="st">"adj_home_team_name:"</span>) <span class="sc">|&gt;</span> <span class="fu">str_replace_all</span>(<span class="st">"_"</span>, <span class="st">" "</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb1-547"><a href="#cb1-547" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">home_effect =</span> b) <span class="sc">|&gt;</span> </span>
+<span id="cb1-548"><a href="#cb1-548" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb1-549"><a href="#cb1-549" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>term,</span>
+<span id="cb1-550"><a href="#cb1-550" aria-hidden="true" tabindex="-1"></a>                <span class="sc">-</span>group</span>
+<span id="cb1-551"><a href="#cb1-551" aria-hidden="true" tabindex="-1"></a>                )</span>
+<span id="cb1-552"><a href="#cb1-552" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-553"><a href="#cb1-553" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-554"><a href="#cb1-554" aria-hidden="true" tabindex="-1"></a>home_team_ft_effect_summary <span class="ot">&lt;-</span> home_team_effect_draws <span class="sc">|&gt;</span> </span>
+<span id="cb1-555"><a href="#cb1-555" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(home_team_name) <span class="sc">|&gt;</span> </span>
+<span id="cb1-556"><a href="#cb1-556" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">prob_less_0 =</span> <span class="fu">mean</span>(home_effect <span class="sc">&lt;</span> <span class="dv">0</span>),</span>
+<span id="cb1-557"><a href="#cb1-557" aria-hidden="true" tabindex="-1"></a>            <span class="at">avg_effect =</span> <span class="fu">mean</span>(home_effect),</span>
+<span id="cb1-558"><a href="#cb1-558" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd_effect =</span> <span class="fu">sd</span>(home_effect)</span>
+<span id="cb1-559"><a href="#cb1-559" aria-hidden="true" tabindex="-1"></a>            ) <span class="sc">|&gt;</span> </span>
+<span id="cb1-560"><a href="#cb1-560" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb1-561"><a href="#cb1-561" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(prob_less_0),</span>
+<span id="cb1-562"><a href="#cb1-562" aria-hidden="true" tabindex="-1"></a>          avg_effect) <span class="sc">|&gt;</span> </span>
+<span id="cb1-563"><a href="#cb1-563" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(ft_half_summary_wide <span class="sc">|&gt;</span> </span>
+<span id="cb1-564"><a href="#cb1-564" aria-hidden="true" tabindex="-1"></a>              <span class="fu">distinct</span>(home_team_name, </span>
+<span id="cb1-565"><a href="#cb1-565" aria-hidden="true" tabindex="-1"></a>                       home_logo) <span class="sc">|&gt;</span> </span>
+<span id="cb1-566"><a href="#cb1-566" aria-hidden="true" tabindex="-1"></a>              <span class="fu">na.omit</span>(),</span>
+<span id="cb1-567"><a href="#cb1-567" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"home_team_name"</span>)</span>
+<span id="cb1-568"><a href="#cb1-568" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-569"><a href="#cb1-569" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-570"><a href="#cb1-570" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-571"><a href="#cb1-571" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-572"><a href="#cb1-572" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-573"><a href="#cb1-573" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-574"><a href="#cb1-574" aria-hidden="true" tabindex="-1"></a>home_team_ft_effect_summary_gt_table <span class="ot">&lt;-</span> home_team_ft_effect_summary <span class="sc">%&gt;%</span> </span>
-<span id="cb1-575"><a href="#cb1-575" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(</span>
-<span id="cb1-576"><a href="#cb1-576" aria-hidden="true" tabindex="-1"></a>    <span class="at">home_team =</span> home_team_name,</span>
-<span id="cb1-577"><a href="#cb1-577" aria-hidden="true" tabindex="-1"></a>    home_logo,</span>
-<span id="cb1-578"><a href="#cb1-578" aria-hidden="true" tabindex="-1"></a>    avg_effect,</span>
-<span id="cb1-579"><a href="#cb1-579" aria-hidden="true" tabindex="-1"></a>    sd_effect,</span>
-<span id="cb1-580"><a href="#cb1-580" aria-hidden="true" tabindex="-1"></a>    prob_less_0 </span>
-<span id="cb1-581"><a href="#cb1-581" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-582"><a href="#cb1-582" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb1-583"><a href="#cb1-583" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
-<span id="cb1-584"><a href="#cb1-584" aria-hidden="true" tabindex="-1"></a>    <span class="at">home_team =</span> <span class="st">"Home Court"</span>,</span>
-<span id="cb1-585"><a href="#cb1-585" aria-hidden="true" tabindex="-1"></a>    <span class="at">home_logo =</span> <span class="st">""</span>,</span>
-<span id="cb1-586"><a href="#cb1-586" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_effect =</span> <span class="st">"Effect on FT%"</span>,</span>
-<span id="cb1-587"><a href="#cb1-587" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd_effect =</span> <span class="st">"Std. Dev."</span>,</span>
-<span id="cb1-588"><a href="#cb1-588" aria-hidden="true" tabindex="-1"></a>    <span class="at">prob_less_0 =</span> <span class="st">"Prob(Effect &lt; 0)"</span> </span>
-<span id="cb1-589"><a href="#cb1-589" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb1-590"><a href="#cb1-590" aria-hidden="true" tabindex="-1"></a>  <span class="co"># # text_transform(</span></span>
-<span id="cb1-591"><a href="#cb1-591" aria-hidden="true" tabindex="-1"></a>  <span class="co"># #   locations = cells_body(c("fbref_logo_url")),</span></span>
-<span id="cb1-592"><a href="#cb1-592" aria-hidden="true" tabindex="-1"></a>  <span class="co"># #   fn = function(x) {</span></span>
-<span id="cb1-593"><a href="#cb1-593" aria-hidden="true" tabindex="-1"></a>  <span class="co"># #     map(x, ~ web_image(.x))</span></span>
-<span id="cb1-594"><a href="#cb1-594" aria-hidden="true" tabindex="-1"></a>  <span class="co"># #   }</span></span>
-<span id="cb1-595"><a href="#cb1-595" aria-hidden="true" tabindex="-1"></a>  <span class="co"># # ) %&gt;% </span></span>
-<span id="cb1-596"><a href="#cb1-596" aria-hidden="true" tabindex="-1"></a>  <span class="co"># tab_style(</span></span>
-<span id="cb1-597"><a href="#cb1-597" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   style = cell_text(weight = "bold"),</span></span>
-<span id="cb1-598"><a href="#cb1-598" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   locations = cells_column_labels()</span></span>
-<span id="cb1-599"><a href="#cb1-599" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ) %&gt;%</span></span>
-<span id="cb1-600"><a href="#cb1-600" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_align</span>(</span>
-<span id="cb1-601"><a href="#cb1-601" aria-hidden="true" tabindex="-1"></a>    <span class="at">align =</span> <span class="fu">c</span>(<span class="st">"center"</span>),</span>
-<span id="cb1-602"><a href="#cb1-602" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">everything</span>()</span>
-<span id="cb1-603"><a href="#cb1-603" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb1-604"><a href="#cb1-604" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_percent</span>(<span class="at">columns =</span> avg_effect<span class="sc">:</span>prob_less_0,</span>
-<span id="cb1-605"><a href="#cb1-605" aria-hidden="true" tabindex="-1"></a>             <span class="at">decimals =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb1-606"><a href="#cb1-606" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt_img_rows</span>(<span class="at">columns =</span> home_logo, <span class="at">img_source =</span> <span class="st">"web"</span>, <span class="at">height =</span> <span class="dv">30</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb1-607"><a href="#cb1-607" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(</span>
-<span id="cb1-608"><a href="#cb1-608" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Home Team's Venue Effect on Visiting Free Throws (vs Avg. Road Venue)"</span>,</span>
-<span id="cb1-609"><a href="#cb1-609" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Hierarchical Bayesian Model Using 2015-16 to 2023-24 Seasons"</span></span>
-<span id="cb1-610"><a href="#cb1-610" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb1-611"><a href="#cb1-611" aria-hidden="true" tabindex="-1"></a>  <span class="co"># gt_theme_538() %&gt;%</span></span>
-<span id="cb1-612"><a href="#cb1-612" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data_color</span>(</span>
-<span id="cb1-613"><a href="#cb1-613" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">c</span>(avg_effect, sd_effect, prob_less_0),</span>
-<span id="cb1-614"><a href="#cb1-614" aria-hidden="true" tabindex="-1"></a>    <span class="at">colors =</span> scales<span class="sc">::</span><span class="fu">col_numeric</span>(</span>
-<span id="cb1-615"><a href="#cb1-615" aria-hidden="true" tabindex="-1"></a>      <span class="at">palette =</span> <span class="fu">viridis</span>(<span class="dv">10</span>),</span>
-<span id="cb1-616"><a href="#cb1-616" aria-hidden="true" tabindex="-1"></a>      <span class="at">domain =</span> <span class="cn">NULL</span>)  <span class="co"># You can adjust the number of colors as needed</span></span>
-<span id="cb1-617"><a href="#cb1-617" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb1-618"><a href="#cb1-618" aria-hidden="true" tabindex="-1"></a>  <span class="fu">opt_interactive</span>(<span class="at">page_size_default =</span> <span class="dv">25</span>)</span>
+<span id="cb1-572"><a href="#cb1-572" aria-hidden="true" tabindex="-1"></a>home_team_ft_effect_summary_gt_table <span class="ot">&lt;-</span> home_team_ft_effect_summary <span class="sc">%&gt;%</span> </span>
+<span id="cb1-573"><a href="#cb1-573" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(</span>
+<span id="cb1-574"><a href="#cb1-574" aria-hidden="true" tabindex="-1"></a>    <span class="at">home_team =</span> home_team_name,</span>
+<span id="cb1-575"><a href="#cb1-575" aria-hidden="true" tabindex="-1"></a>    home_logo,</span>
+<span id="cb1-576"><a href="#cb1-576" aria-hidden="true" tabindex="-1"></a>    avg_effect,</span>
+<span id="cb1-577"><a href="#cb1-577" aria-hidden="true" tabindex="-1"></a>    sd_effect,</span>
+<span id="cb1-578"><a href="#cb1-578" aria-hidden="true" tabindex="-1"></a>    prob_less_0 </span>
+<span id="cb1-579"><a href="#cb1-579" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-580"><a href="#cb1-580" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb1-581"><a href="#cb1-581" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
+<span id="cb1-582"><a href="#cb1-582" aria-hidden="true" tabindex="-1"></a>    <span class="at">home_team =</span> <span class="st">"Home Court"</span>,</span>
+<span id="cb1-583"><a href="#cb1-583" aria-hidden="true" tabindex="-1"></a>    <span class="at">home_logo =</span> <span class="st">""</span>,</span>
+<span id="cb1-584"><a href="#cb1-584" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_effect =</span> <span class="st">"Effect on FT%"</span>,</span>
+<span id="cb1-585"><a href="#cb1-585" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd_effect =</span> <span class="st">"Std. Dev."</span>,</span>
+<span id="cb1-586"><a href="#cb1-586" aria-hidden="true" tabindex="-1"></a>    <span class="at">prob_less_0 =</span> <span class="st">"Prob(Effect &lt; 0)"</span> </span>
+<span id="cb1-587"><a href="#cb1-587" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb1-588"><a href="#cb1-588" aria-hidden="true" tabindex="-1"></a>  <span class="co"># # text_transform(</span></span>
+<span id="cb1-589"><a href="#cb1-589" aria-hidden="true" tabindex="-1"></a>  <span class="co"># #   locations = cells_body(c("fbref_logo_url")),</span></span>
+<span id="cb1-590"><a href="#cb1-590" aria-hidden="true" tabindex="-1"></a>  <span class="co"># #   fn = function(x) {</span></span>
+<span id="cb1-591"><a href="#cb1-591" aria-hidden="true" tabindex="-1"></a>  <span class="co"># #     map(x, ~ web_image(.x))</span></span>
+<span id="cb1-592"><a href="#cb1-592" aria-hidden="true" tabindex="-1"></a>  <span class="co"># #   }</span></span>
+<span id="cb1-593"><a href="#cb1-593" aria-hidden="true" tabindex="-1"></a>  <span class="co"># # ) %&gt;% </span></span>
+<span id="cb1-594"><a href="#cb1-594" aria-hidden="true" tabindex="-1"></a>  <span class="co"># tab_style(</span></span>
+<span id="cb1-595"><a href="#cb1-595" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   style = cell_text(weight = "bold"),</span></span>
+<span id="cb1-596"><a href="#cb1-596" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   locations = cells_column_labels()</span></span>
+<span id="cb1-597"><a href="#cb1-597" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ) %&gt;%</span></span>
+<span id="cb1-598"><a href="#cb1-598" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_align</span>(</span>
+<span id="cb1-599"><a href="#cb1-599" aria-hidden="true" tabindex="-1"></a>    <span class="at">align =</span> <span class="fu">c</span>(<span class="st">"center"</span>),</span>
+<span id="cb1-600"><a href="#cb1-600" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">everything</span>()</span>
+<span id="cb1-601"><a href="#cb1-601" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb1-602"><a href="#cb1-602" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_percent</span>(<span class="at">columns =</span> avg_effect<span class="sc">:</span>prob_less_0,</span>
+<span id="cb1-603"><a href="#cb1-603" aria-hidden="true" tabindex="-1"></a>             <span class="at">decimals =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-604"><a href="#cb1-604" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt_img_rows</span>(<span class="at">columns =</span> home_logo, <span class="at">img_source =</span> <span class="st">"web"</span>, <span class="at">height =</span> <span class="dv">30</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-605"><a href="#cb1-605" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(</span>
+<span id="cb1-606"><a href="#cb1-606" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Home Team's Venue Effect on Visiting Free Throws (vs Avg. Road Venue)"</span>,</span>
+<span id="cb1-607"><a href="#cb1-607" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Hierarchical Bayesian Model Using 2015-16 to 2023-24 Seasons"</span></span>
+<span id="cb1-608"><a href="#cb1-608" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb1-609"><a href="#cb1-609" aria-hidden="true" tabindex="-1"></a>  <span class="co"># gt_theme_538() %&gt;%</span></span>
+<span id="cb1-610"><a href="#cb1-610" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data_color</span>(</span>
+<span id="cb1-611"><a href="#cb1-611" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">c</span>(avg_effect, sd_effect, prob_less_0),</span>
+<span id="cb1-612"><a href="#cb1-612" aria-hidden="true" tabindex="-1"></a>    <span class="at">colors =</span> scales<span class="sc">::</span><span class="fu">col_numeric</span>(</span>
+<span id="cb1-613"><a href="#cb1-613" aria-hidden="true" tabindex="-1"></a>      <span class="at">palette =</span> <span class="fu">viridis</span>(<span class="dv">10</span>),</span>
+<span id="cb1-614"><a href="#cb1-614" aria-hidden="true" tabindex="-1"></a>      <span class="at">domain =</span> <span class="cn">NULL</span>)  <span class="co"># You can adjust the number of colors as needed</span></span>
+<span id="cb1-615"><a href="#cb1-615" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb1-616"><a href="#cb1-616" aria-hidden="true" tabindex="-1"></a>  <span class="fu">opt_interactive</span>(<span class="at">page_size_default =</span> <span class="dv">25</span>)</span>
+<span id="cb1-617"><a href="#cb1-617" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-618"><a href="#cb1-618" aria-hidden="true" tabindex="-1"></a>home_team_ft_effect_summary_gt_table</span>
 <span id="cb1-619"><a href="#cb1-619" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-620"><a href="#cb1-620" aria-hidden="true" tabindex="-1"></a>home_team_ft_effect_summary_gt_table</span>
-<span id="cb1-621"><a href="#cb1-621" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-620"><a href="#cb1-620" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-621"><a href="#cb1-621" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb1-622"><a href="#cb1-622" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-623"><a href="#cb1-623" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-623"><a href="#cb1-623" aria-hidden="true" tabindex="-1"></a>There are a lot of teams that have a noticeable effect beyond that of an average team. I combined the effects estimated on 2nd half free throws and the game impact of a venue on visiting team's free throw percentage.</span>
 <span id="cb1-624"><a href="#cb1-624" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-625"><a href="#cb1-625" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-626"><a href="#cb1-626" aria-hidden="true" tabindex="-1"></a>There are a lot of teams that have a noticeable effect beyond that of an average team. I combined the effects estimated on 2nd half free throws and the game impact of a venue on visiting team's free throw percentage.</span>
-<span id="cb1-627"><a href="#cb1-627" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-628"><a href="#cb1-628" aria-hidden="true" tabindex="-1"></a>There isn't a much of a relationship between the two, but some teams in the lower left hand corner have a noticeable impact in the second half compared to the first and as a whole throughout the entire game.</span>
-<span id="cb1-629"><a href="#cb1-629" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-630"><a href="#cb1-630" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-633"><a href="#cb1-633" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb1-634"><a href="#cb1-634" aria-hidden="true" tabindex="-1"></a>both_ft_impact_plot <span class="ot">&lt;-</span> home_team_ft_effect_summary <span class="sc">|&gt;</span> </span>
-<span id="cb1-635"><a href="#cb1-635" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(statistical_test_first_second_df_for_plotting <span class="sc">|&gt;</span> </span>
-<span id="cb1-636"><a href="#cb1-636" aria-hidden="true" tabindex="-1"></a>              <span class="fu">select</span>(<span class="at">home_team_name =</span> adj_home_team_name,</span>
-<span id="cb1-637"><a href="#cb1-637" aria-hidden="true" tabindex="-1"></a>                     ftp_diff),</span>
-<span id="cb1-638"><a href="#cb1-638" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"home_team_name"</span>)</span>
-<span id="cb1-639"><a href="#cb1-639" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb1-640"><a href="#cb1-640" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(ftp_diff)) <span class="sc">|&gt;</span> </span>
-<span id="cb1-641"><a href="#cb1-641" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> avg_effect, <span class="at">x =</span> ftp_diff)) <span class="sc">+</span></span>
-<span id="cb1-642"><a href="#cb1-642" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_image</span>(<span class="fu">aes</span>(<span class="at">image =</span> home_logo)) <span class="sc">+</span></span>
-<span id="cb1-643"><a href="#cb1-643" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">'glm'</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">size =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb1-644"><a href="#cb1-644" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">col =</span> <span class="st">'black'</span>, <span class="at">size =</span> <span class="fl">0.25</span>, <span class="at">linetype =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb1-645"><a href="#cb1-645" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">col =</span> <span class="st">'black'</span>, <span class="at">size =</span> <span class="fl">0.25</span>, <span class="at">linetype =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb1-646"><a href="#cb1-646" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb1-647"><a href="#cb1-647" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Home Court Effect per Game (Pct.)"</span>) <span class="sc">+</span></span>
-<span id="cb1-648"><a href="#cb1-648" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Diff in FT% (2nd Half - 1st)"</span>) <span class="sc">+</span></span>
-<span id="cb1-649"><a href="#cb1-649" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="sc">-</span><span class="fl">0.04</span>, <span class="at">y =</span> <span class="sc">-</span><span class="fl">0.036</span>, <span class="at">label =</span> <span class="st">"Harder Whole Game &amp; 2nd Half"</span>) <span class="sc">+</span></span>
-<span id="cb1-650"><a href="#cb1-650" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="fl">0.06</span>, <span class="at">y =</span> <span class="fl">0.036</span>, <span class="at">label =</span> <span class="st">"Easier Whole Game &amp; 2nd Half"</span>) <span class="sc">+</span></span>
-<span id="cb1-651"><a href="#cb1-651" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtitle</span>(<span class="st">"Impact on Visiting Team Free Throws by Home Court"</span>,</span>
-<span id="cb1-652"><a href="#cb1-652" aria-hidden="true" tabindex="-1"></a>          <span class="at">subtitle =</span> <span class="st">"2015-16 to 2023-24"</span>)</span>
+<span id="cb1-625"><a href="#cb1-625" aria-hidden="true" tabindex="-1"></a>There isn't a much of a relationship between the two, but some teams in the lower left hand corner have a noticeable impact in the second half compared to the first and as a whole throughout the entire game.</span>
+<span id="cb1-626"><a href="#cb1-626" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-629"><a href="#cb1-629" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb1-630"><a href="#cb1-630" aria-hidden="true" tabindex="-1"></a>both_ft_impact_plot <span class="ot">&lt;-</span> home_team_ft_effect_summary <span class="sc">|&gt;</span> </span>
+<span id="cb1-631"><a href="#cb1-631" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(statistical_test_first_second_df_for_plotting <span class="sc">|&gt;</span> </span>
+<span id="cb1-632"><a href="#cb1-632" aria-hidden="true" tabindex="-1"></a>              <span class="fu">select</span>(<span class="at">home_team_name =</span> adj_home_team_name,</span>
+<span id="cb1-633"><a href="#cb1-633" aria-hidden="true" tabindex="-1"></a>                     ftp_diff),</span>
+<span id="cb1-634"><a href="#cb1-634" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"home_team_name"</span>)</span>
+<span id="cb1-635"><a href="#cb1-635" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb1-636"><a href="#cb1-636" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(ftp_diff)) <span class="sc">|&gt;</span> </span>
+<span id="cb1-637"><a href="#cb1-637" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> avg_effect, <span class="at">x =</span> ftp_diff)) <span class="sc">+</span></span>
+<span id="cb1-638"><a href="#cb1-638" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_image</span>(<span class="fu">aes</span>(<span class="at">image =</span> home_logo)) <span class="sc">+</span></span>
+<span id="cb1-639"><a href="#cb1-639" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">'glm'</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">size =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb1-640"><a href="#cb1-640" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">col =</span> <span class="st">'black'</span>, <span class="at">size =</span> <span class="fl">0.25</span>, <span class="at">linetype =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb1-641"><a href="#cb1-641" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">col =</span> <span class="st">'black'</span>, <span class="at">size =</span> <span class="fl">0.25</span>, <span class="at">linetype =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb1-642"><a href="#cb1-642" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb1-643"><a href="#cb1-643" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Home Court Effect per Game (Pct.)"</span>) <span class="sc">+</span></span>
+<span id="cb1-644"><a href="#cb1-644" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Diff in FT% (2nd Half - 1st)"</span>) <span class="sc">+</span></span>
+<span id="cb1-645"><a href="#cb1-645" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="sc">-</span><span class="fl">0.04</span>, <span class="at">y =</span> <span class="sc">-</span><span class="fl">0.036</span>, <span class="at">label =</span> <span class="st">"Harder Whole Game &amp; 2nd Half"</span>) <span class="sc">+</span></span>
+<span id="cb1-646"><a href="#cb1-646" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="fl">0.06</span>, <span class="at">y =</span> <span class="fl">0.036</span>, <span class="at">label =</span> <span class="st">"Easier Whole Game &amp; 2nd Half"</span>) <span class="sc">+</span></span>
+<span id="cb1-647"><a href="#cb1-647" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtitle</span>(<span class="st">"Impact on Visiting Team Free Throws by Home Court"</span>,</span>
+<span id="cb1-648"><a href="#cb1-648" aria-hidden="true" tabindex="-1"></a>          <span class="at">subtitle =</span> <span class="st">"2015-16 to 2023-24"</span>)</span>
+<span id="cb1-649"><a href="#cb1-649" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-650"><a href="#cb1-650" aria-hidden="true" tabindex="-1"></a>both_ft_impact_plot</span>
+<span id="cb1-651"><a href="#cb1-651" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-652"><a href="#cb1-652" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb1-653"><a href="#cb1-653" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-654"><a href="#cb1-654" aria-hidden="true" tabindex="-1"></a>both_ft_impact_plot</span>
+<span id="cb1-654"><a href="#cb1-654" aria-hidden="true" tabindex="-1"></a><span class="fu"># Conclusion</span></span>
 <span id="cb1-655"><a href="#cb1-655" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-656"><a href="#cb1-656" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-656"><a href="#cb1-656" aria-hidden="true" tabindex="-1"></a>Although a handful of teams have a statistically significant impact on 2nd half free throw percentage compared to first for the visiting team, it doesn't hold up if one adjusts for testing every team in the country. If you were to do a multiple test on only teams with student sections behind the visiting team's second half basket (data I don't have) it likely would hold up for some teams under a multiple tests adjustment.</span>
 <span id="cb1-657"><a href="#cb1-657" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-658"><a href="#cb1-658" aria-hidden="true" tabindex="-1"></a><span class="fu"># Conclusion</span></span>
+<span id="cb1-658"><a href="#cb1-658" aria-hidden="true" tabindex="-1"></a>The magnitude of the effect is important here. The average free throw attempts (FTA) per game is <span class="in">`r round(mean(away_team_game_summary$home_court_avg_fta), digits = 1)`</span>. The average 2nd half FTA per game is <span class="in">`r round(mean(away_team_game_summary$fta_second), digits = 1)`</span>. That means the impact of the crowd with the largest second half free throw effect is roughly <span class="in">`r round(mean(away_team_game_summary$fta_second) *abs(min(statistical_test_first_second_df_for_plotting$ftp_diff)), digits = 1 )`</span> points per 2nd half.</span>
 <span id="cb1-659"><a href="#cb1-659" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-660"><a href="#cb1-660" aria-hidden="true" tabindex="-1"></a>Although a handful of teams have a statistically significant impact on 2nd half free throw percentage compared to first for the visiting team, it doesn't hold up if one adjusts for testing every team in the country. If you were to do a multiple test on only teams with student sections behind the visiting team's second half basket (data I don't have) it likely would hold up for some teams under a multiple tests adjustment.</span>
+<span id="cb1-660"><a href="#cb1-660" aria-hidden="true" tabindex="-1"></a>For the whole game, teams playing at NJIT had a -4.5% estimated decrease in free throw percentage. This would equate to a $0.045*20.3 = 0.9$ points per game impact based on free throws alone over the average venue in the country. That is something! But it is a bit smaller than the 1.4 points per game for Arizona State that was estimated in previous work.</span>
 <span id="cb1-661"><a href="#cb1-661" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-662"><a href="#cb1-662" aria-hidden="true" tabindex="-1"></a>The magnitude of the effect is important here. The average free throw attempts (FTA) per game is <span class="in">`r round(mean(away_team_game_summary$home_court_avg_fta), digits = 1)`</span>. The average 2nd half FTA per game is <span class="in">`r round(mean(away_team_game_summary$fta_second), digits = 1)`</span>. That means the impact of the crowd with the largest second half free throw effect is roughly <span class="in">`r round(mean(away_team_game_summary$fta_second) *abs(min(statistical_test_first_second_df_for_plotting$ftp_diff)), digits = 1 )`</span> points per 2nd half.</span>
+<span id="cb1-662"><a href="#cb1-662" aria-hidden="true" tabindex="-1"></a>It's important to note that effects for the entire game are confounded with altitude, distance traveled and day's rest. Certain visiting team's schedules may over index on those factors than others, meaning it may be more than just the crowd that impacts a visiting team's free throws at one venue over this study period.</span>
 <span id="cb1-663"><a href="#cb1-663" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-664"><a href="#cb1-664" aria-hidden="true" tabindex="-1"></a>For the whole game, teams playing at NJIT had a -4.5% estimated decrease in free throw percentage. This would equate to a $0.045*20.3 = 0.9$ points per game impact based on free throws alone over the average venue in the country. That is something! But it is a bit smaller than the 1.4 points per game for Arizona State that was estimated in previous work.</span>
-<span id="cb1-665"><a href="#cb1-665" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-666"><a href="#cb1-666" aria-hidden="true" tabindex="-1"></a>It's important to note that effects for the entire game are confounded with altitude, distance traveled and day's rest. Certain visiting team's schedules may over index on those factors than others, meaning it may be more than just the crowd that impacts a visiting team's free throws at one venue over this study period.</span>
-<span id="cb1-667"><a href="#cb1-667" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-668"><a href="#cb1-668" aria-hidden="true" tabindex="-1"></a>So can a good crowd impact the road team's free throw making? I think the evidence suggests that it can! But ... that effect is at the extreme end no more than 1 point per game or 0.7 points in the second half.</span>
+<span id="cb1-664"><a href="#cb1-664" aria-hidden="true" tabindex="-1"></a>So can a good crowd impact the road team's free throw making? I think the evidence suggests that it can! But ... that effect is at the extreme end no more than 1 point per game or 0.7 points in the second half.</span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

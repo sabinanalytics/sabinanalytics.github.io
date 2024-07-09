@@ -6,7 +6,7 @@ title-block-banner-color: "#FFFFFF"
 published-title: CV last updated
 engine: knitr 
 cv:
-  pdf: "Paul_Sabin_Resume_12_2023.pdf"
+  pdf: "Paul_CV_2024.pdf"
 sidebar: false
 ---
 

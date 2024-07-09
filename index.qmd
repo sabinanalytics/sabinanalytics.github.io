@@ -1,8 +1,8 @@
 ---
 title: "Welcome!"
 pagetitle: "Paul Sabin"
-main-photo-square: images/headshot.jpg
-main-photo: images/headshot.jpg
+main-photo-square: images/linda_hall_2024.jpg
+main-photo: images/linda_hall_2024.jpg
 title-block-banner: "#0062B8"
 title-block-banner-color: "#FFFFFF"
 format:

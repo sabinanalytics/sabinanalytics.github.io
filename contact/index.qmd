@@ -3,11 +3,31 @@ title: "Contact"
 title-block-banner: "#0062B8"
 title-block-banner-color: "#FFFFFF"
 page-layout: full
+main-photo-square: images/headshot.jpg
+main-photo: images/headshot.jpg
 toc: true
 toc-location: right
 sidebar: false
 ---
 
+::: grid
+::: {.g-col-12 .g-col-sm-4}
+```{=html}
+<div class="grid" style="--bs-columns: 5; row-gap: 0;">
+  <div class="g-col-1 g-col-sm-0"></div>
+  <div class="g-col-3 g-col-sm-5">
+    <picture>
+      <source media="(max-width: 576px)" srcset="{{< meta main-photo-square >}}">
+      <source media="(min-width: 576px)" srcset="{{< meta main-photo >}}">
+      <img class="img-fluid" src="{{< meta main-photo >}}" alt="{{< meta author-meta >}}">
+    </picture>
+  </div>
+  <div class="g-col-1 g-col-sm-0"></div>
+</div>
+```
+:::
+
+::: {.g-col-12 .g-col-sm-8}
 # Consulting
 
 ::: {#consulting}
@@ -31,4 +51,7 @@ In addition to my day to day I offer consulting services and expert witness abil
 Contact me about my work, speaking opportunities, consulting, expert witness, or research at
 
 [Wharton](mailto:psabin88@wharton.upenn.edu) or [Personal](mailto:r.paul.sabin@gmail.com)
+:::
+
+:::
 :::
