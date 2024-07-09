@@ -46,6 +46,7 @@ source("r/haversine_distance.R")
 source("r/get_utc_offset.R")
 options(tibble.width = Inf)
 options(mc.cores = parallel::detectCores())
+options(scipen= 999)
 current_year <- 2024
 historical_seasons <- 20
 run_historical <- TRUE#whether or not to run values for past seasons: if TRUE then just this season
@@ -422,19 +423,20 @@ Fans, weather conditions, or even elevation can then be considered part of a tea
 
 I assume the difference in performance of efficiency at home vs on the road, after accounting for these other "environmental" effects to be a team's home field advantage. I model a teams home field advantage **above the average HFA** in college football as
 
-$$
-\text{Off EPA per drive} = \beta_0 + 
-\text{HFA}\beta_1 + 
-\gamma_{venue} +
-\gamma_{team-offense} +
-\gamma_{team-defense} +
-\gamma_{team-timezone-change} +
-\text{off days rest}\beta_2 +
-g_1(\text{off travel distance}) +
-g_2(\text{def travel distance}) +
-g_3(\text{off elevation change})
-$$
-
+```{=tex}
+\begin{align*}
+\text{Off EPA per drive} &= \beta_0\\
+& + \text{HFA}\beta_1\\
+& + \gamma_{venue}\\
+& + \gamma_{team-offense}\\
+& + \gamma_{team-defense}\\
+& + \gamma_{team-timezone-change}\\
+& + \text{off days rest}\beta_2\\
+& + g_1(\text{off travel distance})\\
+& + g_2(\text{def travel distance})\\
+& + g_3(\text{off elevation change})
+\end{align*}
+```
 ## Data
 
 I am missing venues for some of the data, a total of `r nrow(filter(epa_wpa_game_summary, is.na(venue_id)))/2` games out of `r nrow(epa_wpa_game_summary)/2` . I am missing venues for the following number of games each season.
