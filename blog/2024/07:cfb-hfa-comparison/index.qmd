@@ -329,13 +329,13 @@ games_data_full <- games_data_full |>
 
 # EA Sports Hardest Places to Play
 
-College Football fans (including me) cannot wait until the new College Football 25 video game to come out. As part of the game there are team rankings provided by EA sports in addition to rankings of the [25 hardest places to play](https://www.ea.com/games/ea-sports-college-football/college-football-25/news/college-football-25-rankings-week-showcase).
+College Football fans (including me) cannot wait for the new College Football 25 video game to come out. As part of the game there are team rankings provided by EA sports in addition to rankings of the [25 hardest places to play](https://www.ea.com/games/ea-sports-college-football/college-football-25/news/college-football-25-rankings-week-showcase).
 
-The top of the list is a who's who of college football. EA Sports mentions the rankings of the toughest places to play come from a combination of "home winning %, home game attendance, active home winning streaks, team prestige, and more."
+The top of the hardes places list is a who's who of college football. EA Sports mentions the rankings of the toughest places to play come from a combination of "home winning %, home game attendance, active home winning streaks, team prestige, and more."
 
 ![](images/ea_top10_toughest.png)
 
-The top 10 venues listed by EA Sports are in the top 20 in total capacity across College Football.
+The top 10 venues listed by EA Sports are also in the top 20 in total capacity across College Football. Clearly stadium capacity is correlated in EA's mind with being a tough place to play.
 
 # Good Teams - All They Do Is Win
 
@@ -362,11 +362,11 @@ games_data_full |>
   
 ```
 
-Alabama's winning percentage at home in the Nick Saban era (2007-2023) was 93% which is the highest of any FBS team in that timespan.
+Can we disentengle home team ability from a home field advantage? Alabama's winning percentage at home in the Nick Saban era (2007-2023) was 93% which is the highest of any FBS team in that timespan.
 
-So is Bryant-Denney Stadium a particularly hard place to play? In short of course it is. Just look at how rarely Alabama has lost there. But there's no evidence that it is any more difficult of a place to play than the average college football home venue. Don't believe me? Well in 21 neutral site games over that same time Alabama had a 95% winning percentage and even had a 84% winning percentage on the road. So while 84% on the road is worse, Alabama's road schedule is almost exclusively against SEC teams while they typically would have one or two non-power conference (including FCS) home games each year.
+So is Bryant-Denney Stadium a particularly hard place to play? In short of course it is. Just look at how rarely Alabama has lost there. But there's no evidence that it is any more difficult of a place to play than the average college football home venue *after adjusting for the home team*. Don't believe me? Well in 21 neutral site games over that same time Alabama had a 95% winning percentage and even had a 84% winning percentage on the road. So while 84% on the road is worse, Alabama's road schedule is almost exclusively against SEC teams while they typically have one or two non-power conference (including FCS) home games each year.
 
-Well they do boast a raucous crowd, it can be very hot and humid, but the most difficult thing about winning in Tuscaloosa is the players wearing crimson on the field, not the stadium or the crowd.
+While they do boast a raucous crowd and it can be very hot and humid in Tuscaloosa, but the most difficult thing about winning there is the players wearing crimson on the field, not the stadium or the crowd.
 
 ### Home vs Road
 
@@ -419,7 +419,7 @@ Home field advantage is well studied and documented. But do some teams have a la
 
 I make the assumption that any HFA unique to a team should not involve any factors that involve the visiting team. So while travel and timezone changes matter, the extent thereof is impacted based on where the visiting team is coming from.
 
-Fans, weather conditions, or even elevation can then be considered part of a team's unique HFA.
+Fans, weather conditions, or even elevation can then be considered part of a team's unique HFA and won't be accounted for separately in the model.
 
 I assume the difference in performance of efficiency at home vs on the road, after accounting for these other "environmental" effects to be a team's home field advantage. I model a teams home field advantage **above the average HFA** in college football as
 
@@ -437,9 +437,13 @@ I assume the difference in performance of efficiency at home vs on the road, aft
 & + g_3(\text{off elevation change})
 \end{align*}
 ```
+The $g()$ functions are splines with 2 internal knots to account for nonlinear effects of travel and elevation change. Elevation change is included because only if a visiting team doesn't play at elevation normally is it a factor (recall my rule that things dependent on the visiting team shouldn't be considered home field advantages above the average).
+
+I use a Bayesian model with weakly informative normal priors (see the default of *rstanarm* or click the code at the top of the page).
+
 ## Data
 
-I am missing venues for some of the data, a total of `r nrow(filter(epa_wpa_game_summary, is.na(venue_id)))/2` games out of `r nrow(epa_wpa_game_summary)/2` . I am missing venues for the following number of games each season.
+I am missing venues for some of the data, a total of `r nrow(filter(epa_wpa_game_summary, is.na(venue_id)))/2` games out of `r nrow(epa_wpa_game_summary)/2` . A summary of the total missing venues for the each season is shown below.
 
 ```{r}
 epa_wpa_game_summary |> 
@@ -451,7 +455,7 @@ epa_wpa_game_summary |>
   kableExtra::kable_classic_2()
 ```
 
-Here I add in the latitude, longitude, and elevation for the stadium where the game is played and each respective team's home stadium. Using that I can calculate the distance traveled for each team and any effects of elevation. I can also calculate the capacity for the game and if that is much different than the home capacity for a team. For the purposes of this study I will not include elevation or capacity differences as that can reasonably be part of the home field effect. I will include travel distance and changes in timezone as that, to me, has less to do with a home field effect and more to do with conferences, how they are spread out, or if a team happens to be located geographically far away from those on its schedule.
+Using the latitude and longitude of the game's stadium and each team's respective home stadiums I calculate the distance traveled for each team and any effects of elevation. For the purposes of this study I will not adjust capacity differences as that can reasonably be part of the home field effect. I do show the correlation between my estimates and attendance later on.
 
 ```{r}
 
@@ -537,11 +541,15 @@ stadium_effects_per_drive <- team_effects_per_drive |>
   distinct()
 
 # View(stadium_effects_per_drive)
+
+avg_drive_game <- mean(games_data_full$drives)#per team
+#so hfa has to account for both team's drives (2 x the number above)
+
 ```
 
-The estimated average home field advantage for all teams from 2005 to 2023 is `r round(avg_hfa$mean, digits = 2)` points per drive for the home team.
+The estimated average home field advantage for all teams from 2005 to 2023 is `r round(avg_hfa$mean, digits = 2)` points per drive for the home team. With an average of `r round(avg_drive_game, digits = 1)` offensive drives for each team we can estimate the average home field advantage is `r round(avg_hfa$mean*avg_drive_game*2, digits = 1)` points per game.
 
-While I make estimates for average team ability since 2005 in all seasons of the dataset and each venue they played at in that timespan, I am only assessing the most recent stadium a team has played in for the following analysis if a team has had more than one home stadium since 2005.
+While I make estimates for average team ability since 2005 in each season of the dataset and each venue they played at in that timespan, I am only assessing the most recent stadium a team has played in for the following analysis if a team has had more than one home stadium since 2005.
 
 Even with 18 years of data, it is difficult to detect if a team has a stronger home field advantage than another. That being said, `r sum(stadium_effects_per_drive$stadium_post_prob_abv_80 & stadium_effects_per_drive$stadium_pts_per_drive < 0, na.rm = TRUE)` of them show evidence of being a weaker home field advantage than the average college stadium and `r sum(stadium_effects_per_drive$stadium_post_prob_abv_80 & stadium_effects_per_drive$stadium_pts_per_drive > 0, na.rm = TRUE)` show significant evidence of having a stronger home field advantage than other stadiums.
 
@@ -550,8 +558,6 @@ There are a total of `r nrow(stadium_effects_per_drive)` current unique home sta
 Despite the inconclusive effects for HFA for most teams, I am able to at least provide *an estimate* for each team's home stadium, even if the evidence isn't that strong. This estimate shows the estimated HFA as points *per drive* for each home team above that of an average home field advantage.
 
 ```{r}
-avg_drive_game <- mean(games_data_full$drives)#per team
-#so hfa has to account for both team's drives (2 x the number above)
 
 stadium_effects_hfa_gt <- stadium_effects_per_drive |> 
   mutate(stadium_pts_per_game = 2*stadium_pts_per_drive*avg_drive_game,
@@ -628,7 +634,7 @@ stadium_effects_hfa_gt
 
 ```
 
-One way to normalize this is to multiply the average number of drives per game on these effects to see the estimate points per game effect of a stadium. We see even for Army which has the largest additional home field effect, this comes out to 2.2 points per game which is about double the estimated average home field advantage effect of `r round(avg_drive_game*avg_hfa$mean*2, digits = 1)` points per game (assuming an average number of drives per game).
+We see even for Army (the highest effect) once we multiply its posterior mean home effect by the average drives in a game, it comes out to 2.2 points per game which is about double the estimated average home field advantage effect of `r round(avg_drive_game*avg_hfa$mean*2, digits = 1)` points per game (assuming an average number of drives per game).
 
 ## Attendance
 
@@ -653,13 +659,13 @@ attendance_effect_plot
 
 There is an important confounder here which is team ability. Better football schools traditionally have bigger stadiums and fan support. Perhaps teams with better players and by extension more fans also have players that are less likely to be impacted by opposing fans or their own fans.
 
-This also brings up another point which is that this model solely measures how teams *play* at their home compared to the average home field advantage. For Army this could be for reasons around the strict routine of West Point vs the road.
+This also brings up another point which is that this model solely measures how teams *play* at their home compared to the average home field advantage. For Army this could be for reasons around the strict routine of West Point or its unique offense which lends itself to play better at home than the road that have nothing to do with Michie Stadium. Then again who wouldn't be affected by military cannons blasting at you and soldiers jumping out of helicopters?
 
 In order to fully disentangle a team's typical performance on the road against the effect of the stadium they're playing out, additional effects for a team's **road** performance need to be added to estimate this. With already small effects for stadium specific advantages without all those additional parameters, this is unlikely to increase the significance of these effects.
 
 # Does This Persist?
 
-It's one thing to have a ranking of teams, but is this effect real or is it just a ranking because you have to order teams in **some** way?
+It's one thing to have a ranking of teams, but if we split our data in half would we get similar results in both datasets? In other words, is this effect real or is it just a ranking because if you model something it will order teams in **some** way?
 
 I split the data up into two unique groups:
 
@@ -803,6 +809,8 @@ venue_summary_tbl_both_halves_plot
 
 # Takeaways
 
-Generally it is very hard to estimate if one team or stadium has a stronger home field advantage than another. That being said, there are a handful of teams that may have enough evidence of a stronger homefield advantage than what you would think. These teams are not the typical powerhouse teams with large crowds. The reasoning behind why these teams may have a larger HFA is solely conjecture at this point and falls roughly inline with the expected distribution of HFA effects observable by noise if no stadium had a larger HFA than another.
+Generally it is very hard to estimate if one team or stadium has a stronger home field advantage than another. That being said, there are a handful of teams that may have enough evidence of a stronger homefield advantage than what you would think. These teams are not the typical powerhouse teams with large crowds. The reasoning behind why these teams may have a larger HFA is solely conjecture at this point and the distribution of all posterior mean stadium effects falls roughly inline with the expected distribution of HFA effects observable by noise if no stadium had a larger HFA than another.
 
-A more interesting question perhaps is if there is a statistically significant effect on false start rates by stadium beyond what you would expect with multiple testing. If that is the case that is evidence of a home field advantage beyond average, but the effect size might be small enough to not make an impact in an analysis like this one.
+Beyond this study, a more interesting question perhaps is if there is a statistically significant effect on false start rates by stadium beyond what you would expect with multiple testing. If that is the case that is evidence of a home field advantage beyond average, but the effect size might be small enough to not make an impact in an analysis like this one.
+
+This would be akin to my analysis on home crowds affecting college basketball free throw shooting [in a previous post.](https://sabinanalytics.com/blog/2024/02:28:do-college-crowds-affect-free-throws/)
