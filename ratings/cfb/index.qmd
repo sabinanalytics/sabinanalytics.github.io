@@ -7,13 +7,14 @@ toc: true
 toc-location: right
 ---
 
-Please be patient... website is under construction.
 
 # Power Ratings
 
 ::: {#powerratings}
+```{=html}
+<iframe width="1000" height="1200" src="https://sagemaker-studio-m35e50pwfmm.s3.amazonaws.com/College+Football/Output/HTML+Tables/Sabin_Power_Ratings_CURRENT.html" title=""></iframe>
+```
 :::
-
 # Game Predictions
 
 ::: {#game-predictions}

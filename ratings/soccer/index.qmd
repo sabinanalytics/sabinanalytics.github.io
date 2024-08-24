@@ -10,12 +10,9 @@ toc-location: right
 # English Premier League
 
 ::: {#EPL}
-
 ```{=html}
-<iframe width="1000" height="1200" src="https://website-public-data.s3.amazonaws.com/soccer_data/tables/epl_projections.html" title=""></iframe>
+<iframe width="1000" height="1200" src="https://sagemaker-studio-m35e50pwfmm.s3.amazonaws.com/soccer_data/tables/epl_projections.html" title=""></iframe>
 ```
-
-
 :::
 
 # La Liga
