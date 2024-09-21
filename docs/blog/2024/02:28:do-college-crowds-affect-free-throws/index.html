@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.549">
+<meta name="generator" content="quarto-1.4.553">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
 <meta name="author" content="Paul Sabin">
 <meta name="description" content="Analyzing if college student sections have a measurable impact on opposing team’s free throw percentage.">
+
 <title>Can A College Crowd Affect Free Throws? | Sabin Analytics</title>
 <style>
 code{white-space: pre-wrap;}
@@ -55,6 +58,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
+
 <script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -75,7 +79,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script src="../../../site_libs/quarto-contrib/iconify-1.0.7/iconify-icon.min.js"></script>
 <link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
-<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
+<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -101,21 +106,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><script async="" src="https://www.googletagmanager.com/gtag/js?id=G-YV4B7VVR0R"></script><script type="text/javascript">
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-YV4B7VVR0R"></script>
+
+<script type="text/javascript">
 
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-YV4B7VVR0R', { 'anonymize_ip': true});
-</script><style>
+</script>
+<style>
 
       .quarto-title-block .quarto-title-banner {
         background: #170C3A;
       }
 </style>
-<script src="../../../site_libs/core-js-2.5.3/shim.min.js"></script><script src="../../../site_libs/react-18.2.0/react.min.js"></script><script src="../../../site_libs/react-18.2.0/react-dom.min.js"></script><script src="../../../site_libs/reactwidget-1.0.0/react-tools.js"></script><script src="../../../site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script><link href="../../../site_libs/reactable-0.4.4/reactable.css" rel="stylesheet">
-<script src="../../../site_libs/reactable-binding-0.4.4/reactable.js"></script><script src="../../../site_libs/kePrint-0.0.1/kePrint.js"></script><link href="../../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+<script src="../../../site_libs/core-js-2.5.3/shim.min.js"></script>
+<script src="../../../site_libs/react-18.2.0/react.min.js"></script>
+<script src="../../../site_libs/react-18.2.0/react-dom.min.js"></script>
+<script src="../../../site_libs/reactwidget-1.0.0/react-tools.js"></script>
+<script src="../../../site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<link href="../../../site_libs/reactable-0.4.4/reactable.css" rel="stylesheet">
+<script src="../../../site_libs/reactable-binding-0.4.4/reactable.js"></script>
+<script src="../../../site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="../../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
 const typesetMath = (el) => {
   if (window.MathJax) {
     // MathJax Typeset
@@ -141,6 +161,7 @@ window.Quarto = {
   typesetMath
 };
 </script>
+
 <meta property="og:title" content="Can A College Crowd Affect Free Throws? | Sabin Analytics">
 <meta property="og:description" content="Analyzing if college student sections have a measurable impact on opposing team’s free throw percentage.">
 <meta property="og:image" content="https://sabinanalytics.com/blog/2024/02:28:do-college-crowds-affect-free-throws/img/card.png">
@@ -154,10 +175,13 @@ window.Quarto = {
 <meta name="twitter:image-width" content="620">
 <meta name="twitter:card" content="summary_large_image">
 </head>
+
 <body class="docked nav-fixed slimcontent">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top quarto-banner"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../../index.html">
     <span class="navbar-title">Sabin Analytics</span>
@@ -169,7 +193,7 @@ window.Quarto = {
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
-<li class="nav-item">
+  <li class="nav-item">
     <a class="nav-link" href="../../../about.html"> 
 <span class="menu-text">About Me</span></a>
   </li>  
@@ -189,8 +213,8 @@ window.Quarto = {
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-ratings--projections" role="button" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Ratings &amp; Projections</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-ratings--projections">
-<li>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-ratings--projections">    
+        <li>
     <a class="dropdown-item" href="../../../ratings/soccer/index.html">
  <span class="dropdown-text">Soccer</span></a>
   </li>  
@@ -199,14 +223,14 @@ window.Quarto = {
  <span class="dropdown-text">College Football</span></a>
   </li>  
     </ul>
-</li>
+  </li>
   <li class="nav-item">
     <a class="nav-link" href="../../../blog/index.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
 </ul>
-<ul class="navbar-nav navbar-nav-scroll ms-auto">
-<li class="nav-item">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
     <a class="nav-link" href="mailto:psabin88@wharton.upenn.edu"> 
 <span class="menu-text"><iconify-icon inline="" icon="bi:envelope" style="font-size: 1.1em;" e-mail=""></iconify-icon></span></a>
   </li>  
@@ -227,12 +251,16 @@ window.Quarto = {
 <span class="menu-text"><iconify-icon inline="" icon="fa6-brands:google-scholar" style="font-size: 1.1em;" google="" scholar=""></iconify-icon></span></a>
   </li>  
 </ul>
-</div> <!-- /navcollapse -->
+          </div> <!-- /navcollapse -->
           <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
-    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default blog-post page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default blog-post page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <div class="quarto-title-block"><div><h1 class="title">Can A College Crowd Affect Free Throws?</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
                   <div>
@@ -273,38 +301,46 @@ window.Quarto = {
   
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Contents</h2>
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Contents</h2>
    
   <ul>
-<li>
-<a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a>
+  <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a>
   <ul class="collapse">
-<li><a href="#previous-research" id="toc-previous-research" class="nav-link" data-scroll-target="#previous-research">Previous Research</a></li>
-  </ul>
-</li>
+  <li><a href="#previous-research" id="toc-previous-research" class="nav-link" data-scroll-target="#previous-research">Previous Research</a></li>
+  </ul></li>
   <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
-  <li>
-<a href="#methodology" id="toc-methodology" class="nav-link" data-scroll-target="#methodology">Methodology</a>
+  <li><a href="#methodology" id="toc-methodology" class="nav-link" data-scroll-target="#methodology">Methodology</a>
   <ul class="collapse">
-<li><a href="#nd-half-student-section-effect" id="toc-nd-half-student-section-effect" class="nav-link" data-scroll-target="#nd-half-student-section-effect">2nd Half Student Section Effect</a></li>
+  <li><a href="#nd-half-student-section-effect" id="toc-nd-half-student-section-effect" class="nav-link" data-scroll-target="#nd-half-student-section-effect">2nd Half Student Section Effect</a></li>
   <li><a href="#entire-game-effect" id="toc-entire-game-effect" class="nav-link" data-scroll-target="#entire-game-effect">Entire Game Effect</a></li>
-  </ul>
-</li>
+  </ul></li>
   <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
-  </ul></nav>
-</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
     </div>
 <!-- main -->
-<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content"><div class="cell">
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content">
+
+
+
+
+
+<div class="cell">
 
 </div>
-<section id="background" class="level1"><h1>Background</h1>
+<section id="background" class="level1">
+<h1>Background</h1>
 <p>College basketball holds a special place in my heart. My sister “snuck” me into Cameron Indoor Stadium posing in 10th grade when I posed as one of her graduate student friends. I was there for Jimmermania in 2011. My first published research paper was about college basketball TV audiences in the Final Four. My first major project at ESPN was to redo the college Basketball Power Index (BPI) and create Strength of Record (SOR). My algorithm is still what feeds those rankings on the NCAA selection committees team sheets.</p>
 <p>It is no secret that college basketball has among the largest home advantages in all of sports. There’s many possible reasons why. From travel, rest, unfamiliarity of surroundings to more tangible ones like using a different basketball team to team to the uniqueness of college student sections. In the last decade student sections have gotten much more creative in their attempts to affect the outcome of opposing team shooters making their free throws.</p>
-<section id="previous-research" class="level2"><h2 class="anchored" data-anchor-id="previous-research">Previous Research</h2>
+<section id="previous-research" class="level2">
+<h2 class="anchored" data-anchor-id="previous-research">Previous Research</h2>
 <p>A <a href="https://www.dukechronicle.com/article/2023/11/duke-mens-basketball-free-throw-distractions-graduate-student-section">Duke medical student</a> tabulated the miss percentage for games in the 2020-2021 and 2021-2022 seasons for various different distractions the graduate student section made behind the basket in the second half.</p>
 <p><img src="images/duke_ft_barplot.png" class="img-fluid"></p>
 <p><img src="images/cameron_crazies.png" class="img-fluid"></p>
@@ -313,12 +349,18 @@ window.Quarto = {
 <p>The Harvard Sports Analytics Collective did a <a href="https://harvardsportsanalysis.org/2015/02/how-distracting-is-asus-curtain-of-distraction/">study</a> in 2015 about the Arizona State’s “Curtain of Distraction” and reported that visiting teams shot 60.6% from the free-throw line in the second half compared to 68.6% in the first half. Their estimate was that this distraction was equal to approximately 1.41 points per game. They reported that there was not a statistically significant difference between first half and second half free throw percentages due to the small sample size of their data.</p>
 <p>Luke Benz, a current Harvard PhD student and author of the <code>ncaahoopR</code> package, <a href="https://lukebenz.com/post/asu_curtain/">revisited</a> the Arizona State distraction in 2019 and found that there was not enough evidence to conclude that teams shoot worse against Arizona State than they do at other <em>road</em> games.</p>
 <p>Surely with another 5 years of data one should be able to discern once and for all if Arizona State’s students have made a noticeable effect and if other teams have had similar impacts as well.</p>
-</section></section><section id="data" class="level1"><h1>Data</h1>
+</section>
+</section>
+<section id="data" class="level1">
+<h1>Data</h1>
 <p>I used data from the 2015-2016 college basketball season until the current season’s data (2023-2024). I excluded the 2020-21 seasons due to many arenas not having fans at their games due to the reaction to the COVID-19 pandemic. I grouped any home team that has less than 15 games in the dataset into one collective team.</p>
 <p>I made sure to only look at true road games, not games where the visiting team is playing at a neutral site. Whether or not something is listed as neutral site is sometimes subjective, I used the neutral site tag that can be found via the ESPN.com API.</p>
-</section><section id="methodology" class="level1 page-columns page-full"><h1>Methodology</h1>
+</section>
+<section id="methodology" class="level1 page-columns page-full">
+<h1>Methodology</h1>
 <p>Each of the previous methods take a slightly different approach to estimating a crowd’s affect on free throw shooting. Each has its advantages but with more seasons I will attempt to revisit the 2nd half analysis as well as estimate which home venues affect free throws <em>throughout</em> the game as opposed to only the second half.</p>
-<section id="nd-half-student-section-effect" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="nd-half-student-section-effect">2nd Half Student Section Effect</h2>
+<section id="nd-half-student-section-effect" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="nd-half-student-section-effect">2nd Half Student Section Effect</h2>
 <p>I filtered the data to teams that have at least 200 free throws attempted at their home court in <em>both</em> the first half and second half over the course of this data set. The top 10 in terms of <strong>largest drop-off in free-throw percentage</strong> from the first half to the second half can be seen in the table below.</p>
 <div class="cell">
 
@@ -329,7 +371,8 @@ window.Quarto = {
 <div class="cell">
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -340,7 +383,8 @@ window.Quarto = {
 <div class="cell">
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -349,7 +393,8 @@ window.Quarto = {
 <div class="cell">
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -808,21 +853,18 @@ window.Quarto = {
 <p>There are some familiar names, including our famous “Curtain of Distraction” team, Arizona State among the biggest drop offs from the first half to the second, and with the additional years of data, the result is statistically significant.</p>
 <p>BYU, another team that is increasingly known for its wild student section behind the basket in the second half, is also high on this list. While I don’t have data on all the teams and where their student sections are I did quick research on where many of the teams in the top 10 of this list have their student sections in the second half.</p>
 <ul>
-<li>Valparaiso: <em>behind visiting basket</em>
-</li>
+<li>Valparaiso: <em>behind visiting basket</em></li>
 <li>Lamar: I couldn’t find</li>
-<li>Milwaukee: <em>behind visiting basket</em>
-</li>
-<li>Arizona State: <em>behind visiting basket</em>
-</li>
-<li>BYU: <em>behind visiting basket</em>
-</li>
-<li>Middle Tennessee State: <em>behind visiting basket</em>
-</li>
+<li>Milwaukee: <em>behind visiting basket</em></li>
+<li>Arizona State: <em>behind visiting basket</em></li>
+<li>BYU: <em>behind visiting basket</em></li>
+<li>Middle Tennessee State: <em>behind visiting basket</em></li>
 </ul>
 <div class="quarto-figure quarto-figure-center page-columns page-full">
-<figure class="figure page-columns page-full"><p><img src="images/byu_student_section.png" class="img-fluid figure-img"></p>
-<figcaption class="margin-caption">BYU’s Student Section Attempting to Distract Opposing Shooter</figcaption></figure>
+<figure class="figure page-columns page-full">
+<p><img src="images/byu_student_section.png" class="img-fluid figure-img"></p>
+<figcaption class="margin-caption">BYU’s Student Section Attempting to Distract Opposing Shooter</figcaption>
+</figure>
 </div>
 <p>Some not surprising names appear near the top of this list. Although, it is possible that with over 350 Division I basketball teams, that some by shear randomness, some will have a significant first half to second half effect on opposing free throw shooters.</p>
 <p>There are some corrections for significance testing for multiple tests that one can do such as the Bonferroni correction which would lower a significance threshold by dividing by the number of tests, so if we had a <span class="math inline">\(\alpha = 0.05\)</span> threshold the new one would be <span class="math inline">\(\frac{\alpha}{n}\)</span> where <span class="math inline">\(n=355\)</span> teams in our dataset. Bonferroni is known for being overly conservative, and this surely would be an extremely high standard.</p>
@@ -840,10 +882,13 @@ window.Quarto = {
 <div class="cell">
 
 </div>
-</section><section id="entire-game-effect" class="level2"><h2 class="anchored" data-anchor-id="entire-game-effect">Entire Game Effect</h2>
+</section>
+<section id="entire-game-effect" class="level2">
+<h2 class="anchored" data-anchor-id="entire-game-effect">Entire Game Effect</h2>
 <p>Everything so far has been to look at the first half vs the second half free throw percentage for each team. Some teams don’t put their student sections behind the basket or don’t have a set routine to distract shooters. In fact, college basketball has many teams in Division I with no stands behind the basket whatsoever.</p>
 <p>A different way to analyze the affect a crowd has on free throw shooting would be to build a model that adjusted for the visiting team’s true ability in free throw shooting percentage. This model would ignore half by half effects and simply look at each game as a whole.</p>
-<section id="why-use-team-performance" class="level4"><h4 class="anchored" data-anchor-id="why-use-team-performance">Why Use Team Performance?</h4>
+<section id="why-use-team-performance" class="level4">
+<h4 class="anchored" data-anchor-id="why-use-team-performance">Why Use Team Performance?</h4>
 <p>Free throws should follow a Poisson-Binomial process. While each shot is an independent event, the probability of success should vary because each player has a different shooting ability. Player shooting samples sizes are too small for game by game analysis, so I stuck to using a team’s free throw shooting percentage on a game to game basis. I used the difference of the visiting team’s free throw shooting percentage in that game to its free throw shooting percentage in home games that season.</p>
 <p>Others have pointed out that it is not clear whether a better comparison for effectiveness of a crowd would be to compare free throw percentage of the visiting team’s other <em>road</em> games or to compare them to their <em>home</em> games.</p>
 <p>I chose home games. I did this because each team’s home games are in the same location each time, reducing the effect that a unique road schedule may have on teams in certain conferences more than others. One example would be teams that have to, on average, travel further or to higher elevations in their conference. My <a href="https://www.espn.com/blog/statsinfo/post/_/id/130346/bracket-tips-from-the-basketball-power-index">previous work</a> on BPI and SOR at ESPN consistently showed elevation to have an effect on team efficiency in college basketball and <a href="https://arxiv.org/pdf/1701.05976">this paper</a> from Lopez, Matthews, &amp; Baumer suggested market lines adjust for it in professional sports.</p>
@@ -857,20 +902,27 @@ y_i &amp;= \beta_0 + \gamma_j + g(x_{1,i})\boldsymbol{\beta} + \epsilon\\
 <p>where <span class="math inline">\(y_i\)</span> is the difference the visiting team’s free throw percentage in game <span class="math inline">\(i\)</span> and its free throw percentage in their home games that season. <span class="math inline">\(\gamma_j\)</span> is the effect of the home team <span class="math inline">\(j\)</span>’s home crowd/venue on the free throw percentage for the visiting team. <span class="math inline">\(g(x_i)\)</span> is a nonlinear natural spline on the absolute value of the final score margin. This was motivated by wanting to adjust for free throw differences in games that are close at the end compared to others.</p>
 <p>The home venue effect is given a Laplace prior distribution centered around 0. The Laplace prior is equivalent to LASSO regression and shrinks estimates towards 0. I also weighted the observations by the total number of free throw attempts in the game.</p>
 <p>This method can’t differentiate between crowd effects and the effect of long travel or high elevation since that data wasn’t as readily available. The model should be able to account for differences in visiting teams free throw ability, overall difficulty of shooting free throws on the road, the effect of close games, and the empirical average impact of the venue played at.</p>
-</section></section></section><section id="results" class="level1"><h1>Results</h1>
+</section>
+</section>
+</section>
+<section id="results" class="level1">
+<h1>Results</h1>
 <div class="cell">
 
 </div>
 <p>Using the posterior draws for the team effects from the model I calculated the estimated effect a team’s home court has on the opposing team’s free throw percentage. I also calculated the <em>probability</em> that a team’s home court has an effect that decreases the probability of an opponent making a free throw <strong>above that of the average road venue</strong>.</p>
 <div class="cell">
 <div class="cell-output-display">
+<div>
 <table class="lightable-classic table table-sm table-striped small" data-quarto-postprocess="true">
 <caption>Fixed Effects on Visiting Team Free Throw Percentage</caption>
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">term</th>
 <th style="text-align: right;" data-quarto-table-cell-role="th">estimate</th>
 <th style="text-align: right;" data-quarto-table-cell-role="th">std.error</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
@@ -894,6 +946,9 @@ y_i &amp;= \beta_0 + \gamma_j + g(x_{1,i})\boldsymbol{\beta} + \epsilon\\
 </tr>
 </tbody>
 </table>
+
+
+</div>
 </div>
 </div>
 <p>The negative coefficients of the absolute value of the scoring difference confirms that there is an effect of a close game on free throw percentage. Closer games have higher free throw shooting percentages. The intercept is interpreted as the average change in free throw percentage for playing on the road versus at home (a decrease of 1.2%).</p>
@@ -1353,12 +1408,15 @@ y_i &amp;= \beta_0 + \gamma_j + g(x_{1,i})\boldsymbol{\beta} + \epsilon\\
 <div class="cell">
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-</section><section id="conclusion" class="level1"><h1>Conclusion</h1>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
 <p>Although a handful of teams have a statistically significant impact on 2nd half free throw percentage compared to first for the visiting team, it doesn’t hold up if one adjusts for testing every team in the country. If you were to do a multiple test on only teams with student sections behind the visiting team’s second half basket (data I don’t have) it likely would hold up for some teams under a multiple tests adjustment.</p>
 <p>The magnitude of the effect is important here. The average free throw attempts (FTA) per game is 20.3. The average 2nd half FTA per game is 11.3. That means the impact of the crowd with the largest second half free throw effect is roughly 0.7 points per 2nd half.</p>
 <p>For the whole game, teams playing at NJIT had a -4.5% estimated decrease in free throw percentage. This would equate to a <span class="math inline">\(0.045*20.3 = 0.9\)</span> points per game impact based on free throws alone over the average venue in the country. That is something! But it is a bit smaller than the 1.4 points per game for Arizona State that was estimated in previous work.</p>
@@ -1368,7 +1426,10 @@ y_i &amp;= \beta_0 + \gamma_j + g(x_{1,i})\boldsymbol{\beta} + \epsilon\\
 
 <!-- -->
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -1642,6 +1703,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   if (showAllCode) {
     showAllCode.addEventListener("click", toggleCodeHandler(true));
   }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/sabinanalytics\.com");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -1676,7 +1755,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');
@@ -1949,8 +2032,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script><script src="https://giscus.app/client.js" data-repo="sabinanalytics/sabinanalytics.github.io" data-repo-id="R_kgDOK7or4w" data-category="Blog comments" data-category-id="DIC_kwDOIg6EJc4CSz92" data-mapping="pathname" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
-</script><input type="hidden" id="giscus-base-theme" value="light"><input type="hidden" id="giscus-alt-theme" value="dark"><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+</script>
+<script src="https://giscus.app/client.js" data-repo="sabinanalytics/sabinanalytics.github.io" data-repo-id="R_kgDOK7or4w" data-category="Blog comments" data-category-id="DIC_kwDOIg6EJc4CSz92" data-mapping="pathname" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark"><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Can A College Crowd Affect Free Throws?"</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> 2024-02-28</span></span>
@@ -2590,7 +2676,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer">
+<footer class="footer">
+  <div class="nav-footer">
     <div class="nav-footer-left">
 <p><span class="faux-block"><iconify-icon inline="" icon="fa6-regular:copyright"></iconify-icon> 2023-2024 Paul Sabin</span></p>
 </div>   
@@ -2602,6 +2689,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>
   </div>
 </footer>
+
+
 
 
 </body></html>

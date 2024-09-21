@@ -5,15 +5,35 @@ title-block-banner-color: "#FFFFFF"
 page-layout: full
 toc: true
 toc-location: right
+execute:
+  echo: false
+  warning: false
+  error: false
+  message: false
 ---
-
+```{r}
+library(aws.s3)
+library(gtExtras)
+library(readr)
+bucket_name <- "s3://sagemaker-studio-m35e50pwfmm/"
+html_file_path <- "College Football/Output/HTML Tables/"
+html_rankings_table <- aws.s3::s3read_using(
+  FUN = read_rds,
+  bucket = bucket_name,
+  object = paste0(html_file_path, "Sabin_Power_Ratings_CURRENT.rds")
+  )
+```
 
 # Power Ratings
 
 ::: {#powerratings}
-```{=html}
-<iframe width="1000" height="1200" src="https://sagemaker-studio-m35e50pwfmm.s3.amazonaws.com/College+Football/Output/HTML+Tables/Sabin_Power_Ratings_CURRENT.html" title=""></iframe>
+
+```{r}
+html_rankings_table
 ```
+<!-- ```{=html} -->
+<!-- <iframe width="1000" height="1200" src="https://sagemaker-studio-m35e50pwfmm.s3.amazonaws.com/College+Football/Output/HTML+Tables/Sabin_Power_Ratings_CURRENT.html" title=""></iframe> -->
+<!-- ``` -->
 :::
 # Game Predictions
 
