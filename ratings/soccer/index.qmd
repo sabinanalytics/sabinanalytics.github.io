@@ -5,13 +5,30 @@ title-block-banner-color: "#FFFFFF"
 page-layout: full
 toc: true
 toc-location: right
+execute:
+  echo: false
+  warning: false
+  error: false
+  message: false
 ---
+
+```{r}
+library(aws.s3)
+library(gtExtras)
+library(readr)
+bucket_name <- "s3://sagemaker-studio-m35e50pwfmm/"
+epl_rankings_table <- aws.s3::s3read_using(
+  FUN = read_rds,
+  bucket = bucket_name,
+  object = "soccer_data/tables/epl_projections.rds"
+  )
+```
 
 # English Premier League
 
 ::: {#EPL}
-```{=html}
-<iframe width="1000" height="1200" src="https://sagemaker-studio-m35e50pwfmm.s3.amazonaws.com/soccer_data/tables/epl_projections.html" title=""></iframe>
+```{r}
+epl_rankings_table
 ```
 :::
 
