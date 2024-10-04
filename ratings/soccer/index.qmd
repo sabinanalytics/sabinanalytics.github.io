@@ -15,7 +15,7 @@ execute:
 ```{r}
 library(aws.s3)
 library(gtExtras)
-library(readr)
+library(tidyverse)
 bucket_name <- "s3://sagemaker-studio-m35e50pwfmm/"
 epl_rankings_table <- aws.s3::s3read_using(
   FUN = read_rds,
