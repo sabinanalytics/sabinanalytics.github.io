@@ -72,6 +72,34 @@ ul.task-list li input[type="checkbox"] {
 }</script><script>
 
   window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-posts_2025 .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-project','listing-preview','listing-render','listing-format','listing-editor','listing-freeze','listing-bibliography','listing-csl','listing-pagetitle','listing-author-meta','listing-website','listing-_quarto-vars','listing-language','listing-date-format','listing-title-block-banner','listing-toc','listing-toc-title','listing-toc-location','listing-execute','listing-author','listing-title','listing-date','listing-description','listing-categories','listing-image','listing-twitter-card','listing-open-graph','listing-path','listing-outputHref','listing-date-modified','listing-filename','listing-file-modified','listing-reading-time','listing-word-count',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-date-modified-sort'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
+      
+      searchColumns: ["listing-project","listing-preview","listing-render","listing-format","listing-editor","listing-freeze","listing-bibliography","listing-csl","listing-pagetitle","listing-author-meta","listing-website","listing-_quarto-vars","listing-language","listing-date-format","listing-title-block-banner","listing-toc","listing-toc-title","listing-toc-location","listing-execute","listing-author","listing-title","listing-date","listing-description","listing-categories","listing-image","listing-twitter-card","listing-open-graph","listing-path","listing-outputHref","listing-date-modified","listing-filename","listing-file-modified","listing-reading-time","listing-word-count"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-posts_2025'] = new List('listing-posts_2025', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
     const listingTargetEl = window.document.querySelector('#listing-posts_2024 .list');
     if (!listingTargetEl) {
       // No listing discovered, do not attach.
@@ -241,9 +269,10 @@ window.Quarto = {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Year</h2>
    
   <ul>
-<li><a href="#section" id="toc-section" class="nav-link active" data-scroll-target="#section">2024</a></li>
+<li><a href="#section" id="toc-section" class="nav-link active" data-scroll-target="#section">2025</a></li>
+  <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1">2024</a></li>
   </ul></nav>
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(3)</span></div><div class="category" data-category="EPA">EPA <span class="quarto-category-count">(2)</span></div><div class="category" data-category="basketball">basketball <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bayesian">bayesian <span class="quarto-category-count">(1)</span></div><div class="category" data-category="college">college <span class="quarto-category-count">(1)</span></div><div class="category" data-category="college football">college football <span class="quarto-category-count">(1)</span></div><div class="category" data-category="football">football <span class="quarto-category-count">(2)</span></div><div class="category" data-category="free throws">free throws <span class="quarto-category-count">(1)</span></div><div class="category" data-category="home field advantage">home field advantage <span class="quarto-category-count">(1)</span></div><div class="category" data-category="sports analytics">sports analytics <span class="quarto-category-count">(3)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(4)</span></div><div class="category" data-category="EPA">EPA <span class="quarto-category-count">(3)</span></div><div class="category" data-category="NFL">NFL <span class="quarto-category-count">(1)</span></div><div class="category" data-category="basketball">basketball <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bayesian">bayesian <span class="quarto-category-count">(1)</span></div><div class="category" data-category="college">college <span class="quarto-category-count">(1)</span></div><div class="category" data-category="college football">college football <span class="quarto-category-count">(1)</span></div><div class="category" data-category="football">football <span class="quarto-category-count">(3)</span></div><div class="category" data-category="free throws">free throws <span class="quarto-category-count">(1)</span></div><div class="category" data-category="home field advantage">home field advantage <span class="quarto-category-count">(2)</span></div><div class="category" data-category="sports analytics">sports analytics <span class="quarto-category-count">(4)</span></div></div></div>
 <!-- main -->
 <main class="content quarto-banner-title-block column-page-left" id="quarto-document-content"><div class="cell">
 <style type="text/css">
@@ -252,7 +281,60 @@ window.Quarto = {
 }
 </style>
 </div>
-<section id="section" class="level2"><h2 class="anchored" data-anchor-id="section">2024</h2>
+<section id="section" class="level2"><h2 class="anchored" data-anchor-id="section">2025</h2>
+<div id="listing-posts_2025" class="quarto-listing quarto-listing-container-custom">
+<div class="list blog">
+    
+    <div class="blog-entry" data-index="0" data-categories="NFL,football,home field advantage,sports analytics,EPA" data-listing-date-sort="1738299600000" data-listing-file-modified-sort="1738002055160" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="29" data-listing-word-count-sort="5680">
+        <div class="metadata">          
+            <p class="date listing-date">January 31, 2025</p>
+        </div>
+        <div class="body">
+            <p class="title listing-title"><a href="../blog/2025/01:hfa-football/index.html">Home Field Advantage in the NFL</a></p>
+
+            
+            <div class="post-categories listing-categories">
+                
+                <div class="post-category listing-category" onclick="window.quartoListingCategory('NFL'); return false;">
+                    NFL
+                </div>
+                
+                <div class="post-category listing-category" onclick="window.quartoListingCategory('football'); return false;">
+                    football
+                </div>
+                
+                <div class="post-category listing-category" onclick="window.quartoListingCategory('home field advantage'); return false;">
+                    home field advantage
+                </div>
+                
+                <div class="post-category listing-category" onclick="window.quartoListingCategory('sports analytics'); return false;">
+                    sports analytics
+                </div>
+                
+                <div class="post-category listing-category" onclick="window.quartoListingCategory('EPA'); return false;">
+                    EPA
+                </div>
+                
+            </div>
+            
+
+            <p class="description listing-description">Has it shrunk? Is it caused by penalties?</p>
+            
+            
+        </div>
+        
+        <div class="thumbnail">
+            <img src="../blog/2025/01:hfa-football/images/nfl_logo.png" alt="Home Field Advantage in the NFL" title="Home Field Advantage in the NFL">
+</div>
+        
+    </div>
+    
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div>
+</section><section id="section-1" class="level2"><h2 class="anchored" data-anchor-id="section-1">2024</h2>
 <div id="listing-posts_2024" class="quarto-listing quarto-listing-container-custom">
 <div class="list blog">
     

@@ -6,3 +6,6 @@
 .quarto
 
 /.quarto/
+blog/2024/07:cfb-hfa-comparison/stan/cfb_hfa_mod.rds
+blog/2024/07:cfb-hfa-comparison/stan/unique_hfa_mod_first_half.rds
+blog/2024/07:cfb-hfa-comparison/stan/unique_hfa_mod_second_half.rds

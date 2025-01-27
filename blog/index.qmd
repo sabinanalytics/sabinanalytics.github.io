@@ -3,6 +3,11 @@ title: "Sabin Analytics Blog"
 author: ""
 description: "Thoughts from Paul Sabin"
 listing:
+  - id: posts_2025
+    contents: "2025/**/index.qmd"
+    sort: "date desc"
+    template: ../html/blog/listing.ejs
+    categories: true
   - id: posts_2024
     contents: "2024/**/index.qmd"
     sort: "date desc"
@@ -22,6 +27,11 @@ engine: knitr
     display: none;
 }
 ```
+
+## 2025
+
+:::{#posts_2025}
+:::
 
 ## 2024
 

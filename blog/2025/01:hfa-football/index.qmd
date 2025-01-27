@@ -1,0 +1,605 @@
+---
+title: "Home Field Advantage in the NFL"
+date: 2025-01-31
+author: "Paul Sabin"
+description: "Has it shrunk? Is it caused by penalties?"
+categories:
+  - NFL
+  - football
+  - home field advantage
+  - sports analytics
+  - EPA
+image: "images/nfl_logo.png"
+twitter-card:
+  image: "images/nfl_logo.png"
+open-graph:
+  image: "images/nfl_logo.png"
+format:
+    html:
+      code-fold: true
+      code-summary: "Show the code"
+editor: visual
+execute:
+  echo: false
+  warning: false
+  error: false
+  message: false
+  cache: false
+---
+
+```{r}
+library(tidyverse)
+# library(cfbfastR)
+library(lubridate)
+library(splines)
+library(rstanarm)
+library(broom.mixed)
+library(rstan)
+library(rstanarm)
+library(kableExtra)
+library(viridis)
+library(tidybayes)
+library(gtExtras)
+library(ggimage)
+library(nflfastR)
+# source("r/get_gamma_parameters.R")
+source("r/haversine_distance.R")
+source("r/get_utc_offset.R")
+options(tibble.width = Inf)
+options(mc.cores = parallel::detectCores())
+options(scipen= 999)
+current_year <- 2024
+historical_seasons <- 20
+all_seasons <- (current_year - historical_seasons + 1):current_year
+#function to convert team abbreviations with name changes for PBP data
+source("r/convert_team_abbreviation.R")
+
+```
+
+```{r}
+
+# nfl_participation <- nflreadr::load_participation(run_season)
+nfl_rosters <- nflreadr::load_rosters_weekly(all_seasons)
+# nfl_contracts <- nflreadr::load_contracts()
+nfl_schedule <- nflreadr::load_schedules()
+nfl_player_stats <- load_player_stats(all_seasons)
+nfl_pbp <- load_pbp(all_seasons)
+
+
+## add a indicator for home vs neutral vs away team (1, 0, -1)
+nfl_pbp <- nfl_pbp |> 
+  mutate(posteam_site_ind = case_when(location == "Neutral" ~ 0, 
+                                      posteam == home_team ~ 1,
+                                      posteam == away_team ~ -1,
+                                      TRUE ~ NA_real_),
+         posteam_site = case_when(location == "Neutral" ~ "neutral",
+                                  posteam == home_team ~ "home",
+                                  posteam == away_team ~ "away",
+                                  TRUE ~ NA_character_)
+         )
+
+#adjust team names for pbp data when teams move or change names
+nfl_pbp <- convert_team_abbreviation(data = nfl_pbp, col_name = 'posteam', team_conversion)
+nfl_pbp <- convert_team_abbreviation(data = nfl_pbp, col_name = 'defteam', team_conversion)
+
+
+```
+
+# Introduction
+
+In 2017 as faculty at Skidmore College, current Senior Director of Analytics of the NFL Michael Lopez wrote a paper with his coauthors Greg Matthews and Ben Baumer where they used gambling odds to determine how often the better team ends up winning across the four major North American sports. As a result of this paper, they estimated the individual home field advantage for each of the teams in four major sports leagues in North America. Overall the paper estimated the NFL to have the second largest home field advantage (after the NBA) of the four major professional North American sports.
+
+While their Bayesian model ranked the home field advantage of each team, and found Denver (altitude anyone?) to have the highest posterior mean in each sport, for the NFL the 95% posterior intervals for all the teams overlapped, meaning the data was not indisputable that some teams have harder home fields than others.
+
+![HFA Estimates from 'How Often Does the Best Team Win?'](images/best_team_win.png)I personally wrote on [my blog in 2024](https://sabinanalytics.com/blog/2024/07:cfb-hfa-comparison/) trying to estimate differences in college home field's by fitting an expected points added (EPA) based power ranking with individual home field effects for each team as opposed to one overall one. This work found that the elite teams or typical "toughest" places to play as ranked by EA sport's College Football video game franchise didn't line up with the model because most of those toughest places to play in the video game were just the home fields of typically very good programs, not especially difficult crowds or stadiums (compared to any other college football stadium).
+
+Such Bayesian power ranking based methods as mine or Lopez, Baumer, & Matthews 2017 paper can and will always *rank* a team's home field advantage, but have a hard time finding in noisy game results posterior distributions of individual home field advantages that don't overlap significantly.
+
+Also in 2024 I looked at [college basketball](https://sabinanalytics.com/blog/2024/02:28:do-college-crowds-affect-free-throws/) to see if you could do something similar. Like my college football work or the aforementioned "How often does the best team win?" paper, the number of teams with 95% posterior significance from an average home field advantage was right in line with what you would expect with multiple testing. *But...* I was able to show one specific aspect of home field advantage (free throws) were impacted in stadiums where the opposing student sections were directly behind the visiting team's basket in the 2nd half.
+
+## Home Field Advantage by Year
+
+The easiest way to estimate home field advantage by year is to build a model which accounts for the teams in each game, the scoring efficiences of each team, and the location of the game. This model can then be used to estimate the home field advantage for each year.
+
+I will use expected points added (EPA) per play as the efficiency metric for each team in each game. I will use a Bayesian model to estimate the home field advantage for each year. I will ignore all QB kneels, spikes, and kickoffs in the model as these plays are not indicative of a team's efficiency. The EPA model used is the one included with NFLFastR which is built via XGBoost. There may be better models out there, especially in edge situations, but this model is still very good and the most easy to access.
+
+```{r}
+nfl_epa_game <- nfl_pbp |> 
+  filter(!is.na(play_type), 
+         !play_type %in% c("qb_kneel", "qb_spike", "kickoff"),
+         !is.na(posteam),
+         !is.na(epa)
+         ) |> 
+  group_by(game_id, 
+           season,
+           posteam, 
+           defteam,
+           posteam_site_ind, 
+           posteam_site) |> 
+  summarize(epa_game = sum(epa), 
+            epa_play = mean(epa), 
+            plays = n()) |> 
+  #adjust each to be "vs average" in each season
+  group_by(season) |> 
+  mutate(epa_play = epa_play - weighted.mean(epa_play, w = plays),
+         epa_game = epa_game - weighted.mean(epa_game, w = plays),
+         epa_per_70 = epa_play*70) |> 
+  ungroup()
+
+# add in rest and other factors like outdoors grass
+nfl_epa_game <- nfl_epa_game |> 
+   left_join(nfl_schedule |> 
+              dplyr::select(game_id,
+                            home_team,
+                            away_team,
+                            roof, 
+                            surface,
+                            referee,
+                            stadium_id, 
+                            stadium,
+                            home_rest,
+                            away_rest),
+            by = c("game_id")
+            ) |> 
+  mutate(team_rest = ifelse(posteam == home_team, home_rest, away_rest),
+         opp_rest = ifelse(posteam == home_team, away_rest, home_rest),
+         team_rest_effect = team_rest - opp_rest,
+         indoors = ifelse(roof == "dome" | roof == "closed", 1, 0),
+         grass = ifelse(str_detect(surface, "grass"), 1, 0),
+         )
+```
+
+Now I will fit the model. In this format it acts like ridge regression, shrinking estimates to 0, which will be good for estimating season by season home field advantage and team effects. I will also put a spline on the difference for team rest, as I have found in the past that the effect of rest is not linear. Be sure to include separate team effects for offense and defense for each season.
+
+```{r}
+#so the bayesian model runs in parallel
+options(mc.cores = parallel::detectCores())
+
+#
+nfl_epa_game <- nfl_epa_game |> 
+  mutate(team_season = paste0(posteam, "_", season),
+         defteam_season = paste0(defteam, "_", season)
+         )
+
+library(lme4)
+#bayesian model 
+epa_game_model <- lmer(epa_per_70 ~ -1 + #no intercept since I made them all mean 0
+                              bs(team_rest_effect, df = 3) +
+                              indoors +
+                              grass +
+                              (1 | team_season) + 
+                              (1 | defteam_season) + 
+                              factor(season):posteam_site_ind,
+                            data = nfl_epa_game) 
+```
+
+Here are the model's estimated effects for the home team for 70 plays on offense in a game by season. Remember this is the effect of playing at home vs neutral, so home vs road would be double this effect for the offensive plays, but 4 times it for home vs away for all plays in a game.
+
+```{r}
+home_effects <- tidy(epa_game_model) |> 
+  filter(str_detect(term, "posteam_site")) |>
+  mutate(season = str_extract(term, "\\d{4}"),
+         home_vs_away_full_game = estimate*4)
+
+
+home_effects |> 
+  dplyr::select(season, estimate, home_vs_away_full_game) |>
+  gt() |>
+  cols_label(
+    estimate = "EPA vs Neutral 70 Plays",
+    season = "Season",
+    home_vs_away_full_game = "EPA vs Road per Game"
+  ) |> 
+  #round last 2 columns to 2 digits
+  fmt_number(
+    columns = where(is.numeric) & !matches("season"),
+    decimals = 2
+  )
+```
+
+The nfl is really a pretty small sample size each season, so there shouldn't be a surprise it fluctuates in estimates the way it does, but overall we can see that there is a home field advantage over the long run.
+
+```{r}
+home_effects |> 
+  ggplot(aes(x = as.numeric(season), y = home_vs_away_full_game)) +
+  geom_line() +
+  geom_hline(yintercept = 0, linetype = 2, color = 'red') +
+  theme_minimal() +
+  labs(title = "Home Field Advantage by Year",
+       subtitle = "2005-2024",
+       y = "EPA/game",
+       x = "Season")
+```
+
+So there is a home field, but it does fluctuate year to year. There are various theories as to what causes it but one such one is that the away team gets rattled or the ref calls more penalties on them. Let's dive in.
+
+## Causes of Home Field Advantage
+
+<!-- First I need to load in the data. -->
+
+Now I want to look at the different play types in the NFL. I am going to focus on penalties. I will look at the different types of plays to familiarize myself with them in order to focus penalties.
+
+```{r}
+nfl_pbp |> 
+  count(play_type, play_type_nfl) |>
+  gt() |>
+  cols_label(
+    play_type = "Play Type",
+    play_type_nfl = "Play Type (NFL)"
+  )
+```
+
+It is clear that the only denotation of a penalty is in the `play_type_nfl` column. First I need to make sure this isn't only penalties accepted but also penalties given (but declined).
+
+```{r}
+nfl_pbp |> 
+  filter(!is.na(penalty), penalty == 1) |> 
+  count(play_type_nfl)
+```
+
+I know what to know what fields there are corresponding to penalties already in the dataset.
+
+```{r}
+nfl_pbp |> 
+  filter(!is.na(penalty), penalty == 1) |> 
+  select(contains("penalty")) |> 
+  slice(1:10) |> 
+  gt()
+```
+
+A really quick exploratory data analysis would be to look and see the average penalties and penalty yards per game for a team at home vs away in a season in the NFL.
+
+```{r}
+avg_penalty_by_site <- nfl_pbp |> 
+  filter(!is.na(penalty), penalty == 1) |> 
+  group_by(season, posteam, posteam_site, game_id) |> 
+  summarize(penalties = sum(penalty),
+            penalty_yards = sum(penalty_yards)) |> 
+  group_by(season, posteam, posteam_site) |>
+  summarize(avg_penalties = mean(penalties),
+            avg_penalty_yards = mean(penalty_yards),
+            .groups = 'drop') |> 
+  pivot_wider(names_from = posteam_site, 
+              values_from = c(avg_penalties, avg_penalty_yards)) |>
+  mutate(home_vs_away_penalties = avg_penalties_home - avg_penalties_away,
+         home_vs_away_penalty_yards = avg_penalty_yards_home - avg_penalty_yards_away) 
+
+
+avg_penalty_by_site |> 
+  filter(season == 2024) |> 
+  arrange(desc(home_vs_away_penalty_yards)) |> 
+  mutate(row_num = 1:n()) |> 
+  dplyr::select(-contains("neutral")) |> 
+  dplyr::select(row_num, everything()) |>
+  gt() |> 
+  cols_align(align = "right", columns = everything()) |>
+  #round to one decimal in all numeric columns
+  fmt_number(
+    columns = where(is.numeric) & !matches("season"),
+    decimals = 1
+  ) |>
+  cols_label(
+    row_num = "",
+    avg_penalties_home = "Avg Penalties (Home)",
+    avg_penalties_away = "Avg Penalties (Away)",
+    avg_penalty_yards_home = "Avg Penalty Yards (Home)",
+    avg_penalty_yards_away = "Avg Penalty Yards (Away)",
+    home_vs_away_penalties = "Home vs Away Penalties",
+    home_vs_away_penalty_yards = "Home vs Away Penalty Yards"
+  ) |> 
+  #color the negative values red and positive green
+  # Apply conditional styling for home_vs_away_penalties
+  tab_style(
+    style = list(
+      cell_text(color = "red")  # Red text for negative values
+    ),
+    locations = cells_body(
+      columns = home_vs_away_penalties,
+      rows = home_vs_away_penalties < 0         # Apply to rows where Value1 is negative
+    )
+  ) |> 
+  tab_style(
+    style = list(
+      cell_text(color = "blue") # Blue text for positive values
+    ),
+    locations = cells_body(
+      columns = home_vs_away_penalties,
+      rows = home_vs_away_penalties > 0         # Apply to rows where Value1 is positive
+    )
+  ) |> 
+    # Apply conditional styling for home_vs_away_penalty_yards
+  tab_style(
+    style = list(
+      cell_text(color = "red")  # Red text for negative values
+    ),
+    locations = cells_body(
+      columns = home_vs_away_penalty_yards,
+      rows = home_vs_away_penalty_yards < 0         # Apply to rows where Value1 is negative
+    )
+  ) |> 
+  tab_style(
+    style = list(
+      cell_text(color = "blue") # Blue text for positive values
+    ),
+    locations = cells_body(
+      columns = home_vs_away_penalty_yards,
+      rows = home_vs_away_penalty_yards > 0         # Apply to rows where Value1 is positive
+    )
+  ) 
+```
+
+While over half the teams have more penalty yards when on the road than at home in 2024, I was quite surprised there were 13 teams that had more penalty yards per game at home than on the road. Perhaps it is variance to the sample size of 8-9 games for a team in each location per season, but over the 20 year average of this dataset the teams on average have `r round(mean(avg_penalty_by_site$home_vs_away_penalty_yards),1)` more penalty yards per game and `r round(mean(avg_penalty_by_site$home_vs_away_penalties),2)` penalties per game. That goes against everything we would expect from home field advantage regarding penalties. Let's look at this on a year by year basis:
+
+```{r}
+nfl_ssn_avg_penalty_by_site <- avg_penalty_by_site |> 
+  group_by(season) |> 
+  summarize(avg_home_vs_away_penalty_yards = mean(home_vs_away_penalty_yards),
+            avg_home_vs_away_penalties = mean(home_vs_away_penalties),
+            .groups = 'drop')
+  
+  nfl_ssn_avg_penalty_by_site |> 
+  ggplot() +
+  geom_line(aes(x = season, y = avg_home_vs_away_penalty_yards)) +
+  geom_hline(yintercept = 0, linetype = 2, color = 'red') +
+  theme_minimal() +
+  labs(title = "Average Home vs Away Penalty Yards per Game",
+       subtitle = "2005-2024",
+       y = "Average Difference per Game",
+       x = "Season")
+
+
+  nfl_ssn_avg_penalty_by_site |> 
+  ggplot() +
+  geom_line(aes(x = season, y = avg_home_vs_away_penalty_yards)) +
+  geom_hline(yintercept = 0, linetype = 2, color = 'red') +
+  theme_minimal() +
+  labs(title = "Average Home vs Away Penalties per Game",
+       subtitle = "2005-2024",
+       y = "Average Difference per Game",
+       x = "Season")
+```
+
+The empirical trend to the naked eye appears to be an inverse parabola, but perhaps we need to account for more things than just the overall averages which leads us to a model.
+
+```{r}
+
+## pull out relevant pbp variables per play
+nfl_penalty_pbp <- nfl_pbp |> 
+    filter(!is.na(penalty), penalty == 1) |> 
+    dplyr::select(season,
+                  play_id,
+                  game_id,
+                  posteam,
+                  defteam,
+                  game_date,
+                  posteam_site,
+                  posteam_site_ind,
+                  play_type,
+                  play_type_nfl,#PENALTY an important playtype
+                  penalty,
+                  penalty_type,
+                  penalty_team,
+                  penalty_yards,
+                  ep,
+                  epa,
+                  wp,
+                  wpa,
+                  yards_gained,
+                  half_seconds_remaining,
+                  game_half,
+                  down,
+                  ydstogo,
+                  yardline_100,
+                  posteam_score,
+                  defteam_score,
+                  qb_kneel,
+                  qb_spike,
+                  qb_dropback,
+                  rush_attempt,
+                  pass_attempt,
+                  punt_attempt,
+                  extra_point_attempt,
+                  field_goal_attempt,
+                  kickoff_attempt,
+                  special_teams_play)
+
+```
+
+Now I want to see if there is an impact on penalty yards per game based on the home field advantage but I want to be sure to include a team's typical penalty rate in a game, the NFL trend for that season, the opponents penalty yards given up per game, and perhaps other factors such as the predicted score which I will derive from the betting spread and total.
+
+So I need to take the penalty plays and aggregate them up to the game level, then add in various game specific information at the end such as the predicted spread and total.
+
+```{r}
+
+nfl_penalty_game_summary <- nfl_penalty_pbp |> 
+  group_by(season, 
+           posteam, 
+           posteam_site, 
+           game_id,
+           game_date,
+           ) |> 
+  summarize(penalties = sum(penalty),
+            penalty_yards = sum(penalty_yards),
+            .groups = 'drop') |> 
+  left_join(nfl_schedule |> 
+              dplyr::select(game_id,
+                            home_team,
+                            away_team,
+                            total_line,
+                            spread_line,
+                            roof, 
+                            surface,
+                            referee,
+                            stadium_id, 
+                            stadium,
+                            home_rest,
+                            away_rest),
+            by = c("game_id")
+            )
+```
+
+Now I need to adjust game variables to be from the possessing team's perspective instead of the home team's perspective.
+
+```{r}
+nfl_penalty_game_summary <- nfl_penalty_game_summary |> 
+  mutate(team_rest = ifelse(posteam == home_team, home_rest, away_rest),
+         opp_rest = ifelse(posteam == home_team, away_rest, home_rest),
+         team_rest_effect = team_rest - opp_rest,
+         team_pred_pt_diff = ifelse(posteam == home_team, -spread_line, spread_line),
+         indoors = ifelse(roof == "dome" | roof == "closed", 1, 0),
+         grass = ifelse(str_detect(surface, "grass"), 1, 0),
+         )
+
+```
+
+The last piece of information I want to include into my dataset is the number of plays excluding kneels and spikes in the game so we can normalize the number of penalties by how many "opportunities" there were for a penalty to be called.
+
+```{r}
+nfl_plays_by_game <- nfl_pbp |> 
+  filter(!is.na(play_type), 
+         !play_type %in% c("qb_kneel", "qb_spike", "kickoff")) |> 
+  group_by(game_id) |> 
+  summarize(plays = n())
+
+nfl_penalty_game_summary <- nfl_penalty_game_summary |> 
+  left_join(nfl_plays_by_game, by = 'game_id') |> 
+  mutate(penalty_yards_per_100_plays = penalty_yards / plays * 100)
+
+penalty_model <- lm(penalty_yards_per_100_plays ~ posteam_site +
+                      bs(team_rest_effect, df = 3) +
+                      indoors +
+                      grass +
+                      team_pred_pt_diff + 
+                      total_line,
+                    data = nfl_penalty_game_summary)
+
+```
+
+Let's look at the results.
+
+```{r}
+tidy(penalty_model) |> 
+  gt() |>
+  cols_label(
+    term = "Variable",
+    estimate = "Estimate",
+    std.error = "Standard Error",
+    statistic = "t-value",
+    p.value = "p-value"
+  ) |>
+  fmt_number(
+    columns = where(is.numeric) & !matches("season"),
+    decimals = 2
+  )
+```
+
+Interestingly enough, the model suggests that teams actually get about 1.2 more penalty yards per 100 plays at home than on the road after adjusting for these other factors. But since the `indoors`, `team_rest` and `grass` are nowhere near significant, I will remove them and refit the model.
+
+```{r}
+penalty_model2 <- lm(penalty_yards_per_100_plays ~ posteam_site +
+                      team_pred_pt_diff + 
+                       total_line,
+                    data = nfl_penalty_game_summary)
+
+
+tidy(penalty_model2) |> 
+  gt() |>
+  cols_label(
+    term = "Variable",
+    estimate = "Estimate",
+    std.error = "Standard Error",
+    statistic = "t-value",
+    p.value = "p-value"
+  ) |>
+  fmt_number(
+    columns = where(is.numeric) & !matches("season"),
+    decimals = 2
+  )
+```
+
+The result is pretty much the same. Teams get about 1.2 more penalties at home than on the road after adjusting for the predicted spread and point total. This was certainly a surprise to me.
+
+### Referees
+
+One last thing that may be worth looking at is using the same model we just had but adding a random effect for the referee. Perhaps some referee crews call more penalties than others.
+
+```{r}
+referee_penalty_model <- lmer(penalty_yards_per_100_plays ~ posteam_site +
+                              (1|referee) +
+                      team_pred_pt_diff + 
+                       total_line,
+                    data = nfl_penalty_game_summary)
+
+```
+
+The referee model didn't change the effect of the other variables much but it does provide us some estimates for referee effects.
+
+```{r}
+tidy(referee_penalty_model) |> 
+  gt() |>
+  cols_label(
+    effect = "Effect", 
+    group = "Group",
+    term = "Variable",
+    estimate = "Estimate",
+    std.error = "Standard Error",
+    statistic = "t-value"
+    ) |>
+  fmt_number(
+    columns = where(is.numeric) & !matches("season"),
+    decimals = 2
+  )
+```
+
+Here are the top 10 referees in more penalty yards per 100 plays called in their games.
+
+```{r}
+referee_effects <- tidy(referee_penalty_model, effect = "ran_vals") |> 
+  arrange(desc(estimate)) |> 
+  rename(yards_per_100 = estimate,
+         referee = level)
+
+referee_effects |> 
+  slice(1:10) |> 
+  dplyr::select(referee, yards_per_100, std.error) |> 
+  gt() |>
+  cols_label(
+    referee = "Referee",
+    yards_per_100 = "Penalty Yards per 100 Plays",
+    std.error = "Standard Error"
+  ) |> 
+  #round last 2 columns to 2 digits
+  fmt_number(
+    columns = where(is.numeric) & !matches("season"),
+    decimals = 2
+  )
+```
+
+And here ate the bottom 10 referees in more penalty yards per 100 plays called in their games.
+
+```{r}
+
+referee_effects |> 
+  arrange(yards_per_100) |> 
+  slice(1:10) |> 
+  dplyr::select(referee, yards_per_100, std.error) |> 
+  gt() |>
+  cols_label(
+    referee = "Referee",
+    yards_per_100 = "Penalty Yards per 100 Plays",
+    std.error = "Standard Error"
+  ) |> 
+  #round last 2 columns to 2 digits
+  fmt_number(
+    columns = where(is.numeric) & !matches("season"),
+    decimals = 2
+  )
+```
+
+Clearly some referee crews call more or fewer penalty yards per 100 plays than others. The overall spread of the estimates is -3.48 to 2.7 yards per 100 plays. Since a typical game is about 140 plays, the most effect, on average, we estimate a referee can have on a game is a difference of 8.6 yards penalty yards from the most to least penalizing referees.
+
+# Takeaways
+
+The NFL has a home field advantage, but it fluctuates year to year due to the small sample size in the NFL. The cause of that home field advantage has long been studied but is hard to pin down. One theory that it is due to referee bias doesn't appear to be the case. The average team gets about 1.2 more penalty yards per 100 plays at **home** than on the road after adjusting for the predicted spread and total.
+
+We also looked at individual referees to see how much they impact the game. It turns out that on average there is only an estimated 8.6 yards from penalty difference from the most to least penalizing referees.
