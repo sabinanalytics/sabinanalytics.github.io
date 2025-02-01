@@ -105,10 +105,12 @@ I will use expected points added (EPA) per play as the efficiency metric for eac
 
 ```{r}
 nfl_epa_game <- nfl_pbp |> 
-  filter(!is.na(play_type), 
+  filter(#!is.na(play_type), 
          !play_type %in% c("qb_kneel", "qb_spike", "kickoff"),
+         between(wp, 0.05, 0.95),
          !is.na(posteam),
-         !is.na(epa)
+         !is.na(epa),
+         # special == 0
          ) |> 
   group_by(game_id, 
            season,
@@ -149,7 +151,7 @@ nfl_epa_game <- nfl_epa_game |>
          )
 ```
 
-Now I will fit the model. In this format it acts like ridge regression, shrinking estimates to 0, which will be good for estimating season by season home field advantage and team effects. I will also put a spline on the difference for team rest, as I have found in the past that the effect of rest is not linear. Be sure to include separate team effects for offense and defense for each season.
+I will fit mixed model. In this format it acts like ridge regression, shrinking estimates to 0, which will be good for estimating season by season home field advantage and team effects. I will also put a spline on the difference for team rest, as I have found in the past that the effect of rest is not linear. Be sure to include separate team effects for offense and defense for each season.
 
 ```{r}
 #so the bayesian model runs in parallel
@@ -162,15 +164,31 @@ nfl_epa_game <- nfl_epa_game |>
          )
 
 library(lme4)
-#bayesian model 
-epa_game_model <- lmer(epa_per_70 ~ -1 + #no intercept since I made them all mean 0
+epa_game_model <- lmer(epa_per_70 ~ 
                               bs(team_rest_effect, df = 3) +
                               indoors +
                               grass +
                               (1 | team_season) + 
                               (1 | defteam_season) + 
+                         factor(season) +
                               factor(season):posteam_site_ind,
-                            data = nfl_epa_game) 
+                            data = nfl_epa_game)
+
+tidy(epa_game_model, effects = 'ran_vals') |>
+  filter(str_detect(group, "team_season|defteam_season")) |> 
+  mutate(side = case_when(group == "team_season" ~ "off",
+                          group == "defteam_season" ~ "def",
+                          TRUE ~ NA_character_)) |> 
+  filter(!is.na(side)) |> 
+  mutate(team = str_extract(level, ".+_") |> str_remove("_"),
+         season = str_extract(level, "[[:digit:]]{4}"),
+         estimate = ifelse(side == "def", -estimate, estimate)) |> 
+  dplyr::select(team, season, side, estimate) |> 
+  pivot_wider(values_from = "estimate", names_from = "side") |> 
+  mutate(tot = off + def)
+
+
+
 ```
 
 Here are the model's estimated effects for the home team for 70 plays on offense in a game by season. Remember this is the effect of playing at home vs neutral, so home vs road would be double this effect for the offensive plays, but 4 times it for home vs away for all plays in a game.
@@ -200,15 +218,20 @@ home_effects |>
 The nfl is really a pretty small sample size each season, so there shouldn't be a surprise it fluctuates in estimates the way it does, but overall we can see that there is a home field advantage over the long run.
 
 ```{r}
+avg_hfa <- home_effects |> 
+	summarize(avg_hfa = mean(estimate))
+
 home_effects |> 
   ggplot(aes(x = as.numeric(season), y = home_vs_away_full_game)) +
   geom_line() +
+  geom_hline(data = avg_hfa, aes(yintercept = avg_hfa), linetype = 2, col = 'black') +
   geom_hline(yintercept = 0, linetype = 2, color = 'red') +
   theme_minimal() +
   labs(title = "Home Field Advantage by Year",
        subtitle = "2005-2024",
        y = "EPA/game",
        x = "Season")
+
 ```
 
 So there is a home field, but it does fluctuate year to year. There are various theories as to what causes it but one such one is that the away team gets rattled or the ref calls more penalties on them. Let's dive in.
@@ -456,16 +479,16 @@ The last piece of information I want to include into my dataset is the number of
 
 ```{r}
 nfl_plays_by_game <- nfl_pbp |> 
-  filter(!is.na(play_type), 
-         !play_type %in% c("qb_kneel", "qb_spike", "kickoff")) |> 
+  filter(play_type %in% c("pass", "run", "punt", "field_goal")) |> 
+  filter(!play_type %in% c("qb_kneel", "qb_spike", "kickoff")) |> 
   group_by(game_id) |> 
   summarize(plays = n())
 
 nfl_penalty_game_summary <- nfl_penalty_game_summary |> 
   left_join(nfl_plays_by_game, by = 'game_id') |> 
-  mutate(penalty_yards_per_100_plays = penalty_yards / plays * 100)
+  mutate(penalty_yards_per_70_plays =( penalty_yards / plays) * 70)
 
-penalty_model <- lm(penalty_yards_per_100_plays ~ posteam_site +
+penalty_model <- lm(penalty_yards_per_70_plays ~ posteam_site +
                       bs(team_rest_effect, df = 3) +
                       indoors +
                       grass +
@@ -493,10 +516,10 @@ tidy(penalty_model) |>
   )
 ```
 
-Interestingly enough, the model suggests that teams actually get about 1.2 more penalty yards per 100 plays at home than on the road after adjusting for these other factors. But since the `indoors`, `team_rest` and `grass` are nowhere near significant, I will remove them and refit the model.
+Interestingly enough, the model suggests that teams actually get about 0.95 more penalty yards per 70 plays at home than on the road after adjusting for these other factors. But since the `indoors`, `team_rest` and `grass` are nowhere near significant, I will remove them and refit the model.
 
 ```{r}
-penalty_model2 <- lm(penalty_yards_per_100_plays ~ posteam_site +
+penalty_model2 <- lm(penalty_yards_per_70_plays ~ posteam_site +
                       team_pred_pt_diff + 
                        total_line,
                     data = nfl_penalty_game_summary)
@@ -517,14 +540,14 @@ tidy(penalty_model2) |>
   )
 ```
 
-The result is pretty much the same. Teams get about 1.2 more penalties at home than on the road after adjusting for the predicted spread and point total. This was certainly a surprise to me.
+The result is pretty much the same. Teams get about 0.97 more penalties at home than on the road after adjusting for the predicted spread and point total. This was certainly a surprise to me.
 
 ### Referees
 
 One last thing that may be worth looking at is using the same model we just had but adding a random effect for the referee. Perhaps some referee crews call more penalties than others.
 
 ```{r}
-referee_penalty_model <- lmer(penalty_yards_per_100_plays ~ posteam_site +
+referee_penalty_model <- lmer(penalty_yards_per_70_plays ~ posteam_site +
                               (1|referee) +
                       team_pred_pt_diff + 
                        total_line,
@@ -556,16 +579,16 @@ Here are the top 10 referees in more penalty yards per 100 plays called in their
 ```{r}
 referee_effects <- tidy(referee_penalty_model, effect = "ran_vals") |> 
   arrange(desc(estimate)) |> 
-  rename(yards_per_100 = estimate,
+  rename(yards_per_70 = estimate,
          referee = level)
 
 referee_effects |> 
   slice(1:10) |> 
-  dplyr::select(referee, yards_per_100, std.error) |> 
+  dplyr::select(referee, yards_per_70, std.error) |> 
   gt() |>
   cols_label(
     referee = "Referee",
-    yards_per_100 = "Penalty Yards per 100 Plays",
+    yards_per_70 = "Penalty Yards per 70 Plays",
     std.error = "Standard Error"
   ) |> 
   #round last 2 columns to 2 digits
@@ -575,18 +598,18 @@ referee_effects |>
   )
 ```
 
-And here ate the bottom 10 referees in more penalty yards per 100 plays called in their games.
+And here ate the bottom 10 referees in more penalty yards per 70 plays called in their games.
 
 ```{r}
 
 referee_effects |> 
-  arrange(yards_per_100) |> 
+  arrange(yards_per_70) |> 
   slice(1:10) |> 
-  dplyr::select(referee, yards_per_100, std.error) |> 
+  dplyr::select(referee, yards_per_70, std.error) |> 
   gt() |>
   cols_label(
     referee = "Referee",
-    yards_per_100 = "Penalty Yards per 100 Plays",
+    yards_per_70 = "Penalty Yards per 70 Plays",
     std.error = "Standard Error"
   ) |> 
   #round last 2 columns to 2 digits
@@ -596,7 +619,76 @@ referee_effects |>
   )
 ```
 
-Clearly some referee crews call more or fewer penalty yards per 100 plays than others. The overall spread of the estimates is -3.48 to 2.7 yards per 100 plays. Since a typical game is about 140 plays, the most effect, on average, we estimate a referee can have on a game is a difference of 8.6 yards penalty yards from the most to least penalizing referees.
+Clearly some referee crews call more or fewer penalty yards per 70 plays than others. The overall spread of the estimates is -3.03 to 2.24 yards per 70 plays. Since a typical game is about 140 plays, the most effect, on average, we estimate a referee can have on a game is a difference of 10.54 yards penalty yards from the most to least penalizing referees.
+
+## Do Kansas City opponents get called for more penalties? 
+
+Well that one is really impossible to determine in the data. Why?
+
+Even if the Chiefs have more penalties called on their opponents than other teams, it could be be due for a variety of causal reasons such as:
+
+1.  The Chiefs are usually winning so teams are more desparate, leading to more penalties.
+
+2.  Andy Reid has coached for decades so he knows how to avoid getting penalties called on his team.
+
+3.  Opponents lose their cool due to the pressure of playing the Chiefs dynasty.
+
+4.  ... and yes, if their opponents did get more calls then it ***could theoretically*** be due to referee help.
+
+We can't assign a cause, but do we even know if their opponents are penalized more? Well we can fit a model for that where we try to predict penalty yards for the opponent based on
+
+-   the current team,
+
+-   the opponent,
+
+-   the referee,
+
+-   and a normalizing intercept for the season.
+
+```{r}
+#calculate opp penalty yards per 70 plays
+nfl_penalty_game_summary <- nfl_penalty_game_summary |> 
+  group_by(game_id) |> 
+  mutate(opp_penalty_yds_per_70 = sum(penalty_yards_per_70_plays) - penalty_yards_per_70_plays) |> 
+  ungroup()
+```
+
+Now we fit the mixed effects regression but I will only use data since the 2019 season, the first of the Patrick Mahomes' Super Bowl seasons. I estimate a random effect for all teams and opponent penalty yard effects and a random effect for the referee. I will also adjust for expected the closeness of the game by including the betting lines and totals.
+
+```{r}
+nfl_penalty_game_summary_recent <- nfl_penalty_game_summary |>
+  filter(season >= 2019) |> 
+  mutate(opp = ifelse(posteam == home_team, away_team, home_team)) |> 
+  rename(team = posteam)
+
+team_penalty_help_mod <- lmer(opp_penalty_yds_per_70 ~ factor(season) + 
+                                spread_line*total_line +
+                                (1|referee) + 
+                                (1|team) + 
+                                (1|opp),
+                              data = nfl_penalty_game_summary_recent
+                                )
+
+```
+
+Let's look at the fixed effects:
+
+```{r}
+tidy(team_penalty_help_mod) |> 
+  dplyr::select(term:last_col()) |> 
+  mutate_at(vars(estimate:last_col()), ~round(.x, digits = 2)) 
+```
+
+And the random effects for teams, sorted by the teams that get biggest increase in opponent penalty yards per 70 plays to the least.
+
+```{r}
+tidy(team_penalty_help_mod, effects = "ran_vals") |> 
+  filter(group == "team") |> 
+  dplyr::select(team = level, 
+                estimate, 
+                std.error) |> 
+  arrange(desc(estimate))
+```
 
 # Takeaways
 
