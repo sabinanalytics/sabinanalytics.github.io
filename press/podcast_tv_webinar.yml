@@ -1,9 +1,8 @@
-- date 2024-06-14
+- date: 2024-06-14
   description: "Learning Bayesian Statistics"
   links:
-  - name: Modeling Sports & Extracting Player Values, with Paul Sabin
+  - name: Modeling Sports and Extracting Player Values, with Paul Sabin
     url: https://www.youtube.com/watch?v=_t9J9W5aa5E
-url: https://www.youtube.com/watch?v=_t9J9W5aa5E
 - date: 2024-06-20
   description: "Linda Hall Library Events"
   links:
@@ -32,7 +31,7 @@ url: https://www.youtube.com/watch?v=_t9J9W5aa5E
 - date: 2020-03
   description: "MIT Sloan Sports Analytics Conference"
   links:
-  - name: Playing Catchup: Estimating Player & Positional Value in (American) Football presented by ESPN
+  - name: Playing Catchup Estimating Player & Positional Value in (American) Football presented by ESPN
     url: https://www.sloansportsconference.com/event/playing-catchup-estimating-player-positional-value-in-american-football-presented-by-espn
 - date: 2020-01-08
   description: "TruMedia Expected Value Podcast"
