@@ -6,6 +6,13 @@ title-block-banner-color: "#FFFFFF"
 sidebar: false
 ---
 
+
+I'm a Senior Fellow at [The Wharton Sports Analytics & Business Initiative](https://wsb.wharton.upenn.edu/) and a Lecturer in the Department of Statistics and Data Science at [The Wharton School](https://www.wharton.upenn.edu/) of [The University of Pennsylvania](https://www.upenn.edu/). My formal education is in statistics and French and I have spent my entire career as a sports analytics professional. I teach and lead sports analytics research projects at Wharton but I also provide consulting services. I have a unique perspective on sports analytics problems having been exposed professionally and worked on problems across all major sports. I have worked with teams or on projects across various sports including NFL, Power 5 FBS football, NBA, college basketball,  MLS, European soccer,  MLB and sports media company ESPN.  My most recent consulting clients have been an MLB team, a sports betting company, and a European soccer club.
+
+Previously I was the VP of Football Analytics at [SūmerSports](sumersports.com). There I led our football analytics efforts working with teams in the NFL. Before Sumer, I was a Senior Sports Data Scientist at [ESPN](https://www.espn.com/analytics/). In 2016 at ESPN I led the revamp and relaunch [BPI](espn.com/bpi) and introduced Strength of Record (SOR) for college basketball which are both official metrics used by the NCAA tournament selection committee. In college football I was the original creator of [ESPN’s Allstate Playoff Predictor](https://www.espn.com/espn/feature/story/_/page/cfbplayoffpredictor/cfb-playoff-predictor). I created Fantasy Soccer Projections for ESPN, and worked on other metrics such as  [NFL FPI](https://www.espn.com/nfl/fpi) and NBA BPI. I authored many articles for espn.com in addition to creating the first of its kind objective data-based rating system for all college football and NFL players.
+
+With my training and expertise I am qualified to be an expert witness on statistical and sports analytics matters. To contact me, click the email button at the top of the site.
+
 ![](images/post_marathon_katherine.png){width="800"}
 
 # Personal
