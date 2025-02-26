@@ -1,8 +1,8 @@
 ---
 title: "About Me"
 description: ""
-title-block-banner: "#0062B8"
-title-block-banner-color: "#FFFFFF"
+# title-block-banner: "#0062B8"
+# title-block-banner-color: "#FFFFFF"
 sidebar: false
 ---
 
@@ -13,13 +13,13 @@ Previously I was the VP of Football Analytics at [SūmerSports](sumersports.com)
 
 With my training and expertise I am qualified to be an expert witness on statistical and sports analytics matters. To contact me, click the email button at the top of the site.
 
-![](images/post_marathon_katherine.png){width="800"}
+![](images/post_marathon_katherine.png){width="200"}
 
 # Personal
 
 My wife and I co-coach our coed basketball team of 4 girls and one boy. In my spare time I am chasing my goals in my recent hobby of marathon running and my lifelong love of waterskiing. I enjoy coaching my kids' sports teams and while trying not to overthink strategy for elementary school aged soccer. I volunteer regularly in the community and at my local Church of Jesus Christ of Latter-day Saints.
 
-![](images/sloan_presenting_2019.jpeg){width="400"} ![](images/mega_cast.jpeg){width="400"}
+![](images/sloan_presenting_2019.jpeg){width="200"} ![](images/mega_cast.jpeg){width="200"}
 
 # Professional
 
@@ -27,9 +27,9 @@ I'm a sports analytics expert with years of management experience. I built and g
 
 Among those metrics, BPI and Strength of Record (SOR) are official metrics of the NCAA selection committee. Another, the Allstate Playoff predictor bring millions of people to ESPN to play out how their team can reach the playoff. CFB Real Plus-Minus was the first "objective" rating for every college football player.
 
-![](images/espn_logo.png){width="400"} ![](images/sumer_logo.jpeg){width="400"}
+![](images/espn_logo.png){width="200"} ![](images/sumer_logo.jpeg){width="200"}
 
-![](images/vt_graduation.jpeg){width="600"}
+![](images/vt_graduation.jpeg){width="200"}
 
 # EDUCATION
 
@@ -41,6 +41,6 @@ Among those metrics, BPI and Strength of Record (SOR) are official metrics of th
 
 -   BS in statistics from BYU
 
-![](images/vt_logo.png){width="400"} ![](images/byu_logo.png){width="400"}
+![](images/vt_logo.png){width="200"} ![](images/byu_logo.png){width="200"}
 
-![](images/statistics_chalkboard.jpeg){width="400"} ![](images/french_flag.png){width="400"}
+![](images/statistics_chalkboard.jpeg){width="200"} ![](images/french_flag.png){width="200"}

@@ -13,8 +13,8 @@ listing:
     contents: published_articles.yml
     sort: "date desc"
     template: ../html/press/listing.ejs
-title-block-banner: "#0062B8"
-title-block-banner-color: "#FFFFFF"
+# title-block-banner: "#0062B8"
+# title-block-banner-color: "#FFFFFF"
 page-layout: full
 toc: true
 toc-location: right
