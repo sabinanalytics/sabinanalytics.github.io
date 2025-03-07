@@ -35,7 +35,7 @@ website:
     anonymize-ip: true
 ---
 
-::: grid
+::::: grid
 ::: {.g-col-12 .g-col-sm-4}
 ```{=html}
 
@@ -54,9 +54,6 @@ website:
 :::
 
 ::: {.g-col-12 .g-col-sm-8}
-
-Sabin Analytics is a sports analytics company founded by Dr. Paul Sabin, a world-renowned expert in the field. In addition to leading Sabin Analytics, he is a faculty member at the Wharton School. Previously, Paul developed cutting-edge sports analytics models at ESPN and served as the VP of Football Analytics at Sūmer Sports. 
-
-
+Sabin Analytics is a sports analytics company founded by Dr. Paul Sabin, a world-renowned expert in the field. In addition to leading Sabin Analytics, he is a faculty member at the Wharton School. Previously, Paul developed cutting-edge sports analytics models at ESPN and served as the VP of Football Analytics at Sūmer Sports.
 :::
-:::
+:::::
