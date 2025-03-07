@@ -65,18 +65,19 @@ website:
   #   image: "/files/profiles/twitter-card-large.png"
   #   locale: en_US
   # 
-  sidebar:
-      id: ratings
-      title: "Ratings & Projections"
-      style: "docked"
-      background: light
-      collapse-level: 2
-      contents: 
-        - text: "Ratings & Projections"
-        - text: "Soccer"
-          file: ratings/soccer/index.qmd
-        - text: "College Football"
-          file: ratings/cfb/index.qmd
+  # below uncomment to have ratings back on there.
+  # sidebar:
+  #     id: ratings
+  #     title: "Ratings & Projections"
+  #     style: "docked"
+  #     background: light
+  #     collapse-level: 2
+  #     contents: 
+  #       - text: "Ratings & Projections"
+  #       - text: "Soccer"
+  #         file: ratings/soccer/index.qmd
+  #       - text: "College Football"
+  #         file: ratings/cfb/index.qmd
   
   navbar:
     background: primary
@@ -94,7 +95,7 @@ website:
         file: "contact/index.qmd"
       - text: "Press"
         file: "press/index.qmd"
-      - sidebar:ratings
+      # - sidebar:ratings
       - text: "Blog"
         file: "blog/index.qmd"
     right:
