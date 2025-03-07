@@ -1,3 +1,8 @@
+- date: 2024-06-14
+  description: "Learning Bayesian Statistics"
+  links:
+  - name: Modeling Sports and Extracting Player Values, with Paul Sabin
+    url: https://www.youtube.com/watch?v=_t9J9W5aa5E
 - date: 2024-06-20
   description: "Linda Hall Library Events"
   links:
@@ -22,12 +27,22 @@
   description: "Dataiku"
   links:
   - name: The Scope of Data Science in the Sports World
-    url: https://podcasts.apple.com/ar/podcast/8-3-2022-covid-19-mlb-nfl-sabin/id1159695411?i=1000574895827
+    url: https://www.brighttalk.com/webcast/17108/429501?utm_source=Dataiku&utm_medium=brighttalk&utm_campaign=429501&__hstc=186155446.d1147c5e307371933e99dd1faa5b9c41.1738432519901.1738432519901.1738432519901.1&__hssc=186155446.1.1738432519901&__hsfp=3297947905&hsCtaTracking=8541c1ae-a8ee-42e4-95f7-3ff03530b023%7Cc199696f-0922-441e-93f4-f81af07ff92d
+- date: 2020-03
+  description: "MIT Sloan Sports Analytics Conference"
+  links:
+  - name: Playing Catchup Estimating Player & Positional Value in (American) Football presented by ESPN
+    url: https://www.sloansportsconference.com/event/playing-catchup-estimating-player-positional-value-in-american-football-presented-by-espn
 - date: 2020-01-08
   description: "TruMedia Expected Value Podcast"
   links:
   - name: Paul Sabin
     url: https://www.trumedianetworks.com/expected-value-podcast/paul-sabin
+- date: 2018-03
+  description: "MIT Sloan Sports Analytics Conference"
+  links:
+  - name: Driving Business Decisions With Sports Analytics presented by ESPN
+    url: https://www.sloansportsconference.com/event/driving-business-decisions-with-sports-analytics-presented-by-espn
 - date: 2017-07-21
   description: "BYU Sports Nation"
   links:

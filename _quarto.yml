@@ -12,6 +12,8 @@ render:
   - "*.qmd"
   - "*.md"
   - "!etc/"
+  
+include-before-body: logo-banner.html
 
 format:
   html:

@@ -1,1 +1,8 @@
 /* css styles */
+.banner-logo {
+    width: 100%;
+    max-height: 80px; /* Adjust as needed */
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}
