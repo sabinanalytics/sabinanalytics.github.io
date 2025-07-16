@@ -17,7 +17,7 @@ execute:
 library(magick)
 
 # Define PDF and output directory
-pdf_path <- "Funding Pitch Summary.pdf"
+pdf_path <- "Funding Pitch Summary July 2025.pdf"
 img_dir <- "img"
 
 # Create folder if needed
